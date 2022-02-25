@@ -1,0 +1,107 @@
+﻿@model ActiveMenu.ViewModel.indexVM
+@{
+    ViewBag.Title = "Home Page";
+}
+
+<div style="display:flex; margin:20px 10px ">
+    <i class="fal fa-shopping-cart" style="float:right; font-size:30px; color:white"></i>
+    <i class="fal fa-bars" style="float:left; font-size:30px; color:white; flex:1; text-align:right"></i>
+</div>
+<style>
+    * {
+        box-sizing: border-box;
+    }
+
+    body {
+        margin: 0;
+        font-family: Arial;
+    }
+
+    .header {
+        text-align: center;
+        padding: 32px;
+    }
+
+    .row {
+        display: -ms-flexbox; /* IE10 */
+        display: flex;
+        -ms-flex-wrap: wrap; /* IE10 */
+        flex-wrap: wrap;
+        padding: 0 4px;
+    }
+
+    /* Create four equal columns that sits next to each other */
+    .column {
+        -ms-flex: 25%; /* IE10 */
+        flex: 25%;
+        max-width: 25%;
+        padding: 0 4px;
+    }
+
+        .column img {
+            margin-top: 8px;
+            vertical-align: middle;
+            width: 100%;
+            border-radius:15px
+        }
+
+    /* Responsive layout - makes a two column-layout instead of four columns */
+    @@media screen and (max-width: 800px) {
+        .column {
+            -ms-flex: 50%;
+            flex: 50%;
+            max-width: 50%;
+        }
+    }
+
+    /* Responsive layout - makes the two columns stack on top of each other instead of next to each other */
+    @@media screen and (max-width: 600px) {
+        .column {
+            -ms-flex: 100%;
+            flex: 100%;
+            max-width: 50%;
+        }
+    }
+</style>
+<div style="padding:10px">
+    <img src="@Model.image" style="width:100%; border-radius:10px" />
+</div>
+<div style="width:100%; border-bottom:1px solid #fff; margin-bottom:50px; position:relative; height:50px;display:flex;justify-content:center ">
+    <p style="position:absolute;bottom :0;background-color:#4d4d4d;color:white;font-size: 20px;position: absolute;bottom: -25px;padding: 5px 25px;">منوی @Model.title</p>
+</div>
+
+
+<div class="row" style="margin:0">
+
+    <div class="column">
+        @for (int i = 0; i < Model.calist.Count(); i++)
+        {
+            if (@Model.calist[i].culomn == "1")
+            {
+                string url = @Model.calist[i].imageAddress;
+        <div>
+            <img src="@url" style="width:100%">
+        </div>
+               
+            }
+        }
+
+       
+    </div>
+    <div class="column">
+        
+        @foreach (var item in Model.calist)
+        {
+            if (item.culomn == "2")
+            {
+                string url = item.imageAddress;
+        <div style="position:relative">
+            <a style="display:flex;" href="/Home/Detail/@item.categoryID"> <img src="@url" style="width:100%"></a>
+           
+        </div>
+                
+            }
+        }
+    </div>
+
+</div>

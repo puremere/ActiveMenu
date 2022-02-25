@@ -1,0 +1,39 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - My ASP.NET Application</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+    <link href="~/Content/font.css" rel="stylesheet" />
+
+    <link href="~/Content/fontawesome-all.css" rel="stylesheet" />
+    <link href="~/Content/toastr.css" rel="stylesheet" />
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    <script src="~/Scripts/toastr.js"></script>
+    
+</head>
+<body>
+    @{ 
+        string logo = @ViewBag.Logo;
+    }
+    <div id="loading" style="display:none">
+        <div style="padding:15px 35px; background-color:white;position:fixed;overflow: visible;margin: auto;top: 0;left: 0; bottom: 0; right: 0;max-height:150px; max-width:250px">
+
+
+            <img style="max-width:80px; display:block; margin:auto" src="~/images/@logo" alt="لوگو" />
+
+            <img src="~/images/adminloading.gif" style="display:block; margin:auto; margin-top:15px" alt="لودینگ" />
+
+
+
+        </div>
+    </div>
+    @RenderBody()
+
+    @RenderSection("scripts", required: false)
+
+</body>
+</html>
