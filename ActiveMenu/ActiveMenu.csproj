@@ -154,6 +154,7 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Classes\CustomMethods.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="DBManager.cs" />
     <Compile Include="Global.asax.cs">
@@ -165,7 +166,9 @@
     <Compile Include="ViewModel\basketVM.cs" />
     <Compile Include="ViewModel\checkOutVM.cs" />
     <Compile Include="ViewModel\detailVM.cs" />
+    <Compile Include="ViewModel\EndOrderVM.cs" />
     <Compile Include="ViewModel\indexVM.cs" />
+    <Compile Include="ViewModel\infoVM.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap-theme.css" />
@@ -186,6 +189,11 @@
     <Content Include="fonts\webfonts\fa-solid.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
+    <Content Include="images\app\11.png" />
+    <Content Include="images\app\back0.jpg" />
+    <Content Include="images\app\back.jpg" />
+    <Content Include="images\app\1.png" />
+    <Content Include="images\app\basket.png" />
     <Content Include="images\Categories\1.png" />
     <Content Include="images\Categories\2.png" />
     <Content Include="images\Categories\3.png" />
@@ -197,6 +205,9 @@
     <Content Include="images\Items\5.png" />
     <Content Include="images\Items\6.png" />
     <Content Include="images\Items\7.png" />
+    <Content Include="images\Logo\niki.png" />
+    <Content Include="images\Restaurant\group_21.jpg" />
+    <Content Include="images\Restaurant\group_21.png" />
     <Content Include="images\Restaurant\kafeNiki.png" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
@@ -282,6 +293,10 @@
     <Content Include="Views\Home\Detail.cshtml" />
     <Content Include="Views\Home\ItemDetail.cshtml" />
     <Content Include="Views\Home\basket.cshtml" />
+    <Content Include="Views\Shared\ItemSection.cshtml" />
+    <Content Include="Views\Home\info.cshtml" />
+    <Content Include="Views\Shared\_Layoutinfo.cshtml" />
+    <Content Include="Views\Shared\_orderStatus.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

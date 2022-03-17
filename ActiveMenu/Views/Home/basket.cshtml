@@ -1,157 +1,95 @@
-﻿@model IEnumerable<ActiveMenu.Model.Item>
-<div style="" class="headerTop">
-    <div class="cartHolder" style="">
-        <a href="/Home/basket">
+﻿@model ActiveMenu.ViewModel.EndOrderVM
+<div style="" class="headerTop" >
+    <div class="backToList" style="">
+        <div >
 
-            <i class="fal fa-times" style=" font-size:30px; color:white"></i>
-        </a>
+            <i class="fal fa-times" style=" font-size:20px; color:white"></i>
+        </div>
 
     </div>
     <span style="flex:1"></span>
     <div style=" text-align:right; display:flex">
-        <p style="margin-right:10px ; color:white;font-size:24px">سفارشات شما</p>
-        <i class="fal fa-long-arrow-right" style="font-size:30px; color:white; "></i>
+        <p style="margin-right:10px ; color:white;font-size:18px">سفارشات شما</p>
+       
     </div>
 
 </div>
-<style>
-    .headerTop {
-        display: flex;
-        margin: 30px 20px 50px 20px;
-        align-items: center;
+
+<div style=" ">
+    @{
+        if (Model.lst != null)
+        {
+            foreach (var item in Model.lst  )
+            {
+
+                @Html.Partial("~/Views/Shared/ItemSection.cshtml", item);
+
+            }
+
+        }
     }
+</div>
 
-    .cartHolder {
-        direction: rtl;
-        display: flex;
-        background-color: orange;
-        padding: 5px;
-        border-radius: 10px;
-        align-items: center;
-        justify-content: center;
-    }
-
-    .itemparent {
-        background-color: #4d4d4d;
-        border-radius: 35px 35px 0 0;
-        height: 100%;
-        padding: 20px;
-    }
-
-    .itemHolder {
-        display: flex;
-        border-radius: 35px;
-        background-color: #4d4d4d;
-        margin: 25px 10px;
-        direction: rtl;
-        padding: 20px
-    }
-
-    .title {
-        color: white;
-        font-weight: 500;
-    }
-
-    .desciption {
-        color: white;
-        width: 100%;
-        overflow: hidden;
-        margin: 30px 0;
-        line-height: 2em;
-        height: 4em; /* height is 2x line-height, so two lines will display */
-        overflow: hidden; /* prevents extra lines from being visible */
-    }
-
-    .price {
-        color: white;
-        font-size: 35px;
-        font-weight: 500
-    }
-
-    .imgItem {
-        max-width: 100%;
-        height: 100%;
-        object-fit: cover;
-        border-radius: 20px
-    }
-
-    h2, h4 {
-        margin: 0
-    }
-
-    .countButton {
-        float: left;
-        padding: 5px;
-        background-color: darkorange;
-        color: white;
-        border-radius: 8px;
-        background-color: #4d4d4d;
-        padding: 10px;
-        display: flex;
-        justify-content: space-between;
-        width: 150px;
-        align-items: center
-    }
-</style>
-@foreach (var item in Model)
-{
-    string imageItem = item.imageList.TrimEnd(',').Split(',').ToList().First();
-    <a style="" href="/Home/ItemDetail/@item.itemID">
-        <div class="itemHolder">
-            <div style="width:30%; height:100%">
-                <img class="imgItem" src="~/images/Items/@imageItem" />
-            </div>
-            <div style="width:70%; padding:5px;padding-right:15px">
-                <h2 class="title">@item.title</h2>
-                <h4 class="desciption">@item.desctiption</h4>
-                <div style="display:flex">
-                    <p class="price">@item.price</p>
-                    <span style="flex:1"></span>
-                    <p class="countButton" style="direction:ltr">
-                        <i id="@item.itemID" style=" font-size:30px" class="fal fa-minus"></i>
-                        @{
-                            string iclass = "value" + @item.itemID;
-
-                        }
-                        <span class="@iclass" style="font-size:20px; color:white">0</span>
-                        <i id="@item.itemID" style="color:orange;font-size:30px" class="fal fa-plus"></i>
-                    </p>
-                </div>
-
-            </div>
-        </div>
-
-    </a>
-
-}
 
 <style>
     .itemparent {
-        padding:10px 15px;
+        padding: 10px 15px;
         border-bottom: 1px solid #343333;
-        display:flex
+        display: block;
+        width: 100%;
+      
+    }
+    .reportParent {
+        width: 100%;
+        display: flex;
+        direction: rtl;
+        padding: 5px 15px;
+        border-bottom: 1px solid #343333;
+    }
+    .reportParent span {
+        color: white;
+        font-size:14px;
+    }
+    .flex1{
+        flex:1
     }
 </style>
 <div style="" class="itemparent">
 
     <div class="reportParent">
-        <span>جمع مبلغ پرداختی</span>
+        <span>جمع مبلغ سفارش</span>
         <span class="flex1"></span>
-        <p><span>تومان</span> <span></span></p>
+        <p> <span id="orderTotal" style="margin-left:10px"> @String.Format("{0:n0}", @Model.orderPrice)</span><span>تومان</span></p>
     </div>
     <div class="reportParent">
-        <span>تخفیف</span>
+        <span>مبلغ تخفیف</span>
         <span class="flex1"></span>
-        <p><span>تومان</span> <span></span></p>
+        <p> <span id="discount"  style="margin-left:10px">@Model.discount</span><span>تومان</span></p>
     </div>
     <div class="reportParent">
         <span>جمع کل پرداختی</span>
         <span class="flex1"></span>
-        <p><span>تومان</span> <span></span></p>
+        <p><span id="total"  style="margin-left:10px; font-size:20px; font-weight:600; color:orange"> @String.Format("{0:n0}", @Model.finalPrice) </span><span>تومان</span></p>
+
+    </div>
+
+
+    <div id="addOrder" style="display:flex; justify-content:center;margin:15px;">
+        <div style="width:50%; padding:20px;color:white; background-color:orange;text-align:center; border-radius:13px">ثبت سفارش</div>
     </div>
 </div>
 
 @section scripts{
+    <script>
+        $("#addOrder").click(function () {
+            window.location.href = "/Home/setOrder"
+        })
+    </script>
+    <script>
+        $(".backToList").click(function () {
+            history.back();
+        })
+    </script>
     <script>
         var getquntity = function () {
             $.ajax({
@@ -190,7 +128,7 @@
 
     </script>
     <script>
-        $(".fa-plus").click(function () {
+        $(".fa-plus").click(function (e) {
             e.stopPropagation();
             $("#loading").fadeIn()
             var id = $(this).attr('id');
@@ -208,7 +146,7 @@
             })
         })
 
-        $('.fa-minus').on('click', function () {
+        $('.fa-minus').on('click', function (e) {
             e.stopPropagation();
             event.stopPropagation();
 
@@ -218,8 +156,6 @@
             let newVal = $(this).parent().children(".value").text();
             if (newVal != "0") {
                 $("#loading").fadeIn()
-                let finalVal = parseInt(newVal) - 1;
-                $("." + myid).text(finalVal);
                 $.ajax({
                     url: '/Home/minusfromcart',
                     dataType: 'html',

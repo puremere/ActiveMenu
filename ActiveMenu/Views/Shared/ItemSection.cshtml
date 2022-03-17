@@ -1,0 +1,42 @@
+﻿@model ActiveMenu.Model.Item
+
+@{ 
+    string imageItem = Model.imageList.TrimEnd(',').Split(',').ToList().First();
+
+
+}
+
+
+<div class="itemHolder" >
+    <div  >
+        <div style="display:flex;padding-right:12px ">
+            <div class="itemImageHolder"  id="@Model.itemID" style="" onclick="goToDetail(this)">
+                <img class="imgItem" src="~/images/Items/@imageItem" />
+            </div>
+            <div style="width:100%; padding:5px;padding-right:25px">
+                <h4 class="title">@Model.title</h4>
+                <h5 class="desciption">@Model.desctiption</h5>
+
+                <div style="display:flex; align-items:center">
+                    <p class="price">@Model.price</p>
+                    <span style="flex:1"></span>
+                    <p class="countButton" style="direction:ltr">
+                        <i id="@Model.itemID" style=" font-size:20px" class="fal fa-minus" onclick="removeItem(this)"></i>
+                        @{
+                            string iclass = "value" + Model.itemID;
+
+                        }
+                        <span class="@iclass allPrice" style="font-size:20px; color:white; margin:0 15px">0</span>
+                        <i id="@Model.itemID" style="color:orange;font-size:20px" class="fal fa-plus" onclick="addItem(this)"></i>
+                    </p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+        <div>
+           
+        </div>
+</div>
+
+

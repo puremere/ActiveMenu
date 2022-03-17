@@ -13,23 +13,251 @@
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
     <script src="~/Scripts/toastr.js"></script>
-    
+    <script>
+        var goToDetail = function (el) {
+            let id = "/Home/ItemDetail/" + el.id;
+            window.location.href = id;
+        }
+       
+    </script>
+    <script>
+        var getquntity = function () {
+            $.ajax({
+                url: '/Home/getquntitiy',
+                dataType: 'html',
+                success: function (data) {
+                    var total = 0;
+                    var srtcookie = data;
+
+                    if (srtcookie.length > 0) {
+                        srtcookie = srtcookie.replace(/&quot;/g, '"');
+                        JSON.parse(srtcookie).forEach(function (item) {
+                            let valueID = "value" + item.productid;
+                           
+                            $("." + valueID).text(item.quantity);
+                            total += parseInt(item.quantity);
+                        });
+                    
+                        $(".simpleCart_quantityy").text(total)
+                        if (total == "0") {
+                            $(".allPrice").text("0");
+                        }
+                       
+
+                    } else {
+                        $(".allPrice").text("0");
+                        $(".simpleCart_quantityy").text("0")
+                    };
+                }
+
+            })
+        };
+
+        $(document).ready(function () {
+            getquntity();
+        })
+
+
+
+
+
+
+    </script>
+    <script>
+        var removeItem = function (event) {
+
+          
+            var ID = event.id;
+            let myid = "value" + ID.replace('minus', '');
+
+            let newVal = $(this).parent().children(".value").text();
+            if (newVal != "0") {
+                $("#loading").fadeIn();
+                $.ajax({
+                    url: '/Home/minusfromcart',
+                    dataType: 'html',
+                    data: {
+                        id: ID
+                    },
+                    success: function (data) {
+                        getquntity();
+                        $("#loading").fadeOut()
+
+                    },
+                    error: function () {
+                        alert("error")
+                    }
+
+
+                });
+            };
+        }
+        var addItem = function (event) {
+            
+            $("#loading").fadeIn()
+            var id = event.id;
+            $.ajax({
+                url: "/Home/addtocart",
+                data: {
+                    id: id,
+                },
+                success: function (data) {
+
+
+                    getquntity();
+                    $("#loading").fadeOut()
+                }
+            })
+        }
+      
+
+      
+    </script>
+    <style>
+        .headerTop {
+            display: flex;
+            margin: 20px;
+            align-items: center;
+        }
+
+        .cartHolder {
+            direction: rtl;
+            display: flex;
+            background-color: orange;
+            padding: 5px;
+            border-radius: 10px;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .itemparent {
+            /*background-color: #4d4d4d;*/
+            border-radius: 35px 35px 0 0;
+            height: 100%;
+           
+        }
+
+        .itemHolder {
+            border-radius: 35px;
+            /*background-color: #4d4d4d;*/
+            margin: 25px 10px;
+            direction: rtl;
+            padding: 12px 
+        }
+
+        .title {
+            color: white;
+            font-weight: 600;
+        }
+
+        .desciption {
+            color: white;
+            width: 100%;
+            overflow: hidden;
+            margin: 10px 0;
+            line-height: 2em;
+            height: 4em; /* height is 2x line-height, so two lines will display */
+            overflow: hidden; /* prevents extra lines from being visible */
+        }
+
+        .price {
+            color: white;
+            font-size: 20px;
+            font-weight: 600;
+            margin: 0
+        }
+
+        .imgItem {
+            max-width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 20px
+        }
+
+        h2, h4 {
+            margin: 0
+        }
+
+        .countButton {
+            float: left;
+            padding: 5px;
+           
+            color: white;
+            border-radius: 15px;
+            background-color: #343333;
+            padding: 10px;
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0;
+            align-items: center
+        }
+        .parentBlur {
+            /* The image used */
+          
+            /* Add the blur effect */
+            filter: blur(8px);
+            -webkit-filter: blur(4px);
+            /* Full height */
+            height: 100%;
+            /* Center and scale the image nicely */
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+            position:fixed;
+            width:100%;
+           bottom:0
+
+        }
+        ::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+            color: #e6e3e3;
+            opacity: 1; /* Firefox */
+        }
+
+        :-ms-input-placeholder { /* Internet Explorer 10-11 */
+            color: #e6e3e3;
+        }
+
+        ::-ms-input-placeholder { /* Microsoft Edge */
+            color: #e6e3e3;
+        }
+        .itemImageHolder {
+            width: 30%;
+            position: absolute;
+            height: 90%;
+            top: 0;
+            right: -18%;
+            margin-top: 3%;
+            
+            background: rgba(255,255,255,0.05);
+            backdrop-filter: blur(10px);
+            /* border-top: 1px solid rgba(255,255,255,0.2); */
+            border-left: 1px solid rgba(255,255,255,0.2);
+            box-shadow: 5px 5px 30px rgb(0 0 0 / 20%);
+            border-radius: 25px;
+        }
+    </style>
 </head>
 <body>
-    @{ 
-        string logo = @ViewBag.Logo;
+    @{
+        string logo = Request.Cookies["logo"].Value as string;
     }
     <div id="loading" style="display:none">
-        <div style="padding:15px 35px; background-color:white;position:fixed;overflow: visible;margin: auto;top: 0;left: 0; bottom: 0; right: 0;max-height:150px; max-width:250px">
+        <div style="z-index:9; padding:15px 35px; background-color:rgba(0,0,0,0.5);display:flex; justify-content:center; align-items:center; position:fixed;overflow: visible;margin: auto;top: 0;left: 0; bottom: 0; right: 0;">
 
 
-            <img style="max-width:80px; display:block; margin:auto" src="~/images/@logo" alt="لوگو" />
-
-            <img src="~/images/adminloading.gif" style="display:block; margin:auto; margin-top:15px" alt="لودینگ" />
-
+            <img style="max-width:80px; display:block; margin:auto" src="~/images/Logo/@logo" alt="لوگو" />
 
 
         </div>
+    </div>
+    <div style="background: url('../../images/app/back.jpg')" class="parentBlur">
+
+    </div>
+
+    <div class="row" style="display:flex; padding:30px 30px 0; position:relative;width:100%; margin:0px">
+        <i class="fal fa-shopping-cart" style=" font-size:20px; color:white;width:20%"></i>
+        <p style="font-size:16px; color:white;font-weight:500; text-align:center; width:60%">@ViewBag.ItemTitle</p>
+        <i class="fal fa-bars" style=" font-size:20px; color:white;  text-align:right; width:20%"></i>
     </div>
     @RenderBody()
 

@@ -1,0 +1,123 @@
+﻿
+@model IEnumerable<ActiveMenu.Model.order>
+
+
+
+<style>
+    #countdown {
+        position: relative;
+        margin: auto;
+        
+        height: 40px;
+        width: 40px;
+        text-align: center;
+    }
+
+    .countdown-number {
+        color: white;
+        display: inline-block;
+        line-height: 40px;
+    }
+
+    svg {
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: 40px;
+        height: 40px;
+        transform: rotateY(-180deg) rotateZ(-90deg);
+    }
+
+        svg circle {
+            stroke-dasharray: 113px;
+            stroke-dashoffset: 0px;
+            stroke-linecap: round;
+            stroke-width: 2px;
+            stroke: white;
+            fill: none;
+            /*animation: countdown 10s linear infinite forwards;*/
+        }
+
+    @@keyframes countdown {
+        from {
+            stroke-dashoffset: 0px;
+        }
+
+        to {
+            stroke-dashoffset: 113px;
+        }
+    }
+</style>
+
+
+
+
+<style>
+    .statusDiv {
+        padding: 10px;
+        background-color: #343333;
+        border-radius: 12px;
+        margin-bottom: 15px;
+    
+    }
+    .statusDiv > div {
+        display: flex;
+        color: white;
+        margin-bottom: 20px;
+        direction: rtl
+    }
+    .spanSec{
+        margin: 10px;
+        font-size:16px;
+    }
+</style>
+@foreach (var item in Model)
+{
+    string circleID = item.peigiry + "circle";
+
+    <div class="statusDiv">
+        <div class="" style="">
+
+           
+            <span  class="spanSec">شماره سفارش: </span>
+            <span class="spanSec">@item.orderNumber</span>
+
+        </div>
+        <div  style="">
+            <spna class="spanSec">مدت زمان آماده سازی</spna>
+            <div id="countdown">
+
+                <div id="@item.peigiry" class="countdown-number"></div>
+                <svg>
+                    <circle id="@circleID" r="18" cx="20" cy="20"></circle>
+                </svg>
+            </div>
+        </div>
+    </div>
+    
+
+    <script>
+         var  second = parseInt(@item.minutToAdd) *60;
+        var secondPassed = parseInt(@item.minutPassed) * 60;
+      
+        var final = second - secondPassed;
+        
+        document.getElementById('@item.peigiry').textContent =  @item.minutToAdd
+
+            setInterval(function () {
+
+            document.getElementById('@item.peigiry').textContent=parseInt(document.getElementById('@item.peigiry').textContent) - 1;
+
+                @*var number = parseInt(document.getElementById('@item.peigiry').textContent);
+                number = --number <= 0 ? @item.minutToAdd : 0;
+                document.getElementById('@item.peigiry').textContent = number;*@
+
+            }, 60000);
+        var circleID = '@item.peigiry'+ "circle";
+        var value = 'countdown ' + final + 's linear infinite forwards';
+       
+        document.getElementById(circleID).style.animation = value;
+
+    </script>
+}
+
