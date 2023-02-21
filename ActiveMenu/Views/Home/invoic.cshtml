@@ -1,0 +1,105 @@
+﻿@model ActiveMenu.ViewModel.invoicVM
+
+@{
+    ViewBag.Title = "invoic";
+    ViewBag.ItemTitle = "invoic";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<style>
+    #invoice {
+        display: none;
+        background-color: #fff;
+        margin: 20px;
+        padding: 40px;
+        background-image: url(/images/app/invoic.jpg);
+        background-size: cover;
+        opacity: 0.75;
+        border-radius: 25px;
+        width: 350px;
+        position:relative;
+        /*position:absolute;
+        top:50%;
+        left:50%;
+        transform : translate(-50%, -50%);*/
+    }
+
+        #invoice p {
+            padding: 5px;
+            text-align: center;
+            display: flex;
+        }
+
+            #invoice p span {
+                font-weight: 600
+            }
+
+    .sp2 {
+        flex: 1
+    }
+
+    .sp1 {
+        font-size:16px
+    }
+    .total{
+        font-size:18px;
+    }
+    
+</style>
+<div style="display:flex; justify-content:center">
+    <div id="invoice">
+
+        @{
+            double subtotal = @Model.lst.Sum(x => x.count * x.price);
+            double discount = 0;
+            double vat = (subtotal * @Model.vat) / 100;
+            double total = subtotal + vat;
+        }
+        <p style="color:forestgreen; border-bottom:1px solid #4d4d4d; margin-top:25px"> Your Order Is Successfully Registered</p>
+        <p> <span class="sp1">Sub Total : </span><span class="sp2">@subtotal AED</span> </p>
+        <p><span class="sp1"> Vat : </span><span></span><span class="sp2"> @vat AED (@Model.vat %)</span> </p>
+        <p><span class="sp1">Discount : </span><span></span> <span class="sp2">0 AED</span> </p>
+        <p> <span class="sp1 total"> Total : </span><span class="sp2 total">@total AED</span> </p>
+
+        <div class="iconholder" style="">
+            <a href="/Home/getReciet?id=@Model.orderID">  <i class="fa fa-download"></i> <b> Invoice</b></a>
+          
+        </div>
+        <div class="homeholder" style="">
+            <a href="/Home/index">
+                <i class="fa fa-home"></i> <b> Home</b>
+            </a>
+           
+        </div>
+    </div>
+ 
+</div>
+
+<style>
+    .iconholder {
+        height: 50px;
+        position:absolute;
+        right:10px;
+        top:25px;
+        cursor:pointer;
+        padding-right:15px
+
+    }
+    .homeholder {
+        height: 50px;
+        position: absolute;
+        left: 10px;
+        top: 25px;
+        cursor: pointer;
+        padding-left: 15px
+    }
+</style>
+
+
+
+<script>
+    $(document).ready(function () {
+        $("#invoice").slideDown();
+    })
+</script>

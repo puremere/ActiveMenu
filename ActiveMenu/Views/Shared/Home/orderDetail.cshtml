@@ -1,0 +1,46 @@
+﻿@model  ActiveMenu.ViewModel.orderDetailPageVM
+    @{
+        ViewBag.Title = "Detail";
+        ViewBag.ItemTitle =Model.name ;
+    }
+
+
+
+    @*<div style="position:relative" class="headerTop">
+            <div>
+                <a href="/Home/basket" class="cartHolder">
+                    <p class="simpleCart_quantityy" style="color:white; margin-left:10px;font-size:20px;"></p>
+                    <i class="fal fa-shopping-cart" style=" font-size:20px; color:white"></i>
+                </a>
+
+            </div>
+            <span style="flex:1"></span>
+            <div style=" text-align:right; display:flex; align-items:center">
+                <p style="margin-right:10px ; color:white;font-size:20px; margin-bottom:0">@</p>
+                <i class="fal fa-long-arrow-right" style="font-size:20px; color:white; "></i>
+            </div>
+
+
+        </div>*@
+
+
+    <div style="position:relative" class="itemparent">
+        <div style="text-align:center;display: flex;justify-content: center;margin-bottom: 25px;">
+            <div style="height:2px; background-color:orange; width:30%"></div>
+        </div>
+
+        @foreach (var item in Model.list)
+        {
+            @Html.Partial("~/Views/Shared/orderDetailSection.cshtml", item);
+
+        }
+    </div>
+    <style>
+
+        .itemparent {
+        }
+    </style>
+
+    @section scripts{
+
+    }

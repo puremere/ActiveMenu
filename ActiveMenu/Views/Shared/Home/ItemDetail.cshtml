@@ -1,0 +1,249 @@
+﻿@model ActiveMenu.Model.Item
+@{
+    ViewBag.Title = "ItemDetail";
+    ViewBag.ItemTitle = Model.title;
+}
+
+<link href="~/Content/slick.css" rel="stylesheet" />
+<link href="~/Content/slick-theme.css" rel="stylesheet" />
+<script src="~/Scripts/slick.js"></script>
+
+
+
+<div class="imageslider" style="width:90%; margin:auto;margin-top:30px">
+
+    @foreach (var item in Model.imageList.Trim(',').Split(',').ToList())
+    {
+        <img style="border-radius:12px" src="~/images/Items/@ViewBag.username/@item" />
+    }
+
+</div>
+
+<style>
+    .description {
+        font-size: 17px;
+        color: white;
+        direction: rtl;
+        margin-top: 15px;
+        line-height: 2;
+        text-align:justify;
+    }
+
+    /*.countButton {
+        float: left;
+        padding: 5px;
+        background-color: darkorange;
+        color: white;
+        border-radius: 8px;
+        background-color: #4d4d4d;
+        padding: 10px;
+        display: flex;
+        justify-content: space-between;
+        width: 150px;
+        align-items: center;
+        border: 1px solid white;
+        background-color: #4d4d4d;
+        margin: 25px auto
+    }*/
+    .infoSec {
+        position:relative;
+        z-index:9999;
+        background-color: #343333;
+        padding: 20px;
+        border-radius: 32px 32px 0 0;
+        
+       
+        width: 100%;
+        padding-top: 40px;
+        background: rgba(255,255,255,0.05);
+        backdrop-filter: blur(10px);
+        border-top: 1px solid rgba(255,255,255,0.2);
+        border-left: 1px solid rgba(255,255,255,0.2);
+        box-shadow: 5px 5px 30px rgb(0 0 0 / 20%);
+        margin-top:-40px;
+        padding-bottom:40px
+    }
+    .blur::before {
+        backdrop-filter: blur(2px) contrast(60%);
+        -webkit-backdrop-filter: blur(2px) contrast(60%);
+        width: contain;
+        
+    }
+
+    .blur {
+        backdrop-filter: blur(2px) contrast(60%);
+        -webkit-backdrop-filter: blur(2px) contrast(60%);
+        width: contain;
+       
+    }
+</style>
+<div style="" class="infoSec blur">
+    
+    <div style="margin-top:20px">
+
+        <div style="direction:rtl; display:flex; align-items:center">
+            <i class="fa fa-dot-circle" style="color:orange"></i>
+            <span style="color:white;font-size:19px ; margin-right:15px;white-space: nowrap;">معرفی آیتم</span>
+
+        </div>
+        <p class="description">@Model.desctiption</p>
+        <div style="direction:rtl; display:flex; align-items:center; margin-top:30px">
+            <i class="fa fa-dot-circle" style="color:orange"></i>
+            <span style="color:white;font-size:19px ; margin-right:15px;white-space: nowrap;">ترکیبات</span>
+
+        </div>
+        <p class="description">@Model.ingredient</p>
+
+        <div style="align-items:center; border:1px solid white; border-radius:15px; padding:15px; display:flex; margin-top:40px; direction:rtl">
+            <p style="color:white; font-size:18px; margin:0">مبلغ قابل پرداخت</p>
+            <p style="flex:1"></p>
+            <p style="color:orange; font-size:25px; margin:0">@string.Format("{0:n0}", @Model.price)  </p>
+            <p style="color:white; font-size:18px; margin:0;margin-right:15px; ">تومان</p>
+        </div>
+        <div style="display:flex; align-items:center; margin-top:10px">
+
+            @if (ViewBag.sabad == "1" || !String.IsNullOrEmpty(ViewBag.istrue))
+            {
+                <p class="countButton" style="direction:ltr">
+                    <i id="@Model.itemID" style=" font-size:20px" class="fal fa-minus" onclick="removeItem(this)"></i>
+                    @{
+                        string iclass = "value" + Model.itemID;
+
+                    }
+                    <span class="@iclass allPrice" style="font-size:20px; color:white; margin:0 25px">0</span>
+                    <i id="@Model.itemID" style="color:orange;font-size:20px" class="fal fa-plus" onclick="addItem(this)"></i>
+                </p>
+            }
+
+
+
+            <p style="flex:1"></p>
+            @*<div  style="display:flex; justify-content:center;margin:15px;">
+            <div style=" padding:15px;color:white; background-color:orange;text-align:center; border-radius:13px">حذف</div>
+        </div>*@
+
+            @{
+
+                if (ViewBag.istrue != "")
+                {
+                    <div style="display:flex; justify-content:center;margin:15px;">
+                        <a href="/admin/createItem?item=@Model.itemID">
+                            <div style=" padding:15px;color:white; background-color:orange;text-align:center; border-radius:13px">ویرایش</div>
+                        </a>
+                        <a style="margin: 0 10px" href="/admin/DeleteItem?item=@Model.itemID">
+                            <div style=" padding:15px;color:white; background-color:orange;text-align:center; border-radius:13px">حذف</div>
+                        </a>
+                    </div>
+                }
+            }
+
+
+        </div>
+       
+    </div>
+</div>
+
+
+@section scripts{
+    <script>
+        var getquntity = function () {
+            $.ajax({
+                url: '/Home/getquntitiy',
+                dataType: 'html',
+                success: function (data) {
+                    var total = 0;
+                    var srtcookie = data;
+
+                    if (srtcookie.length > 0) {
+                        srtcookie = srtcookie.replace(/&quot;/g, '"');
+                        JSON.parse(srtcookie).forEach(function (item) {
+                            let valueID = "value" + item.productid;
+
+                            $("." + valueID).text(item.quantity);
+                            total += parseInt(item.quantity);
+                        });
+                        $(".simpleCart_quantityy").text(total)
+
+                    } else {
+                        $(".simpleCart_quantityy").text("0")
+                    };
+                }
+
+            })
+        };
+
+        $(document).ready(function () {
+            getquntity();
+        })
+
+
+
+
+
+
+    </script>
+    <script>
+        $(".fa-plus").click(function () {
+           
+            $("#loading").fadeIn()
+          
+            var id = $(this).attr('id');
+            $.ajax({
+                url: "/Home/addtocart",
+                data: {
+                    id: id,
+                },
+                success: function (data) {
+
+
+                    getquntity();
+                    $("#loading").fadeOut()
+                }
+            })
+        })
+
+        $('.fa-minus').on('click', function () {
+            event.stopPropagation();
+
+            var ID = $(this).attr('id');
+            let myid = "value" + ID.replace('minus', '');
+
+            let newVal = $(this).parent().children(".value").text();
+            if (newVal != "0") {
+                $("#loading").fadeIn()
+                let finalVal = parseInt(newVal) - 1;
+                $("." + myid).text(finalVal);
+                $.ajax({
+                    url: '/Home/minusfromcart',
+                    dataType: 'html',
+                    data: {
+                        id: ID
+                    },
+                    success: function (data) {
+                        getquntity();
+                        $("#loading").fadeOut()
+
+                    },
+                    error: function () {
+                        alert("error")
+                    }
+
+
+                });
+            }
+
+
+
+
+
+
+
+
+        });
+    </script>
+}
+<script>
+    $('.imageslider').slick({
+        arrows: false,
+    });
+</script>

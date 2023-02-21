@@ -1,0 +1,172 @@
+﻿@model ActiveMenu.ViewModel.EndOrderVM
+
+@{
+    ViewBag.Title = "ItemDetail";
+    ViewBag.ItemTitle = "سبد خرید";
+}
+
+
+<div style="position:relative" class="itemparent">
+    <div style="text-align:center;display: flex;justify-content: center;margin-bottom: 25px;">
+        <div style="height:2px; background-color:orange; width:30%"></div>
+    </div>
+
+    @foreach (var item in Model.lst)
+    {
+        @Html.Partial("~/Views/Shared/ItemSection.cshtml", item);
+
+    }
+</div>
+
+
+
+<style>
+
+    .reportParent {
+        width: 100%;
+        display: flex;
+        direction: rtl;
+        padding: 5px 15px;
+        border-bottom: 1px solid #343333;
+    }
+
+        .reportParent span {
+            color: white;
+            font-size: 14px;
+        }
+
+    .flex1 {
+        flex: 1
+    }
+</style>
+<div style="position:relative" class="">
+
+    <div class="reportParent">
+        <span>جمع مبلغ سفارش</span>
+        <span class="flex1"></span>
+        <p> <span id="orderTotal" style="margin-left:10px"> @String.Format("{0:n0}", @Model.orderPrice)</span><span>تومان</span></p>
+    </div>
+    <div class="reportParent">
+        <span>مبلغ تخفیف</span>
+        <span class="flex1"></span>
+        <p> <span id="discount" style="margin-left:10px">@Model.discount</span><span>تومان</span></p>
+    </div>
+    <div class="reportParent">
+        <span>جمع کل پرداختی</span>
+        <span class="flex1"></span>
+        <p><span id="total" style="margin-left:10px; font-size:20px; font-weight:600; color:orange"> @String.Format("{0:n0}", @Model.finalPrice) </span><span>تومان</span></p>
+
+    </div>
+
+
+    <div id="addOrder" style="display:flex; justify-content:center;margin:15px;">
+        <div style="width:50%; padding:20px;color:white; background-color:orange;text-align:center; border-radius:13px">ثبت سفارش</div>
+    </div>
+</div>
+
+@section scripts{
+    <script>
+        $("#addOrder").click(function () {
+            window.location.href = "/Home/setOrder"
+        })
+    </script>
+    <script>
+        $(".backToList").click(function () {
+            history.back();
+        })
+    </script>
+    <script>
+        var getquntity = function () {
+            $.ajax({
+                url: '/Home/getquntitiy',
+                dataType: 'html',
+                success: function (data) {
+                    var total = 0;
+                    var srtcookie = data;
+
+                    if (srtcookie.length > 0) {
+                        srtcookie = srtcookie.replace(/&quot;/g, '"');
+                        JSON.parse(srtcookie).forEach(function (item) {
+                            let valueID = "value" + item.productid;
+
+                            $("." + valueID).text(item.quantity);
+                            total += parseInt(item.quantity);
+                        });
+                        $(".simpleCart_quantityy").text(total)
+
+                    } else {
+                        $(".simpleCart_quantityy").text("0")
+                    };
+                }
+
+            })
+        };
+
+        $(document).ready(function () {
+            getquntity();
+        })
+
+
+
+
+
+
+    </script>
+    <script>
+        $(".fa-plus").click(function (e) {
+            e.stopPropagation();
+            $("#loading").fadeIn()
+            var id = $(this).attr('id');
+            $.ajax({
+                url: "/Home/addtocart",
+                data: {
+                    id: id,
+                },
+                success: function (data) {
+
+
+                    window.location.reload();
+                    $("#loading").fadeOut()
+                }
+            })
+        })
+
+        $('.fa-minus').on('click', function (e) {
+            e.stopPropagation();
+            event.stopPropagation();
+
+            var ID = $(this).attr('id');
+            let myid = "value" + ID.replace('minus', '');
+
+            let newVal = $(this).parent().children(".value").text();
+            if (newVal != "0") {
+                $("#loading").fadeIn()
+                $.ajax({
+                    url: '/Home/minusfromcart',
+                    dataType: 'html',
+                    data: {
+                        id: ID
+                    },
+                    success: function (data) {
+                        window.location.reload();
+                        $("#loading").fadeOut()
+
+                    },
+                    error: function () {
+                        alert("error")
+                    }
+
+
+                });
+            }
+
+
+
+
+
+
+
+
+        });
+    </script>
+}

@@ -1,0 +1,331 @@
+﻿@model ActiveMenu.ViewModel.CreateItemVM
+@{
+    ViewBag.Title = "createItem";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+
+@{
+    ViewBag.Title = "ItemDetail";
+    ViewBag.ItemTitle = "Add New Meal";
+}
+
+@section scripts{
+    <script src="~/Scripts/createItem.js"></script>
+    <script>
+        $("#priceInput").change(function () {
+            $(this).val(persianToEnglish($(this).val()));
+        })
+        function persianToEnglish(input) {
+            var inputstring = input;
+            var persian = ["۰", "۱", "۲", "۳", "۴", "۵", "۶", "۷", "۸", "۹"]
+            var english = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"]
+            for (var i = 0; i < 10; i++) {
+                var regex = new RegExp(persian[i], 'g');
+                inputstring = inputstring.toString().replace(regex, english[i]);
+            }
+            return inputstring;
+        }
+    </script>
+}
+
+<div style="" class="  modal fade" id="addInventoryModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content oof" style="color:white;border-radius:8px">
+
+            <div style=" display:flex; font-size: 14px;  padding: 20px; text-align: center" class="modal-body">
+
+                @Html.DropDownList("mavadItem", new SelectList(Model.lstMavad, "mavadID", "title"), new { @class = "form-control oof", id = "mavadItem" })
+                <input id="ingamount" class="oof form-control inputnumber" style="direction:ltr; margin:0 10px" placeholder="Insert Amount" />
+
+            </div>
+            <div class="modal-footer" style="border-color:#4d4d4d">
+                <button style="padding:7px 30px" type="button" class="btn btn-secondary oof" data-dismiss="modal" id="cancelQR">Cancel</button>
+                <button style="padding:7px 30px" type="button" class="btn btn-success" id="addIngredientTo">Verify</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div style="position:absolute; overflow:auto; width:100%;padding:20px  " class="">
+
+    <div class="default oof " style=" cursor:pointer;margin-bottom:15px; text-align:center;border:1px dotted #4d4d4d; padding:10px 15px ;border-radius:5px;"> Add Image <img class="imageDefault" style="width:30px; margin : 0 20px" src="~/images/app/addPic.png" /></div>
+    <div id="imageHolder" style="display:flex; margin:20px 0">
+
+        <input multiple type="file" id="imageFileHolder" name="image" required="required" class="form-control  imageinput" style="display:none">
+
+        <style>
+            .imageCover {
+                border-radius: 5px;
+                object-fit: scale-down;
+                align-items: center;
+                width: 90px;
+                height: 90px;
+                position: relative;
+                border: 1px solid #eee;
+                align-items: center;
+                display: flex;
+                cursor: pointer;
+                margin: 0 10px;
+                border-radius: 5px;
+                border: 1px solid white;
+            }
+
+                .imageCover img {
+                    max-width: 100%;
+                    max-height: 100%;
+                    object-fit: scale-down;
+                    margin: auto;
+                }
+
+            .imageItemParent {
+                display: flex
+            }
+
+            .searchInput {
+                font-size: 16px;
+                font-weight: 400;
+                padding: 10px 15px 10px 10px;
+                position: relative;
+                border: none;
+                background: rgba(255,255,255,0.05);
+                backdrop-filter: blur(10px);
+                border-top: 1px solid rgba(255,255,255,0.2);
+                border-left: 1px solid rgba(255,255,255,0.2);
+                box-shadow: 5px 5px 30px rgba(0,0,0,0.2);
+                color: rgb(255, 255, 255);
+                transition: color 0.3s ease-out;
+                border-radius: 15px;
+                text-align: right;
+                margin: 10px;
+                display: flex;
+                direction: rtl;
+                position: relative;
+                padding: 10px;
+                text-align: right;
+                align-items: center
+            }
+
+            .searchi {
+                padding: 4px;
+                -webkit-appearance: none;
+                -moz-appearance: none;
+                background-color: transparent;
+                text-decoration: none;
+                border-top-style: hidden;
+                border-right-style: hidden;
+                border-left-style: hidden;
+                border-bottom-style: hidden;
+                width: 100%;
+                max-width: none;
+                padding-right: 25px
+            }
+
+                .searchi:focus {
+                    outline: none;
+                }
+
+            option {
+                color: black
+            }
+        </style>
+        <div class="imageItemParent">
+
+            @{
+                if (@ViewBag.images != null)
+                {
+                    string[] lst = (ViewBag.images).Split(',');
+
+
+                    foreach (var item in lst)
+
+                    {
+                        if (item != "")
+                        {
+                            <div class="imageCover">
+                                <img src="/images/Items/@Model.username/@item" />
+                                <img id="@item" class="removeImage" src="/images/app/trash.png" style="position:absolute; bottom:0;top:0;left:0;right:0;margin:auto; width:30px" /> <i class="fa fa-remove" style="font-size: 12px;position: absolute;bottom: 5px;left: 0px;color: white;"></i>
+                            </div>
+                        }
+
+
+                    }
+                }
+            }
+        </div>
+
+
+
+    </div>
+    <div class="addInventoryButton oof " style=" cursor:pointer;margin-bottom:15px; text-align:center;border:1px dotted #4d4d4d; padding:10px 15px ;border-radius:5px;">Add ingeredient <img class="addIngredient" style="width:30px; margin : 0 20px" src="~/images/app/addPic.png" /></div>
+    <div id="mavadHolder">
+
+        @if (Model.itemMavad != null)
+        {
+            foreach (var item in Model.itemMavad)
+            {
+                <div style="display:flex; ">
+                    <p class="oof myitemmavad">@item.title</p>
+                    <p class="oof myitemmavad">@item.amount</p>
+
+                </div>
+            }
+
+        }
+
+    </div>
+    @{
+        string ourtitle = Model.item == null ? "" : Model.item.title;
+        string price = Model.item == null ? "" : Model.item.price.ToString();
+        string desctiption = Model.item == null ? "" : Model.item.desctiption;
+        string ingredient = Model.item == null ? "" : Model.item.ingredient;
+
+    }
+    <p style="display:none" id="meyar">@ourtitle</p>
+    <form id="createForm" action="addItem" method="post">
+        <input hidden value="@Model.catItem" name="catid" class="searchi" />
+        @if (Model.item != null)
+        {
+            <input name="itemID" value="@Model.item.itemID" hidden />
+        }
+
+        <div class="itemRow">
+            <div class="searchInput" style="margin:20px 10px">
+                <i class="fal fa-file" style="position:absolute"></i>
+                <input id="titleInput" value="@ourtitle" name="title" class="searchi" placeholder="Item Name" />
+            </div>
+        </div>
+
+        <div class="itemRow">
+
+            <div class="searchInput" style="margin:20px 10px">
+                <i class="fal fa-file" style="position:absolute"></i>
+                @if (@price == "0")
+                {
+                    <input id="priceInput" value="" name="price" class="searchi" placeholder="Item Price" />
+
+                }
+                else
+                {
+                    <input id="priceInput" value="@price" name="price" class="searchi" placeholder="Item Price" />
+
+                }
+            </div>
+        </div>
+        <div class="itemRow">
+
+            <div class="searchInput" style="margin:20px 10px">
+                <i class="fal fa-file" style="position:absolute"></i>
+                <input id="descriptionInput" value="@desctiption" name="description" class="searchi" placeholder="Description" />
+            </div>
+        </div>
+        @*<div class="itemRow">
+            <div class="searchInput" style="margin:20px 10px">
+                <i class="fal fa-file" style="position:absolute"></i>
+                <input id="ingredientInput" value="@ingredient" name="ingredient" class="searchi" placeholder="مواد تشکیل دهنده" />
+            </div>
+        </div>*@
+
+        <div id="addOrder" style="display:flex; justify-content:center;margin:15px;">
+            <div style="width:100%; padding:20px;color:white; background-color:#3aafd6;text-align:center; border-radius:13px">Verify</div>
+        </div>
+
+        @*<div class="itemRow " style="border:none">
+                <div class="creatButt btn btn-success">Verify</div>
+            </div>*@
+    </form>
+</div>
+
+
+<style>
+    .myitemmavad {
+        width: 50%;
+        text-align: center;
+        padding: 15px;
+        border-radius: 8px;
+        margin:5px
+    }
+    .searchi, .placeinput {
+        padding: 4px;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        background-color: transparent;
+        text-decoration: none;
+        border-top-style: hidden;
+        border-right-style: hidden;
+        border-left-style: hidden;
+        border-bottom-style: hidden;
+        max-width: none;
+        padding-right: 25px
+    }
+
+
+        .searchi:focus, .placeinput:focus {
+            outline: none;
+        }
+
+    .modal-backdrop {
+        z-index: 1;
+    }
+</style>
+<script>
+    $("#addIngredientTo").click(function () {
+        var ItemID = '@Model.itemID';
+        var amount = $("#ingamount").val();
+        var mavadItem = $("#mavadItem").val();
+        if (amount == "") {
+            amount = "0";
+        }
+        $.ajax({
+            url: "/admin/addIngredientTo",
+            data: {
+                ItemID: ItemID,
+                amount: amount.replace(",",""),
+                mavadItem: mavadItem
+            },
+            success: function (data) {
+                
+                $("#mavadHolder").append(data);
+                $("#addInventoryModal").modal('toggle');
+            }
+
+        })
+    })
+    $(".addInventoryButton").click(function () {
+        $("#addInventoryModal").modal('toggle');
+    })
+    $("#addOrder").click(function () {
+        var catInput = $("#catInput").val();
+        var ingredientInput = $("#ingredientInput").val();
+        var descriptionInput = $("#descriptionInput").val();
+        var priceInput = $("#priceInput").val();
+        var titleInput = $("#titleInput").val();
+
+        if (catInput != "" && ingredientInput != "" && descriptionInput != "" && priceInput != "" && titleInput != "") {
+            $("#createForm").submit();
+        }
+        else {
+            toastr.options = {
+                "debug": false,
+                "positionClass": "toast-top-full-width",
+                "onclick": null,
+                "fadeIn": 300,
+                "fadeOut": 1000,
+                "timeOut": 10000,
+                "extendedTimeOut": 10000,
+            }
+            toastr.error('تمام موارد را کامل کنید');
+        }
+
+
+    })
+    
+    var textmeyar = $("#meyar").text();
+    if (textmeyar != "") {
+
+
+        @*var val = '@Model.item.categoryID';
+
+        $('#catid option[value="' + val + '"]').attr('selected', 'selected')*@
+    }
+</script>

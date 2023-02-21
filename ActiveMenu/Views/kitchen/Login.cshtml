@@ -1,0 +1,139 @@
+﻿<!doctype html>
+<html lang="en" dir="ltr">
+
+<!-- Mirrored from templates.iqonic.design/aprycot/html/dashboard/dist/dashboard/auth/recoverpw.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 07 Feb 2023 18:22:47 GMT -->
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Menumotive | Admin Panel</title>
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="manifest" href="/site.webmanifest">
+    <meta name="msapplication-TileColor" content="#da532c">
+    <meta name="theme-color" content="#ffffff">
+
+    <!-- Library / Plugin Css Build -->
+    <link rel="stylesheet" href="/assetes/portal/assets/css/core/libs.min.css">
+
+    <!-- Custom Css -->
+    <link rel="stylesheet" href="/assetes/portal/assets/css/aprycot.mine209.css?v=1.0.0">
+</head>
+<body class=" " data-bs-spy="scroll" data-bs-target="#elements-section" data-bs-offset="0" tabindex="0">
+    <!-- loader Start -->
+    <div id="loading">
+        <div class="loader simple-loader">
+            <svg version="1.1" id="L7" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 100 100" enable-background="new 0 0 100 100" xml:space="preserve">
+            <path fill="#fff" d="M31.6,3.5C5.9,13.6-6.6,42.7,3.5,68.4c10.1,25.7,39.2,38.3,64.9,28.1l-3.1-7.9c-21.3,8.4-45.4-2-53.8-23.3
+  c-8.4-21.3,2-45.4,23.3-53.8L31.6,3.5z">
+            <animateTransform attributeName="transform" attributeType="XML" type="rotate" dur="2s" from="0 50 50" to="360 50 50" repeatCount="indefinite"></animateTransform>
+  </path>
+            <path fill="#fff" d="M42.3,39.6c5.7-4.3,13.9-3.1,18.1,2.7c4.3,5.7,3.1,13.9-2.7,18.1l4.1,5.5c8.8-6.5,10.6-19,4.1-27.7
+  c-6.5-8.8-19-10.6-27.7-4.1L42.3,39.6z">
+            <animateTransform attributeName="transform" attributeType="XML" type="rotate" dur="1s" from="0 50 50" to="-360 50 50" repeatCount="indefinite"></animateTransform>
+  </path>
+            <path fill="#fff" d="M82,35.7C74.1,18,53.4,10.1,35.7,18S10.1,46.6,18,64.3l7.6-3.4c-6-13.5,0-29.3,13.5-35.3s29.3,0,35.3,13.5
+  L82,35.7z">
+            <animateTransform attributeName="transform" attributeType="XML" type="rotate" dur="2s" from="0 50 50" to="360 50 50" repeatCount="indefinite"></animateTransform>
+  </path>
+</svg>
+
+        </div>
+    </div>
+    <!-- loader END -->
+
+    <div class="wrapper">
+        <section class="container-fluid bg-circle" id="auth-login">
+            <div class="row align-items-center">
+                <div class="col-md-12 col-lg-7 col-xl-4">
+                    <div class="row justify-content-center">
+                        <div class="col-md-10">
+                            <div class="d-flex justify-content-center mb-0">
+                                <div class="card-body text-center">
+                                    <a href="../index-2.html">
+                                        <img src="~/assetes/portal/assets/images/logo2.png" class="img-fluid logo-img mb-4" alt="img3">
+                                    </a>
+                                    <h2 class="mb-2 text-center">Sign In</h2>
+                                    <p class=" text-center">Sign in to stay connected.</p>
+                                    <form action="/kitchen/login" method="post">
+                                        <div class="row text-start">
+                                            <div class="col-lg-12">
+                                                <div class="floating-label form-group">
+                                                    <label for="username" class="form-label">Username</label>
+                                                    <input type="text" class="form-control" id="username" name="username" aria-describedby="email" placeholder=" ">
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-12">
+                                                <div class="floating-label form-group">
+                                                    <label for="password" class="form-label">Password</label>
+                                                    <input type="password" class="form-control" id="password" name="password" aria-describedby="email" placeholder=" ">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        @if (ViewBag.error == "1")
+                                        {
+                                            <p style="color:red">your username or password is wrong</p>
+
+                                        }
+                                        <button type="submit" class="btn btn-primary">Login</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12 col-lg-5 col-xl-8 d-lg-block d-none vh-100 overflow-hidden">
+                    <div>
+                        <img src="/assetes/portal/assets/images/auth/01.png" class="hover-img rounded-circle first-img" alt="images">
+                        <img src="/assetes/portal/assets/images/auth/02.png" class="hover-img rounded-circle second-img" alt="images">
+                        <img src="/assetes/portal/assets/images/auth/03.png" class="hover-img rounded-circle third-img" alt="images">
+                        <img src="/assetes/portal/assets/images/auth/04.png" class="hover-img rounded-circle fourth-img" alt="images">
+                        <img src="/assetes/portal/assets/images/auth/05.png" class="hover-img rounded-circle fifth-img" alt="images">
+                        <img src="/assetes/portal/assets/images/auth/06.png" class="hover-img rounded-circle six-img" alt="images">
+                        <img src="/assetes/portal/assets/images/auth/01.png" class="hover-img rounded-circle seventh-img" alt="images">
+                        <img src="/assetes/portal/assets/images/auth/02.png" class="hover-img rounded-circle eight-img" alt="images">
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Required Library Bundle Script -->
+    <script src="/assetes/portal/assets/js/core/libs.min.js"></script>
+
+    <!-- External Library Bundle Script -->
+    <script src="/assetes/portal/assets/js/core/external.min.js"></script>
+
+    <!-- Widgetchart JavaScript -->
+    <script src="/assetes/portal/assets/js/charts/widgetcharts.js"></script>
+
+    <!-- Mapchart JavaScript -->
+    <script src="/assetes/portal/assets/js/charts/vectore-chart.js"></script>
+    <script src="/assetes/portal/assets/js/charts/dashboard.js"></script>
+
+    <!-- Admin Dashboard Chart -->
+    <script src="/assetes/portal/assets/js/charts/admin.js"></script>
+
+    <!-- fslightbox JavaScript -->
+    <script src="/assetes/portal/assets/js/fslightbox.js"></script>
+
+    <!-- GSAP Animation -->
+    <script src="/assetes/portal/assets/vendor/gsap/gsap.min.js"></script>
+    <script src="/assetes/portal/assets/vendor/gsap/ScrollTrigger.min.js"></script>
+    <script src="/assetes/portal/assets/js/animation/gsap-init.js"></script>
+
+    <!-- Stepper Plugin -->
+    <script src="/assetes/portal/assets/js/stepper.js"></script>
+
+    <!-- Form Wizard Script -->
+    <script src="/assetes/portal/assets/js/form-wizard.js"></script>
+
+    <!-- app JavaScript -->
+    <script src="/assetes/portal/assets/js/app.js"></script>
+
+    <!-- moment JavaScript -->
+    <script src="/assetes/portal/assets/vendor/moment.min.js"></script>
+</body>
+
+<!-- Mirrored from templates.iqonic.design/aprycot/html/dashboard/dist/dashboard/auth/recoverpw.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 07 Feb 2023 18:22:47 GMT -->
+</html>

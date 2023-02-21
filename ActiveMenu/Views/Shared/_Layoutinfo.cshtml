@@ -3,18 +3,70 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@ViewBag.Title - My ASP.NET Application</title>
-    @Styles.Render("~/Content/css")
-    @Scripts.Render("~/bundles/modernizr")
+    <title>@ViewBag.Title</title>
+    @*@Styles.Render("~/Content/css")*@
+   <link href="~/Content/bootstrap.css" rel="stylesheet" />
     <link href="~/Content/font.css" rel="stylesheet" />
 
     <link href="~/Content/fontawesome-all.css" rel="stylesheet" />
     <link href="~/Content/toastr.css" rel="stylesheet" />
-    @Scripts.Render("~/bundles/jquery")
-    @Scripts.Render("~/bundles/bootstrap")
+
+    <script src="~/Scripts/jquery-3.3.1.js"></script>
+    @*<script src="~/Scripts/bootstrap.js"></script>*@
+    <script src="~/Scripts/bootstrap.min.js"></script>
+
+
+
+    @RenderSection("scripts", required: false)
     <script src="~/Scripts/toastr.js"></script>
- 
+    <script>
+        var orderToDelete;
+        var showFinish = function (ele) {
+
+            orderToDelete = $(ele).attr('newitem');
+
+            $("#finalModal").show();
+        };
+        var cancelEnd = function () {
+            $("#finalModal").hide();
+        }
+        var verifyEnd = function () {
+
+            $("#finalModal").hide();
+
+            $.ajax({
+                url: "/admin/endOrder",
+                data: {
+                    orderSrt: orderToDelete,
+                },
+                success: function (data) {
+                    if (data == "200") {
+                        $("#" + orderToDelete).hide();
+                        $("#cancelVerif").click();
+
+                    }
+                }
+            })
+        };
+    </script>
     <style>
+        .pointer {
+            cursor: pointer;
+        }
+
+        .mainparent {
+            min-height: 100vh;
+            width: 600px;
+            max-width: 100%;
+            margin: auto;
+            position: absolute;
+            z-index: 999;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%,-50%);
+            overflow: auto
+        }
+
         .headerTop {
             display: flex;
             margin: 20px;
@@ -93,27 +145,144 @@
             align-items: center
         }
     </style>
-</head>
-<body>
-    @{
-        string logo = @ViewBag.Logo;
-    }
-    <div id="loading" style="display:none">
-        <div style="padding:15px 35px; background-color:white;position:fixed;overflow: visible;margin: auto;top: 0;left: 0; bottom: 0; right: 0;max-height:150px; max-width:250px">
 
-
-            <img style="max-width:80px; display:block; margin:auto" src="~/images/@logo" alt="لوگو" />
-
-            <img src="~/images/adminloading.gif" style="display:block; margin:auto; margin-top:15px" alt="لودینگ" />
-
-
-
-        </div>
-    </div>
-    @RenderBody()
-
-    @RenderSection("scripts", required: false)
     @RenderSection("scriptsLayout", required: false)
 
+</head>
+<body style="">
+  
+    <div id="finalModal" class="oof blur" style="  position:fixed; width:100%; height:100%; top:0; left:0; z-index:999; display:none">
+        <div style="font-size:14px; padding:20px;color:white;  text-align:center" class="modal-body">
+            Are you sure about finishing order?
+        </div>
+        <div class="modal-footer" style="border-color:#4d4d4d">
+            <button style="padding:7px 30px" type="button" class="btn btn-secondary oof" data-dismiss="modal" id="cancelVerif" onclick="cancelEnd()">Cancel</button>
+            <button style="padding:7px 30px" type="button" class="btn btn-success" onclick="verifyEnd()">Verify</button>
+        </div>
+    </div>
+    <div class="mainparent">
+
+
+        @{
+            string logo = @ViewBag.Logo;
+        }
+        <div id="loading" style="display:none">
+            <div style="padding:15px 35px; background-color:white;position:fixed;overflow: visible;margin: auto;top: 0;left: 0; bottom: 0; right: 0;max-height:150px; max-width:250px">
+
+
+                <img style="max-width:80px; display:block; margin:auto" src="~/images/@logo" alt="لوگو" />
+
+                <img src="~/images/adminloading.gif" style="display:block; margin:auto; margin-top:15px" alt="لودینگ" />
+
+
+
+            </div>
+        </div>
+        @RenderBody()
+
+
+
+
+        <style>
+            input {
+                direction: ltr;
+                color: white;
+                text-align: left
+            }
+
+            .parentBlur {
+                /* The image used */
+                /* Add the blur effect */
+                filter: blur(8px);
+                -webkit-filter: blur(4px);
+                /* Full height */
+                height: 100%;
+                /* Center and scale the image nicely */
+                background-position: center;
+                background-repeat: no-repeat;
+                background-size: cover;
+                position: fixed;
+                width: 100%;
+                bottom: 0
+            }
+
+            .accordion > .card {
+                background: rgba(255,255,255,0.05);
+                backdrop-filter: blur(10px);
+                border-top: 1px solid rgba(255,255,255,0.2);
+                border-left: 1px solid rgba(255,255,255,0.2);
+                box-shadow: 5px 5px 30px rgba(0,0,0,0.2);
+            }
+
+            .oof {
+                background: rgba(255,255,255,0.05);
+                backdrop-filter: blur(10px);
+                border-top: 1px solid rgba(255,255,255,0.2);
+                border-left: 1px solid rgba(255,255,255,0.2);
+                box-shadow: 5px 5px 30px rgba(0,0,0,0.2);
+            }
+
+            .blur::before {
+                backdrop-filter: blur(2px) contrast(60%);
+                -webkit-backdrop-filter: blur(2px) contrast(60%);
+                width: contain;
+            }
+
+            .blur {
+                backdrop-filter: blur(2px) contrast(60%);
+                -webkit-backdrop-filter: blur(2px) contrast(60%);
+                width: contain;
+            }
+
+            body {
+                overflow: hidden; /* Hide scrollbars */
+            }
+
+            body {
+                overflow-y: hidden; /* Hide vertical scrollbar */
+                overflow-x: hidden; /* Hide horizontal scrollbar */
+            }
+
+            .mainparent::-webkit-scrollbar {
+                display: none;
+            }
+
+            /* Hide scrollbar for IE, Edge and Firefox */
+            .mainparent {
+                -ms-overflow-style: none; /* IE and Edge */
+                scrollbar-width: none; /* Firefox */
+            }
+
+            .modal-backdrop {
+                z-index: 1;
+            }
+
+            /*.fade.in {
+                opacity: 1 !important;
+            }*/
+        </style>
+    </div>
+
+    <div style="background: url('../../images/app/back.jpg')" class="parentBlur">
+
+    </div>
+
+
+    <script>
+        $('input.inputnumber').keyup(function (event) {
+            if (event.which >= 37 && event.which <= 40) return;
+            $(this).val(function (index, value) {
+                return value
+                    // Keep only digits and decimal points:
+                    .replace(/[^\d.]/g, "")
+                    // Remove duplicated decimal point, if one exists:
+                    .replace(/^(\d*\.)(.*)\.(.*)$/, '$1$2$3')
+                    // Keep only two digits past the decimal point:
+                    .replace(/\.(\d{2})\d+/, '.$1')
+                    // Add thousands separators:
+                    .replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+            });
+        });
+    </script>
 </body>
 </html>

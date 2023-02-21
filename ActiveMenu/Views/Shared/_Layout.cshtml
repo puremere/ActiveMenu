@@ -3,22 +3,24 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@ViewBag.Title - My ASP.NET Application</title>
-    @Styles.Render("~/Content/css")
-    @Scripts.Render("~/bundles/modernizr")
+    <title>@ViewBag.Title</title>
+    @*@Styles.Render("~/Content/css")*@
+    <link href="~/Content/bootstrap.css" rel="stylesheet" />
     <link href="~/Content/font.css" rel="stylesheet" />
 
     <link href="~/Content/fontawesome-all.css" rel="stylesheet" />
     <link href="~/Content/toastr.css" rel="stylesheet" />
-    @Scripts.Render("~/bundles/jquery")
-    @Scripts.Render("~/bundles/bootstrap")
-    <script src="~/Scripts/toastr.js"></script>
+
+    <script src="~/Scripts/jquery-3.3.1.js"></script>
+    @*<script src="~/Scripts/bootstrap.js"></script>*@
+    <script src="~/Scripts/bootstrap.min.js"></script>
+
     <script>
         var goToDetail = function (el) {
             let id = "/Home/ItemDetail/" + el.id;
             window.location.href = id;
         }
-       
+
     </script>
     <script>
         var getquntity = function () {
@@ -33,16 +35,21 @@
                         srtcookie = srtcookie.replace(/&quot;/g, '"');
                         JSON.parse(srtcookie).forEach(function (item) {
                             let valueID = "value" + item.productid;
-                           
-                            $("." + valueID).text(item.quantity);
+                            let count = 0;
+                            JSON.parse(srtcookie).forEach(function (newitem) {
+                                if (newitem.productid == item.productid) {
+                                    count += newitem.quantity;
+                                }
+                            });
+                            $("." + valueID).text(count);
                             total += parseInt(item.quantity);
                         });
-                    
+
                         $(".simpleCart_quantityy").text(total)
                         if (total == "0") {
                             $(".allPrice").text("0");
                         }
-                       
+
 
                     } else {
                         $(".allPrice").text("0");
@@ -66,7 +73,7 @@
     <script>
         var removeItem = function (event) {
 
-          
+
             var ID = event.id;
             let myid = "value" + ID.replace('minus', '');
 
@@ -93,7 +100,7 @@
             };
         }
         var addItem = function (event) {
-            
+
             $("#loading").fadeIn()
             var id = event.id;
             $.ajax({
@@ -109,11 +116,37 @@
                 }
             })
         }
-      
 
-      
+
+
     </script>
+
+    <link href="~/Content/toastr.css" rel="stylesheet" />
+
     <style>
+        .pointer {
+            cursor: pointer;
+        }
+
+        .mainparent {
+            min-height: 100vh;
+            width: 100%;
+            margin: auto;
+            position: absolute;
+            z-index: 999;
+            top: 0;
+            left: 0;
+            /*transform: translate(-50%,-50%);*/
+            overflow: auto
+        }
+
+        .oof {
+            background: rgba(255,255,255,0.05);
+            backdrop-filter: blur(10px);
+            box-shadow: 5px 5px 30px rgba(0,0,0,0.2);
+            color: white;
+        }
+
         .headerTop {
             display: flex;
             margin: 20px;
@@ -134,7 +167,6 @@
             /*background-color: #4d4d4d;*/
             border-radius: 35px 35px 0 0;
             height: 100%;
-           
         }
 
         .itemHolder {
@@ -142,12 +174,13 @@
             /*background-color: #4d4d4d;*/
             margin: 25px 10px;
             direction: rtl;
-            padding: 12px 
+            padding: 12px
         }
 
         .title {
             color: white;
             font-weight: 600;
+            font-size: 13px;
         }
 
         .desciption {
@@ -155,9 +188,10 @@
             width: 100%;
             overflow: hidden;
             margin: 10px 0;
-            line-height: 2em;
-            height: 4em; /* height is 2x line-height, so two lines will display */
+            line-height: 1.5em;
+            height: 3em; /* height is 2x line-height, so two lines will display */
             overflow: hidden; /* prevents extra lines from being visible */
+            font-size: 12px
         }
 
         .price {
@@ -181,7 +215,6 @@
         .countButton {
             float: left;
             padding: 5px;
-           
             color: white;
             border-radius: 15px;
             background-color: #343333;
@@ -189,25 +222,30 @@
             display: flex;
             justify-content: space-between;
             margin-bottom: 0;
-            align-items: center
+            align-items: center;
+            background: rgba(255,255,255,0.05);
+            backdrop-filter: blur(10px);
+            border-top: 1px solid rgba(255,255,255,0.2);
+            border-left: 1px solid rgba(255,255,255,0.2);
+            box-shadow: 5px 5px 30px rgba(0,0,0,0.2);
         }
+
         .parentBlur {
             /* The image used */
-          
             /* Add the blur effect */
-            filter: blur(8px);
-            -webkit-filter: blur(4px);
+            /*filter: blur(8px);
+            -webkit-filter: blur(4px);*/
             /* Full height */
             height: 100%;
             /* Center and scale the image nicely */
             background-position: center;
             background-repeat: no-repeat;
             background-size: cover;
-            position:fixed;
-            width:100%;
-           bottom:0
-
+            position: fixed;
+            width: 100%;
+            bottom: 0
         }
+
         ::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
             color: #e6e3e3;
             opacity: 1; /* Firefox */
@@ -220,48 +258,211 @@
         ::-ms-input-placeholder { /* Microsoft Edge */
             color: #e6e3e3;
         }
+
         .itemImageHolder {
-            width: 30%;
-            position: absolute;
-            height: 90%;
-            top: 0;
-            right: -18%;
-            margin-top: 3%;
-            
+            width: 40%;
+            margin-right: -30%;
+            padding: 5px;
             background: rgba(255,255,255,0.05);
             backdrop-filter: blur(10px);
             /* border-top: 1px solid rgba(255,255,255,0.2); */
             border-left: 1px solid rgba(255,255,255,0.2);
             box-shadow: 5px 5px 30px rgb(0 0 0 / 20%);
             border-radius: 25px;
+            max-height: 130px;
+            text-align: center
+        }
+
+        .itemHolder {
+            margin: 10px;
+            background: rgba(255,255,255,0.05);
+            backdrop-filter: blur(10px);
+            border-top: 1px solid rgba(255,255,255,0.2);
+            border-left: 1px solid rgba(255,255,255,0.2);
+            box-shadow: 5px 5px 30px rgba(0,0,0,0.2);
+            width: 80%;
+        }
+        body{
+            background-color:black;
         }
     </style>
 </head>
 <body>
+
     @{
         string logo = Request.Cookies["logo"].Value as string;
     }
-    <div id="loading" style="display:none">
-        <div style="z-index:9; padding:15px 35px; background-color:rgba(0,0,0,0.5);display:flex; justify-content:center; align-items:center; position:fixed;overflow: visible;margin: auto;top: 0;left: 0; bottom: 0; right: 0;">
+    @*<div id="loading" style="display:none">
+            <div style="z-index:9; padding:15px 35px; background-color:rgba(0,0,0,0.5);display:flex; justify-content:center; align-items:center; position:fixed;overflow: visible;margin: auto;top: 0;left: 0; bottom: 0; right: 0;">
 
 
-            <img style="max-width:80px; display:block; margin:auto" src="~/images/Logo/@logo" alt="لوگو" />
+                <img style="max-width:80px; display:block; margin:auto" src="~/images/Logo/@logo" alt="لوگو" />
 
 
-        </div>
+            </div>
+        </div>*@
+   
+
+    <!-- Use any element to open the sidenav -->
+    @*<span onclick="openNav()">open</span>*@
+
+    <div class="mainparent" >
+        @*<div class="row" style="display:flex; padding:30px 30px 0; position:relative;width:100%; margin:0px">
+
+                @{
+                    string percent = "";
+                    string position = "center";
+                    if (ViewBag.sabad == "1" || !String.IsNullOrEmpty(ViewBag.istrue))
+                    {
+                        <a style="width:20%; text-decoration:none" href="/Home/basket">
+                            <i class="fal fa-shopping-cart" style=" font-size:20px; color:white;">
+                                <span style="color:white ; font-family:'IRANSans'" class="simpleCart_quantityy"></span>
+                            </i>
+                        </a>
+                        percent = "20%";
+                    }
+                    else
+                    {
+                        percent = "40%";
+                        position = "right";
+                    }
+
+
+                }
+
+
+
+
+                <a href="/Home/index" style="text-decoration:none;width:60%"><p style="font-size:16px; color:white;font-weight:500; text-align:@position; ">@ViewBag.ItemTitle</p></a>
+
+                @{
+                    if (!String.IsNullOrEmpty(ViewBag.istrue))
+                    {
+                        <a href="/admin/info" style="width:@percent; text-align:right"><i class="fal fa-user" style=" font-size:20px; color:white;  text-align:right; "></i></a>
+                    }
+                    else
+                    {
+                        <a href="/Home/info" style="width:@percent; text-align:right"><i class="fal fa-user" style=" font-size:20px; color:white;  text-align:right; "></i></a>
+                    }
+                }
+            </div>*@
+        @RenderBody()
+
+        @RenderSection("scripts", required: false)
     </div>
-    <div style="background: url('../../images/app/back.jpg')" class="parentBlur">
+
+    <div style="background: url('../../images/app/back.jpg'); background-size:cover; opacity:0.4" class="parentBlur">
 
     </div>
 
-    <div class="row" style="display:flex; padding:30px 30px 0; position:relative;width:100%; margin:0px">
-        <i class="fal fa-shopping-cart" style=" font-size:20px; color:white;width:20%"></i>
-        <p style="font-size:16px; color:white;font-weight:500; text-align:center; width:60%">@ViewBag.ItemTitle</p>
-        <i class="fal fa-bars" style=" font-size:20px; color:white;  text-align:right; width:20%"></i>
-    </div>
-    @RenderBody()
+    <script>
+        $('input.inputnumber').keyup(function (event) {
+            if (event.which >= 37 && event.which <= 40) return;
+            $(this).val(function (index, value) {
+                return value
+                    // Keep only digits and decimal points:
+                    .replace(/[^\d.]/g, "")
+                    // Remove duplicated decimal point, if one exists:
+                    .replace(/^(\d*\.)(.*)\.(.*)$/, '$1$2$3')
+                    // Keep only two digits past the decimal point:
+                    .replace(/\.(\d{2})\d+/, '.$1')
+                    // Add thousands separators:
+                    .replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+            });
+        });
+    </script>
 
-    @RenderSection("scripts", required: false)
+    <style>
+        input {
+            direction: ltr;
+            color: white;
+            text-align: left
+        }
 
+        /*body {
+            overflow: hidden;
+        }
+
+        body {
+            overflow-y: hidden;
+            overflow-x: hidden;
+        }*/
+
+        .mainparent::-webkit-scrollbar {
+            display: none;
+        }
+
+        /* Hide scrollbar for IE, Edge and Firefox */
+        .mainparent {
+            -ms-overflow-style: none; /* IE and Edge */
+            scrollbar-width: none; /* Firefox */
+        }
+
+        .modal-backdrop {
+            z-index: 1;
+        }
+
+        .buttonHead {
+            padding: 15px;
+            color: white;
+            background-color: #3aafd6;
+            text-align: center;
+            border-radius: 13px;
+            cursor: pointer
+        }
+
+        a:hover {
+            text-decoration: none
+        }
+        /*.fade.in {
+            opacity: 1 !important;
+         }*/
+    </style>
+    <style>
+        /* style the elements with CSS */
+        #pleaserotate-graphic {
+            fill: #fff;
+        }
+
+        #pleaserotate-backdrop {
+            color: #fff;
+            background-color: #000;
+        }
+
+        .swiper-pagination {
+            display: none;
+        }
+
+        .swiper-pagination-bullets {
+            display: none;
+        }
+
+        .swiper-scrollbar {
+            display: none
+        }
+    </style>
+
+    <script>
+        //var PleaseRotateOptions = {
+        //    startOnPageLoad: true,
+        //    onHide: function () { },
+        //    onShow: function () { },
+        //    forcePortrait: true,
+        //    message: "Please Rotate Your Device",
+        //    subMessage: "(or click to continue)",
+        //    allowClickBypass: true,
+        //    onlyMobile: true,
+        //    zIndex: 1000,
+        //    iconNode: null
+        //};
+        /* you can pass in options here */
+        PleaseRotateOptions = {
+            forcePortrait: false, // if you would prefer to force portrait mode,
+            forceLandscape: true
+        };
+        PleaseRotate.start(PleaseRotateOptions)
+    </script>
+    <script src="~/Scripts/pleaseRotate.js"></script>
+  
 </body>
 </html>

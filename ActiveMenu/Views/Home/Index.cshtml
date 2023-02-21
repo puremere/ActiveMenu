@@ -1,191 +1,574 @@
 ﻿@model ActiveMenu.ViewModel.indexVM
-@{
-    ViewBag.Title = "Home Page";
-    ViewBag.ItemTitle = Model.title;
-}
-<style>
-    * {
-        box-sizing: border-box;
-    }
 
-    body {
-        margin: 0;
-        font-family: Arial;
-    }
+<html lang="en">
+<head>
 
-    .header {
-        text-align: center;
-        padding: 32px;
-    }
+    <meta charset="UTF-8">
 
-    .row {
-        display: -ms-flexbox; /* IE10 */
-        display: flex;
-        -ms-flex-wrap: wrap; /* IE10 */
-        flex-wrap: wrap;
-        padding: 0 4px;
-    }
 
-    /* Create four equal columns that sits next to each other */
-    .column {
-        -ms-flex: 25%; /* IE10 */
-        flex: 25%;
-        max-width: 25%;
-        padding: 0 4px;
-    }
 
-        .column img {
-            margin-top: 8px;
-            vertical-align: middle;
+    <title>Menumotive | application</title>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Swiper/4.4.2/css/swiper.min.css">
+    <link href="~/Content/fontawesome-all.css" rel="stylesheet" />
+    <link href="~/Content/toastr.css" rel="stylesheet" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="manifest" href="/site.webmanifest">
+    <meta name="msapplication-TileColor" content="#da532c">
+    <meta name="theme-color" content="#ffffff">
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: #fff;
+            font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
+            font-size: 14px;
+            color: #000;
+            background-color: #212121;
+            margin: 0;
+            padding: 0;
+        }
+
+        .swiper-container {
             width: 100%;
-            border-radius: 15px
+            /*padding-top: 50px;
+            padding-bottom: 50px;*/
         }
 
-    /* Responsive layout - makes a two column-layout instead of four columns */
-    @@media screen and (max-width: 800px) {
-        .column {
-            -ms-flex: 50%;
-            flex: 50%;
-            max-width: 50%;
+        .swiper-slide {
+            background-position: center;
+            background-size: cover;
+            width: 350px;
+            /*background-color: #fff;*/
+            overflow: hidden;
+            border-radius: 8px;
         }
-    }
 
-    /* Responsive layout - makes the two columns stack on top of each other instead of next to each other */
-    @@media screen and (max-width: 600px) {
-        .column {
-            -ms-flex: 100%;
-            flex: 100%;
-            max-width: 50%;
+        .picture {
+            width: 100%;
+            
+            overflow: hidden;
         }
-    }
 
-    .blur {
-        position: absolute;
-        width: 100%;
-        height: 100%;
-        background-color: rgba(0,0,0,0.9);
-    }
+            .picture img {
+                display: block;
+                max-width: 100%;
+                max-width: 100%;
+                -o-object-fit: cover;
+                object-fit: cover;
+            }
 
-    .menuTitle {
-        position: absolute;
-        bottom: 0;
-        right: 16px;
-        color: white;
-        font-size: 14px;
-        background: rgba( 13, 12, 12, 0.25 );
-        box-shadow: 0 8px 32px 0 rgb(31 38 135 / 37%);
-        backdrop-filter: blur( 4px );
-        -webkit-backdrop-filter: blur( 4px );
-        border-radius: 10px;
-        border: 1px solid rgba( 255, 255, 255, 0.18 );
-        padding: 3px 10px;
-    }
-    .searchInput {
-        font-size: 16px;
-        font-weight: 400;
-        padding: 10px 15px 10px 10px;
-        position: relative;
-        border: none;
-        background: rgba(255,255,255,0.05);
-        backdrop-filter: blur(10px);
-        border-top: 1px solid rgba(255,255,255,0.2);
-        border-left: 1px solid rgba(255,255,255,0.2);
-        box-shadow: 5px 5px 30px rgba(0,0,0,0.2);
-        color: rgb(255, 255, 255);
-        transition: color 0.3s ease-out;
-        border-radius: 15px;
-        text-align: right;
-        margin: 10px;
-        display: flex;
-        direction: rtl;
-        position: relative;
-        padding: 10px;
-        text-align: right;
-       align-items:center
-    }
-    .searchi {
-        padding: 4px;
-        -webkit-appearance: none;
-        -moz-appearance: none;
-        background-color: transparent;
-        text-decoration: none;
-        border-top-style: hidden;
-        border-right-style: hidden;
-        border-left-style: hidden;
-        border-bottom-style: hidden;
-        width: 100%;
-        max-width: none;
-        padding-right:25px
-    }
-        .searchi:focus {
-            outline: none;
+        .detail {
+            padding: 25px 20px;
+            font-weight: 600;
+            text-align: center;
+        }
+
+            .detail h3 {
+                margin: 0;
+                font-size: 20px;
+                color: white
+            }
+
+            .detail span {
+                display: block;
+                font-size: 16px;
+                margin: 10px 0;
+                color: white;
+            }
+
+        .swiper-slide {
+            height: 100% !important
+        }
+    </style>
+
+    <script>
+        window.console = window.console || function (t) { };
+    </script>
+
+
+
+    <script>
+        if (document.location.search.match(/type=embed/gi)) {
+            window.parent.postMessage("resize", "*");
+        }
+    </script>
+
+    <style>
+        .parentBlur {
+            /* The image used */
+            /* Add the blur effect */
+            /*filter: blur(8px);
+            -webkit-filter: blur(4px);*/
+            /* Full height */
+            height: 100%;
+            /* Center and scale the image nicely */
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover !important;
+            position: fixed;
+            width: 100%;
+            bottom: 0;
+            opacity: 0.3;
+        }
+
+        .messageDiv {
+            position: fixed;
+            position: fixed;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            padding: 40px;
+            background: rgba(0,0,0,0.8);
+            width: 100%;
+            height: 100%;
+            z-index: 99999;
+            border-radius: 15px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            visibility: hidden
+        }
+
+            .messageDiv p {
+                color: white;
+                font-size: 18px;
+                text-align: center;
+            }
+    </style>
+</head>
+
+<body translate="no" data-new-gr-c-s-check-loaded="14.1095.0" data-gr-ext-installed="" style="">
+    <div class="messageDiv">
+        <p>no service at the time</p>
+        <p>@ViewBag.time</p>
+    </div>
+
+
+
+    <div style="background: url('../../images/app/back.jpg')" class="parentBlur">
+
+    </div>
+    <style>
+        .menuOpen {
+            position: absolute;
+            left: 50px;
+            top: 50px;
+            color: white;
+            z-index: 999;
+        }
+
+        .sidenav {
+            height: 100%; /* 100% Full-height */
+            width: 0; /* 0 width - change this with JavaScript */
+            position: fixed; /* Stay in place */
+            z-index: 1; /* Stay on top */
+            top: 0; /* Stay at the top */
+            left: 0;
+            background-color: #111; /* Black*/
+            overflow-x: hidden; /* Disable horizontal scroll */
+            padding-top: 6px; /* Place content 60px from the top */
+            transition: 0.5s; /* 0.5 second transition effect to slide in the sidenav */
+        }
+
+            /* The navigation menu links */
+            .sidenav a {
+                padding: 8px 8px 8px 32px;
+                text-decoration: none;
+                font-size: 25px;
+                color: #818181;
+                display: block;
+                transition: 0.3s;
+            }
+
+                /* When you mouse over the navigation links, change their color */
+                .sidenav a:hover {
+                    color: #f1f1f1;
+                }
+
+            /* Position and style the close button (top right corner) */
+            .sidenav .closebtn {
+                position: absolute;
+                top: 0;
+                right: 25px;
+                font-size: 36px;
+                margin-left: 50px;
+            }
+
+        /* Style page content - use this if you want to push the page content to the right when you open the side navigation */
+        #main {
+            transition: margin-left .5s;
+        }
+
+        /* On smaller screens, where height is less than 450px, change the style of the sidenav (less padding and a smaller font size) */
+        @@media screen and (max-height: 450px) {
+            .sidenav {
+                padding-top: 15px;
+            }
+
+                .sidenav a {
+                    font-size: 18px;
+                }
+        }
+    </style>
+    <div id="mySidenav" class="sidenav">
+        <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+        <div style="padding:25px">
+            @Html.Action("getBasket", "Home")
+        </div>
+
+    </div>
+    <span class="menuOpen" onclick="openNav()"> <i style="font-size:20px" class="fa fa-shopping-cart"></i></span>
+    <!-- Slider main container -->
+    <div id="main" class="swiper-container swiper-container-coverflow swiper-container-3d swiper-container-horizontal" style="cursor: grab;height:80vh">
+
+        <!-- Additional required wrapper -->
+        <div class="swiper-wrapper" style="transition-duration: 0ms; transform: translate3d(235.5px, 0px, 0px); perspective-origin: 160px 50%;">
+            <!-- Slides -->
+
+
+            @if (Model.calist.Count() > 0)
+            {
+                var item = Model.calist[0];
+
+
+                string url = "/images/Items/" + @ViewBag.username + "/" + @Model.calist[0].imageAddress;
+                string calssname = "swiper-slide swiper-slide-active";
+
+
+
+                <div idtogo="@item.categoryID" class="@calssname" style="transition-duration: 0ms; transform: translate3d(0px, 0px, 0px) rotateX(0deg) rotateY(0deg); z-index: 1;">
+                    <div class="picture">
+                        <img src="@url" alt="">
+                    </div>
+                    <div class="detail">
+                        <h3> @item.title</h3>
+
+                    </div>
+                </div>
+            }
+
+            @if (Model.calist.Count() > 1)
+            {
+                var item = Model.calist[1];
+
+
+                string url = "/images/Items/" + @ViewBag.username + "/" + @Model.calist[1].imageAddress;
+                string calssname = "swiper-slide swiper-slide-next";
+
+
+
+                <div idtogo="@item.categoryID" class="@calssname" style="transition-duration: 0ms; transform: translate3d(0px, 0px, 0px) rotateX(0deg) rotateY(0deg); z-index: 1;">
+                    <div class="picture">
+                        <img src="@url" alt="">
+                    </div>
+                    <div class="detail">
+                        <h3> @item.title</h3>
+
+                    </div>
+                </div>
+            }
+            @if (Model.calist.Count() > 2)
+            {
+                for (int i = 2; i <= Model.calist.Count() - 1; i++)
+                {
+                    var item = Model.calist[i];
+
+
+
+                    string url = "/images/Items/" + @ViewBag.username + "/" + @Model.calist[i].imageAddress;
+                    string calssname = "swiper-slide";
+
+
+
+                    <div idtogo="@item.categoryID" class="@calssname" style="transition-duration: 0ms; transform: translate3d(0px, 0px, 0px) rotateX(0deg) rotateY(0deg); z-index: 1;">
+                        <div class="picture">
+                            <img src="@url" alt="">
+                        </div>
+                        <div class="detail">
+                            <h3> @item.title</h3>
+
+                        </div>
+                    </div>
+                }
+
+            }
+
+
+            @*
+
+                switch (index)
+                {
+                case 0:
+                calssname = "";
+                break;
+                case 1:
+                calssname = "";
+                break;
+                default:
+                calssname = "swiper-slide";
+                break;
+
+
+                }
+
+
+
+
+            *@
+
+
+        </div>
+        <!-- If we need pagination -->
+        <div class="swiper-pagination swiper-pagination-bullets"><span class="swiper-pagination-bullet swiper-pagination-bullet-active"></span><span class="swiper-pagination-bullet"></span><span class="swiper-pagination-bullet"></span><span class="swiper-pagination-bullet"></span><span class="swiper-pagination-bullet"></span><span class="swiper-pagination-bullet"></span></div>
+
+        <!-- If we need navigation buttons -->
+        <!--     <div class="swiper-button-prev"></div> -->
+        <!--     <div class="swiper-button-next"></div> -->
+        <!-- If we need scrollbar -->
+        <div class="swiper-scrollbar"></div>
+        <span class="swiper-notification" aria-live="assertive" aria-atomic="true"></span>
+    </div>
+    <script src="~/Scripts/jquery-3.3.1.js"></script>
+    <script src="https://cpwebassets.codepen.io/assets/common/stopExecutionOnTimeout-2c7831bb44f98c1391d6a4ffda0e1fd302503391ca806e7fcc7b9b87197aec26.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/4.4.2/js/swiper.min.js"></script>
+    <script id="rendered-js">
+        var swiper = new Swiper(".swiper-container", {
+            effect: "coverflow",
+            grabCursor: true,
+            centeredSlides: true,
+            slidesPerView: "auto",
+            coverflowEffect: {
+                rotate: 20,
+                stretch: 0,
+                depth: 350,
+                modifier: 1,
+                slideShadows: true
+            },
+
+            pagination: {
+                el: ".swiper-pagination"
+            }
+        });
+        //# sourceURL=pen.js
+    </script>
+
+
+
+    <script>
+        $(".swiper-slide").click(function () {
+            var id = $(this).attr('idtogo');
+            window.location.href = "/Home/Detail/" + id;
+
+        })
+    </script>
+    <style>
+        /* style the elements with CSS */
+        #pleaserotate-graphic {
+            fill: #fff;
+        }
+
+        #pleaserotate-backdrop {
+            color: #fff;
+            background-color: #000;
+        }
+
+        .swiper-pagination {
+            display: none;
+        }
+
+
+        .swiper-pagination-bullets {
+            display: none;
+        }
+
+        .swiper-scrollbar {
+            display: none
+        }
+
+        .swiper-container-3d .swiper-slide-shadow-right, .swiper-container-3d .swiper-slide-shadow-left {
+            background-image: unset !important
+        }
+
+        .swiper-slide {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+    </style>
+
+    <script>
+        //var PleaseRotateOptions = {
+        //    startOnPageLoad: true,
+        //    onHide: function () { },
+        //    onShow: function () { },
+        //    forcePortrait: true,
+        //    message: "Please Rotate Your Device",
+        //    subMessage: "(or click to continue)",
+        //    allowClickBypass: true,
+        //    onlyMobile: true,
+        //    zIndex: 1000,
+        //    iconNode: null
+        //};
+        /* you can pass in options here */
+        PleaseRotateOptions = {
+            forcePortrait: false, // if you would prefer to force portrait mode,
+            forceLandscape: true
+        };
+        //PleaseRotate.start(PleaseRotateOptions)
+    </script>
+    <script src="~/Scripts/pleaseRotate.js"></script>
+
+
+    <script>
+        function openNav() {
+            document.getElementById("mySidenav").style.width = "350px";
+            document.getElementById("main").style.marginLeft = "350px";
+            document.body.style.backgroundColor = "rgba(0,0,0,0.8)";
+            $(".menuOpen").hide();
+        }
+
+        /* Set the width of the side navigation to 0 and the left margin of the page content to 0, and the background color of body to white */
+        function closeNav() {
+            document.getElementById("mySidenav").style.width = "0";
+            document.getElementById("main").style.marginLeft = "0";
+            document.body.style.backgroundColor = "";
+            $(".menuOpen").show();
+
+        }
+    </script>
+    <script>
+        $(".fa-plus").click(function () {
+
+            $("#loading").fadeIn()
+
+            var id = $(this).attr('id');
+            $.ajax({
+                url: "/Home/addtocart",
+                data: {
+                    id: id,
+                },
+                success: function (data) {
+
+
+                    getquntity();
+                    $("#loading").fadeOut()
+                }
+            })
+        })
+
+        $('.fa-minus').on('click', function () {
+            event.stopPropagation();
+
+            var ID = $(this).attr('id');
+            let myid = "value" + ID.replace('minus', '');
+            $("#loading").fadeIn()
+            var ele = $(this).parent().parent();
+            var num = ele.find(".allPrice").text();
+
+            $.ajax({
+                url: '/Home/minusfromcart',
+                dataType: 'html',
+                data: {
+                    id: ID
+                },
+                success: function (data) {
+
+                    if (num == "1") {
+                        ele.parent().remove();
+                    }
+                    //getquntity();
+                    //$("#loading").fadeOut()
+
+
+                },
+                error: function () {
+                    alert("error")
+                }
+
+
+            });
+
+
+
+
+
+
+
+
+        });
+        var getquntity = function () {
+            $.ajax({
+                url: '/Home/getquntitiy',
+                dataType: 'html',
+                success: function (data) {
+                    var total = 0;
+                    var srtcookie = data;
+
+                    if (srtcookie.length > 0) {
+                        srtcookie = srtcookie.replace(/&quot;/g, '"');
+                        JSON.parse(srtcookie).forEach(function (item) {
+
+
+                            let valueID = "value" + item.productid;
+
+                            $("." + valueID).text(item.quantity);
+
+
+                            total += parseInt(item.quantity);
+                        });
+                        $(".simpleCart_quantityy").text(total)
+
+                    } else {
+                        $(".simpleCart_quantityy").text("0")
+                    };
+                }
+
+            })
+        };
+
+        $(document).ready(function () {
+            getquntity();
+        })
+
+        $(".confirmbtn").click(function () {
+            window.location.href = "/home/basket";
+        })
+    </script>
+    @if (ViewBag.closed == "1")
+    {
+        <script>
            
-        }
-</style>
-
-
-
-
-@*<div style="padding:10px; position:relative">
-
-        <img  src="~/images/app/11.png" style="width:100%; border-radius:10px" />
-
-    </div>*@
-
-
-<div class="searchInput" style="margin:20px 10px">
-    <i class="fal fa-search" style="position:absolute" ></i>
-    <input class="searchi" placeholder="هرچی دلت میکشه بزن" />
-</div>
-<div class="row" style="margin:0">
-
-    <div class="column">
-        @for (int i = 0; i < Model.calist.Count(); i++)
+            $(".messageDiv").css('visibility', "visible");
+        </script>
+    }
+    @{ 
+        if (ViewBag.endorder != null)
         {
-            if (@Model.calist[i].culomn == "1")
-            {
-                string url = @Model.calist[i].imageAddress;
-                string title = @Model.calist[i].title;
-                string categoryID = "" + @Model.calist[i].categoryID;
-                <div style="position:relative">
-                    <a style="" href="/Home/Detail/@categoryID">
-                        <img src="@url" style="width:100%">
-                        <p class="menuTitle">
-                            <spna> @title </spna>
-                           
-                        </p>
-                    </a>
-                </div>
-
-
-            }
+            <script>
+                toastr.options = {
+                    "debug": false,
+                    "positionClass": "toast-top-full-width",
+                    "onclick": null,
+                    "fadeIn": 300,
+                    "fadeOut": 1000,
+                    "timeOut": 10000,
+                    "extendedTimeOut": 10000,
+                }
+                toastr.success('Your Order Is Registered Successfully');
+            </script>
+          
         }
+    }
 
+</body>
 
-    </div>
-    <div class="column">
-
-        @for (int i = 0; i < Model.calist.Count(); i++)
-        {
-            if (@Model.calist[i].culomn == "2")
-            {
-                string url = @Model.calist[i].imageAddress;
-                string title = @Model.calist[i].title;
-                string categoryID = "" + @Model.calist[i].categoryID;
-                <div style="position:relative">
-                    <a style="" href="/Home/Detail/@categoryID">
-
-                        <img src="@url" style="width:100%">
-                        <p class="menuTitle">
-                            <spna> @title </spna>
-                          
-                        </p>
-                    </a>
-
-                </div>
-
-            }
-        }
-    </div>
-
-</div>
+</html>

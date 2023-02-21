@@ -1,0 +1,136 @@
+﻿@model ActiveMenu.Model.Item
+
+@{ 
+    string imageItem = Model.imageList.TrimEnd(',').Split(',').ToList().First();
+
+
+}
+
+
+<div class="itemHolder" >
+    <div  >
+        <div style="display:flex;padding-right:12px ">
+            <div class="itemImageHolder"  id="@Model.itemID" style="" onclick="goToDetail(this)">
+                <img class="imgItem" src="~/images/Items/@ViewBag.username/@imageItem" />
+            </div>
+            <div style="width:100%; padding:5px;padding-right:25px">
+                <h4 style="direction:ltr" class="title">@Model.title</h4>
+                <h6 style="direction:ltr" class="desciption">@Model.desctiption</h6>
+
+                <div style="display:flex; align-items:center">
+                    <p class="price" style="direction:ltr"><span> @Model.price</span> <span>AED</span></p>
+                    <span style="flex:1"></span>
+                    @{
+                        if(ViewBag.sabad == "1" || !String.IsNullOrEmpty(ViewBag.istrue))
+                         {
+                            <p class="countButton" style="direction:ltr">
+                                <i id="@Model.itemID" style=" font-size:20px" class="fal fa-minus" ></i>
+                                @{
+                                    string iclass = "value" + Model.itemID;
+
+                                }
+                                <span class="@iclass allPrice" style="font-size:20px; color:white; margin:0 15px">0</span>
+                                <i id="@Model.itemID" style="color:orange;font-size:20px" class="fal fa-plus" ></i>
+                            </p>
+                        }
+                    }
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+        <div>
+           
+        </div>
+</div>
+
+
+<script>
+    $(".fa-plus").click(function () {
+
+        $("#loading").fadeIn()
+
+        var id = $(this).attr('id');
+        $.ajax({
+            url: "/Home/addtocart",
+            data: {
+                id: id,
+            },
+            success: function (data) {
+
+
+                getquntity();
+                $("#loading").fadeOut()
+            }
+        })
+    })
+
+    $('.fa-minus').on('click', function () {
+       
+        event.stopPropagation();
+
+        var ID = $(this).attr('id');
+        //let myid = "value" + ID.replace('minus', '');
+        //$("#loading").fadeIn()
+        //var ele = $(this).parent().parent();
+        //var num = ele.find(".allPrice").text();
+
+        $.ajax({
+            url: '/Home/minusfromcart',
+            dataType: 'html',
+            data: {
+                id: ID
+            },
+            success: function (data) {
+
+                getquntity();
+                //$("#loading").fadeOut()
+
+
+            },
+            error: function () {
+                alert("error")
+            }
+
+
+        });
+
+
+
+
+
+
+
+
+    });
+    var getquntity = function () {
+        $.ajax({
+            url: '/Home/getquntitiy',
+            dataType: 'html',
+            success: function (data) {
+                var total = 0;
+                var srtcookie = data;
+
+                if (srtcookie.length > 0) {
+                    srtcookie = srtcookie.replace(/&quot;/g, '"');
+                    JSON.parse(srtcookie).forEach(function (item) {
+
+
+                        let valueID = "value" + item.productid;
+
+                        $("." + valueID).text(item.quantity);
+
+
+                        total += parseInt(item.quantity);
+                    });
+                    $(".simpleCart_quantityy").text(total)
+
+                } else {
+                    $(".simpleCart_quantityy").text("0")
+                };
+            }
+
+        })
+    };
+</script>

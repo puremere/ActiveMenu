@@ -1,0 +1,271 @@
+﻿@model IEnumerable<ActiveMenu.Model.mavad>
+@{
+    ViewBag.Title = "ingredients";
+    Layout = "~/Views/Shared/_managementLayout.cshtml";
+}
+
+
+    <main class="main-content">
+        <div id="confirmDelete" class="modal fade " tabindex="-1" style="display: none;" aria-modal="true" role="dialog">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+
+                    <div class="modal-body">
+                        <p style="margin-left:15px">Are you sure removing this item?</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary" id="RemoveIngButton">Verify</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="content-inner mt-5 py-0">
+            <div id="addInventoryModal" class="modal fade " tabindex="-1" style="display: none;" aria-modal="true" role="dialog">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Create New Ingredient</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="row">
+                                <div class="form-group col-6">
+                                    <label class="form-label" for="email">Item Name:</label>
+
+                                    <input value="" id="itemName" class="oof form-control inputnumber" style=" direction:ltr; margin:0 10px" placeholder="Item Title" />
+                                </div>
+                                <div class="form-group col-6">
+                                    <label class="form-label" for="email">Item Calories:</label>
+
+                                    <input value="0" id="itemcal" class="oof form-control inputnumber" style=" direction:ltr; margin:0 10px" placeholder="Item Calories Amount" />
+                                </div>
+                                <div class="form-group col-6">
+                                    <label class="form-label" for="email">Item Carbohydrates:</label>
+
+                                    <input value="0" id="Carbohydrates" class="oof form-control inputnumber" style=" direction:ltr; margin:0 10px" placeholder="Item Carbohydrates Amount" />
+                                </div>
+                                <div class="form-group col-6">
+                                    <label class="form-label" for="email">Item fats:</label>
+
+                                    <input value="0" id="fats" class="oof form-control inputnumber" style=" direction:ltr; margin:0 10px" placeholder="Item fats Amount" />
+                                </div>
+                                <div class="form-group col-6">
+                                    <label class="form-label" for="email">Item Proteins:</label>
+
+                                    <input value="0" id="Proteins" class="oof form-control inputnumber" style=" direction:ltr; margin:0 10px" placeholder="Item Proteins Amount" />
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-primary" id="addIngredientTo">Verify</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="input-group search-input">
+                        <span style="cursor:pointer" class="input-group-text" id="search-input">
+                            <svg width="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <circle cx="11.7669" cy="11.7666" r="8.98856" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></circle>
+                                <path d="M18.0186 18.4851L21.5426 22" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                            </svg>
+                        </span>
+                        <input id="itemq" type="search" class="form-control" placeholder="Search...">
+                    </div>
+                </div>
+                <div class="col-3"></div>
+                <div class="col-3"></div>
+                <div class="col-3">
+                    <div class="addInventoryButton oof " style=" cursor:pointer;margin-bottom:15px; text-align:center;border:1px dotted #4d4d4d; padding:10px 15px ;border-radius:5px;">Add ingeredient <img class="addIngredient" style="width:30px; margin : 0 20px" src="~/images/app/addPic.png" /></div>
+
+                </div>
+
+                <div>
+                    <div class="col-lg-12">
+                        <div class="card card-block card-stretch card-height">
+                            <div class="card-header d-flex justify-content-between">
+                                <div class="header-title">
+                                    <h4 class="card-title">Ingredients List</h4>
+                                </div>
+
+
+                            </div>
+                            <style>
+                                .myheader {
+                                    padding: 15px;
+                                    background-color: orange;
+                                    border-radius: 15px;
+                                    color: white;
+                                }
+
+                                .myrmoveparent {
+                                    display: flex;
+                                    align-items: center;
+                                    cursor: pointer
+                                }
+
+                                .myremove {
+                                    padding: 15px;
+                                    background-color: red;
+                                    border-radius: 15px;
+                                    color: white;
+                                }
+                            </style>
+                            <div class="row" style="margin: 30px 15px">
+                                <div class="col-sm-6 col-md-4 col-lg-">
+                                    <div class=" text-center">
+                                        <h6 class="myheader">title</h6>
+                                    </div>
+                                </div>
+                                <div class="row col-sm-6 col-md-6 col-lg-7 mt-2 mt-md-0">
+                                    <div class="col-sm-6 col-md-6 col-lg-3 mt-2 mt-md-0">
+                                        <div class="text-center">
+                                            <h6 class="myheader">Calories</h6>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm- col-md-6 col-lg-3 mt-2 mt-lg-0">
+                                        <div class=" text-center">
+                                            <h6 class="myheader">Protein</h6>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6 col-md-6 col-lg-3 mt-2 mt-lg-0">
+                                        <div class=" text-center">
+                                            <h6 class="myheader">Carbs</h6>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6 col-md-6 col-lg-3 mt-2 mt-lg-0">
+                                        <div class=" text-center">
+                                            <h6 class="myheader">Fat</h6>
+                                        </div>
+                                    </div>
+                                </div>
+                               
+                                <div class="col-sm-6 col-md-6 col-lg-1 mt-2 mt-lg-0">
+
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                @if (Model != null)
+                                {
+                                    foreach (var item in Model)
+                                    {
+                                <div class="row">
+                                    <div class="col-sm-6 col-md-6 col-lg-4">
+                                        <div class="shadow-lg p-4 shadow-showcase text-center">
+                                            <h6>@item.title</h6>
+                                        </div>
+                                    </div>
+                                    <div class="row col-sm-6 col-md-6 col-lg-7">
+                                        <div class="col-sm-6 col-md-6 col-lg-3">
+                                            <div class="shadow-lg p-4 shadow-showcase text-center">
+                                                <h6>@item.Calories</h6>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6 col-md-6 col-lg-3 mt-3 mt-md-0">
+                                            <div class="shadow-lg p-4 shadow-showcase text-center">
+                                                <h6>@item.Proteins</h6>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6 col-md-6 col-lg-3 mt-3 mt-lg-0">
+                                            <div class="shadow-lg p-4 shadow-showcase text-center">
+                                                <h6>@item.Carbohydrates</h6>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6 col-md-6 col-lg-3 mt-3 mt-lg-0">
+                                            <div class="shadow-lg p-4 shadow-showcase text-center">
+                                                <h6>@item.Fats</h6>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+                                    
+                                  
+                                  
+                                    <div id="@item.mavadID" class="col-sm-6 col-md-6 col-lg-1 myrmoveparent">
+                                        <div class=" text-center">
+                                            <h6 class="myremove">remove</h6>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                    }
+
+                                }
+
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+
+            </div>
+        </div>
+
+    </main>
+
+
+@section scripts{
+    <script>
+        var idtoremove = "";
+        $(".myrmoveparent").click(function () {
+
+            var id = $(this).attr('id');
+            idtoremove = id;
+            $("#confirmDelete").modal('toggle');
+
+        })
+        $("#RemoveIngButton").click(function () {
+            //alert(idtoremove);
+            $.ajax({
+                url: "/Admin/DeleteIngredient",
+                data: {
+                    id: idtoremove
+                },
+                success: function (data) {
+                    window.location.reload();
+                }
+            })
+        })
+        $("#addNewQr").click(function () {
+            $("#addQRModal").modal('toggle');
+        })
+        $(".addInventoryButton").click(function () {
+            $("#addInventoryModal").modal('toggle');
+        })
+
+
+
+        $("#addIngredientTo").click(function () {
+            var name = $("#itemName").val();
+            var cal = $("#itemcal").val();
+            var carb = $("#Carbohydrates").val();
+            var fat = $("#fats").val();
+            var prot = $("#Proteins").val();
+            $.ajax({
+                url: "/Admin/addInventory",
+                data: {
+                    name: name,
+                    cal: cal,
+                    carb: carb,
+                    fat: fat,
+                    prot: prot
+
+                },
+                success: function (data) {
+                    window.location.reload();
+                }
+            })
+        });
+        $("#search-input").click(function () {
+            var q = $("#itemq").val();
+            window.location.href = "/Management/ingredients?q=" + q
+        })
+    </script>
+}

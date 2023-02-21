@@ -1,0 +1,150 @@
+﻿@model ActiveMenu.ViewModel.EndOrderVM
+
+
+
+
+<style>
+
+    .imaghld {
+        width: 30%;
+        margin: 2.5%
+    }
+
+        .imaghld img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: cover
+        }
+
+    .contenthld {
+        width: 60%;
+    }
+
+    .remoteControl {
+        width: 10%;
+    }
+
+    .ptitle {
+        color: white;
+        padding: 10px;
+        font-size: 14px;
+        text-align: left
+    }
+
+    .contentrow {
+        display: flex;
+        border-top: 1px solid #4d4d4d;
+        border-bottom: 1px solid #4d4d4d;
+        padding: 10px;
+        direction: ltr;
+        color:white
+    }
+
+    .contentChild {
+        padding: 0 10px;
+        border-left: 1px solid #4d4d4d;
+        width: 100%;
+    }
+
+        .contentChild p {
+            color: white;
+        }
+
+    .sliderParent {
+        margin: 10px;
+        padding: 5px
+    }
+
+    .sameParent {
+        /*background: rgb(126,128,126);
+        background: linear-gradient(90deg, rgba(126,128,126,1) 0%, rgba(81,83,81,1) 44%, rgba(60,61,61,1) 100%);*/
+        border-radius: 10px;
+        display: flex !important;
+        direction: ltr;
+        margin: 10px;
+        background-color:rgb(42, 43, 43)
+    }
+
+    .noitem {
+        background: rgb(126,128,126);
+        background: linear-gradient(90deg, rgba(126,128,126,1) 0%, rgba(81,83,81,1) 44%, rgba(60,61,61,1) 100%);
+        border-radius: 10px;
+        color   :white;
+        direction: ltr;
+        margin: 30px 10px;
+        padding:20px 5px;
+        text-align:center
+    }
+        .noitem p {
+            text-align: center;
+            color: white;
+        }
+
+        .remoteControl {
+            margin-right: 10px
+        }
+    .confirmbtn {
+        padding: 25px 60px;
+        border-radius: 15px;
+        color: white;
+        /*background: rgb(106,153,193);
+        background: linear-gradient(90deg, rgba(106,153,193,1) 0%, rgba(57,86,140,1) 44%, rgba(34,34,112,1) 100%);*/
+        text-align: center;
+        font-size: 18px;
+        margin: 10px;
+        background-color:#033c20
+    }
+</style>
+
+@if (Model.lst.Count()>0)
+{
+
+    foreach (var item in Model.lst)
+    {
+        <div class="sameParent">
+            <div class="imaghld">
+                <div class="imgholder">
+                    <img src="~/images/Items/@ViewBag.username/@item.imageList.Trim(',').Split(',').ToList().First()" />
+                </div>
+            </div>
+            <div class="contenthld">
+                <p class="ptitle">
+                    @item.title
+                </p>
+                <div class="contentrow">
+                    price @item.price AED
+                </div>
+            </div>
+
+            <div class="remoteControl">
+                @{
+                    string iclass = "value" + item.itemID;
+
+                }
+
+                <p class="countButton" style="text-align:center">
+                    <i id="@item.itemID" style="color:orange; font-size:20px" class="fal fa-minus"></i>
+                </p>
+                <p style="text-align:center">
+                    <span class="@iclass allPrice" style="font-size:20px; color:white; margin:25px 0">0</span>
+                </p>
+                <p style="text-align:center">
+                    <i id="@item.itemID" style="color:orange;font-size:20px" class="fal fa-plus"></i>
+                </p>
+            </div>
+
+        </div>
+    }
+
+    <div class="confirmbtn">
+
+          chekout
+    </div>
+}
+else
+{
+    <div class="noitem">
+        <p>not item found !!</p>
+        
+    </div>
+}

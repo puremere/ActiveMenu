@@ -1,0 +1,161 @@
+﻿@model IEnumerable<ActiveMenu.ViewModel.currentVM>
+@{
+    ViewBag.Title = "meals";
+    Layout = "~/Views/Shared/_kitchenLayout.cshtml";
+}
+
+
+<div id="ingmodal" class="modal fade " tabindex="-1" style="display: none;" aria-modal="true" role="dialog">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+
+            <div class="modal-body">
+                <p style="margin-left:15px">this meal will be contain following ingredients</p>
+                <div id="ingHolder">
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+<div id="compMeal" class="modal fade " tabindex="-1" style="display: none;" aria-modal="true" role="dialog">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+
+            <div class="modal-body">
+                <p style="margin-left:15px">Are you sure removing this item?</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" id="endMealButton">Verify</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="content-inner mt-5 py-0">
+    <div class="row">
+
+        <div class="col-sm-12">
+            <div class="card">
+                <div class="card-header d-flex justify-content-between border-0">
+                    <div class="header-title ">
+                        <h4 class="card-title">Current Order List</h4>
+                    </div>
+                </div>
+                <div class="card-body p-0">
+                    <div class="table-responsive">
+                        <table id="basic-table" class="table table-striped table-shadow mb-0" role="grid">
+                            <thead class="border-0">
+                                <tr>
+                                    <th>Item Title</th>
+                                    <th>Item Count</th>
+                                    <th>table  </th>
+                                    <th>ingredients</th>
+                                    <th>complete</th>
+
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model)
+                                {
+
+                                    <tr>
+                                        <td>
+                                            <div class="">
+                                                @*<img class="rounded img-fluid avatar-40 me-3 bg-soft-primary" src="../../assets/images/avatars/06.png" alt="profile">*@
+                                                <h6>@item.itemordertitle</h6>
+                                            </div>
+                                        </td>
+
+                                        <td>
+                                            <div class="">
+                                                <h6>@item.itemorderCount</h6>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="">
+                                                <h6>@item.orderplace</h6>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <button idto="@item.orderdetailID" type="button" class="ingmodalbutt btn btn-outline-success mt-2">view</button>
+
+                                        </td>
+                                        <td>
+                                            <button idto="@item.orderdetailID" type="button" class="compmodalbutt btn btn-outline-success mt-2">Complete</button>
+
+                                        </td>
+
+
+                                    </tr>
+                                }
+
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section scripts{
+    <script>
+        $(".ingmodalbutt").click(function () {
+
+
+            var id = $(this).attr('idto');
+            $.ajax({
+                url: "/Kitchen/getOrderDetailMavad",
+                data: {
+                    ID: id
+                },
+                success: function (data) {
+                    $("#ingHolder").html(data);
+                    $("#ingmodal").modal("toggle");
+                }
+            })
+            //window.location.href = "/Management/createItem?item=" + id;
+        })
+        $(".compmodalbutt").click(function () {
+            idtoremove = $(this).attr('idto');
+            var el = $("#" + idtoremove);
+
+            $.ajax({
+                url: "/Kitchen/EndOrderDetail",
+                data: {
+                    id: idtoremove
+                },
+                success: function (data) {
+                    el.remove();
+                    $("#compMeal").modal("toggle");
+                }
+            }) 
+        })
+
+        $("#endMealButton").click(function () {
+            var el = $("#" + idtoremove);
+
+            $.ajax({
+                url: "/Kitchen/EndOrderDetail",
+                data: {
+                    id: idtoremove
+                },
+                success: function (data) {
+                    el.remove();
+                    $("#compMeal").modal("toggle");
+                }
+            })
+
+        })
+    </script>
+    <style>
+        th , td,td  h6{
+            text-align:center;
+
+        }
+    </style>
+}
+
+

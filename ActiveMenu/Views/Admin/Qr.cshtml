@@ -1,0 +1,302 @@
+﻿@model ActiveMenu.ViewModel.qrVM
+@{
+    ViewBag.Title = "Home Page";
+
+
+}
+@{
+    ViewBag.Title = "Tables";
+    Layout = "~/Views/Shared/_Layoutinfo.cshtml";
+}
+
+
+
+@section scripts{
+
+
+
+}
+<style>
+    * {
+        box-sizing: border-box;
+    }
+
+    body {
+        margin: 0;
+        font-family: Arial;
+    }
+
+    .header {
+        text-align: center;
+        padding: 32px;
+    }
+
+    .row {
+        display: -ms-flexbox; /* IE10 */
+        display: flex;
+        -ms-flex-wrap: wrap; /* IE10 */
+        flex-wrap: wrap;
+        padding: 0 4px;
+    }
+
+    /* Create four equal columns that sits next to each other */
+    .column {
+        /*-ms-flex: 25%; /* IE10 */ */
+        /*flex: 25%;*/
+        /*max-width: 25%;*/
+        padding: 0 4px;
+    }
+
+        .column img {
+            margin-top: 8px;
+            vertical-align: middle;
+            width: 100%;
+            border-radius: 15px
+        }
+
+    /* Responsive layout - makes a two column-layout instead of four columns */
+    @@media screen and (max-width: 800px) {
+        .column {
+            -ms-flex: 50%;
+            flex: 50%;
+            max-width: 50%;
+        }
+    }
+
+    /* Responsive layout - makes the two columns stack on top of each other instead of next to each other */
+    @@media screen and (max-width: 600px) {
+        .column {
+            -ms-flex: 100%;
+            flex: 100%;
+            max-width: 100%;
+        }
+    }
+
+    .blur {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0,0,0,0.9);
+    }
+
+    .menuTitle {
+        position: relative;
+        bottom: 0;
+        color: white;
+        font-size: 14px;
+        background: rgba( 13, 12, 12, 0.25 );
+        box-shadow: 0 8px 32px 0 rgb(31 38 135 / 37%);
+        backdrop-filter: blur( 4px );
+        -webkit-backdrop-filter: blur( 4px );
+        border-radius: 10px;
+        border: 1px solid rgba( 255, 255, 255, 0.18 );
+        padding: 3px 10px;
+    }
+
+    .searchInput {
+        font-size: 16px;
+        font-weight: 400;
+        padding: 10px 15px 10px 10px;
+        position: relative;
+        border: none;
+        background: rgba(255,255,255,0.05);
+        backdrop-filter: blur(10px);
+        border-top: 1px solid rgba(255,255,255,0.2);
+        border-left: 1px solid rgba(255,255,255,0.2);
+        box-shadow: 5px 5px 30px rgba(0,0,0,0.2);
+        color: rgb(255, 255, 255);
+        transition: color 0.3s ease-out;
+        border-radius: 15px;
+        text-align: right;
+        margin: 10px;
+        display: flex;
+        direction: rtl;
+        position: relative;
+        padding: 10px;
+        text-align: right;
+        align-items: center
+    }
+
+    .searchi, .placeinput {
+        padding: 4px;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        background-color: transparent;
+        text-decoration: none;
+        border-top-style: hidden;
+        border-right-style: hidden;
+        border-left-style: hidden;
+        border-bottom-style: hidden;
+        max-width: none;
+        padding-right: 25px
+    }
+
+
+        .searchi:focus, .placeinput:focus {
+            outline: none;
+        }
+
+    .buttonCss {
+        padding: 10px 0px;
+        color: white;
+        background-color: orange;
+        text-align: center;
+        border-radius: 13px;
+        width: 100%;
+        margin: 0 10px;
+    }
+
+    .searchBar {
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        direction: ltr;
+        padding: 0 10px;
+    }
+
+    .modal-backdrop {
+        z-index: 1
+    }
+</style>
+
+
+
+
+
+@*<div style="padding:10px; position:relative">
+
+        <img  src="~/images/app/11.png" style="width:100%; border-radius:10px" />
+
+    </div>*@
+
+<div style="" class="modal fade" id="addQRModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content oof" style="color:white;border-radius:8px">
+
+            <div style="        font-size: 14px;  padding: 20px; text-align: center" class="modal-body">
+
+                <input class="placeinput" style="direction:rtl" placeholder="Insert Your Name" />
+            </div>
+            <div class="modal-footer" style="border-color:#4d4d4d">
+                <button style="padding:7px 30px" type="button" class="btn btn-secondary oof" data-dismiss="modal" id="cancelQR">Cancel</button>
+                <button style="padding:7px 30px" type="button" class="btn btn-success" id="addQR">Verify</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div style="position:relative" class="headerTop">
+    <div class="backToList" style="">
+        <div>
+
+            <i class="fal fa-arrow-left " style=" font-size:20px; color:white"></i>
+        </div>
+
+    </div>
+
+    <span style="flex:1;text-align:center">
+
+    </span>
+    <div style=" text-align:right; display:flex">
+        <a href="/Home/index" style="color:white; text-decoration:none">
+
+            <i class="fal fa-home" style=" font-size:20px; color:white;"></i>
+        </a>
+    </div>
+
+</div>
+
+@*<div class="searchBar">
+        <div class="searchInput" style="margin:20px 10px; width:90%">
+            <i id="searchItem pointer" class="fal fa-search" style="position:absolute; left:20px"></i>
+            <input id="tableToSearch" class="searchi " placeholder="Insert Your Name" />
+        </div>
+        <div id="" class="buttonCss" style="position:relative; margin:0; width:10%"  data-toggle="modal" data-target="#addQRModal">
+            <p style="margin:0" class="endOrder pointer">
+                +
+            </p>
+        </div>
+    </div>*@
+<div class="searchBar ">
+    <div class="searchInput" style="margin:20px 10px; width:90%">
+        <i id="searchItem" class="fal fa-search pointer" style="position:absolute; right:20px"></i>
+        <input id="tableToSearch" class="searchi" placeholder="Insert your name" style="width:100%;text-align:left" />
+    </div>
+    <div id="startQrbutton" class="buttonCss pointer" style="position:relative; margin:0; width:10%">
+        <p style="margin:0" class="endOrder pointer">
+            +
+        </p>
+    </div>
+</div>
+
+<div class="" style="margin:0; position:relative">
+
+    <div class="column qrHolder" style="position:absolute; width:100%">
+
+
+
+
+
+    </div>
+
+
+</div>
+
+<script>
+    $(".backToList").click(function () {
+        history.back();
+    })
+    $("#startQrbutton").click(function () {
+        $("#addQRModal").modal('toggle');
+    })
+</script>
+<script>
+    var page = 1;
+    var getQR = function (query) {
+        $.ajax({
+            url: "/admin/updateQrList",
+            data: {
+                query: query,
+                page: page
+            },
+            success: function (data) {
+
+                $(".qrHolder").append(data);
+            }
+
+        })
+    };
+    getQR()
+    //$("#addNewQr").click(function () {
+    //    $("#addQRModal").modal('toggle');
+    //})
+    $("#searchItem").click(function () {
+        var value = $("#tableToSearch").val();
+        $(".qrHolder").html("");
+        $("#tableToSearch").val("");
+        getQR(value);
+
+
+
+    })
+    $("#addQR").click(function () {
+        var name = $(".placeinput").val();
+        $.ajax({
+            url: "/Admin/addQr",
+            data: {
+                name: name
+            },
+            success: function (data) {
+                if (data == 200) {
+
+                    page = 1;
+                    $(".placeinput").val('');
+                    $(".qrHolder").html('');
+                    getQR()
+                    $("#addQRModal").modal('toggle');
+                }
+            }
+        })
+    })
+</script>

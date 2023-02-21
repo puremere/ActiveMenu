@@ -1,0 +1,95 @@
+﻿@model ActiveMenu.Model.restaurant
+@{
+    ViewBag.Title = "setting";
+    Layout = "~/Views/Shared/_managementLayout.cshtml";
+}
+
+
+
+
+
+<style>
+    .card-body img {
+        max-width: 100%;
+        max-height: 100%;
+        object-fit: scale-down
+    }
+</style>
+<div class="content-inner mt-5 py-0">
+    <div class="container-fluid">
+        <div class="row" style="justify-content:center">
+            <div class="col-sm-12 col-lg-6">
+                <div class="card">
+                    <div class="card-header d-flex justify-content-between">
+                        <div class="header-title">
+                            <h4 class="card-title">General Information</h4>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <p>Please Insert Your Data</p>
+                        <form method="post" enctype="multipart/form-data">
+
+                            <div class="form-group">
+                                <label class="form-label" for="email">brand name:</label>
+                                <input value="@Model.brandName" type="text" class="form-control" name="brandName">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" for="email">mobile number:</label>
+                                <input value="@Model.mobile" type="number" maxlength="10" class="form-control" name="mobileNumber">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" for="email">phone number:</label>
+                                <input value="@Model.phone" type="number" maxlength="10" class="form-control" name="phoneNumber">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" for="email">whatsapp number:</label>
+                                <input value="@Model.whatsappPhone" type="number" maxlength="10" class="form-control" name="whatsappNumber">
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label" for="exampleInputtime">Oppening Time</label>
+                                <input name="oppeningD"  type="time" class="form-control" id="exampleInputtime" value="@Model.oppening.TimeOfDay">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" for="exampleInputtime">Closing Time</label>
+                                <input name="closingD" type="time" class="form-control" id="exampleInputtime"  value="@Model.colsing.TimeOfDay">
+                            </div>
+
+                          
+
+
+                            <div class="form-group">
+                                <label class="form-label" for="email"> email address:</label>
+                                <input value="@Model.email" type="text" class="form-control" name="email">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" for="email">address:</label>
+                                <input value="@Model.Address" type="text" class="form-control" name="address">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" for="email">vat(%):</label>
+                                <input value="@Model.vat" type="number" class="form-control" name="vat">
+                            </div>
+                            <div class="form-group">
+                                <label for="customFile1" class="form-label custom-file-input">Choose Logo</label>
+                                <input class="form-control" type="file" id="imagefile" name="imagefile">
+                            </div>
+                            <div class="form-group">
+                                @{
+                                    string url = "/images/Logo/" + @Request.Cookies["username"].Value + "/" + Model.logo;
+                                }
+                                <img style="width:150px" src="@url" />
+                            </div>
+
+
+                            <button type="submit" class="btn btn-primary rounded">Submit</button>
+                            <button type="submit" class="btn btn-danger rounded">cancel</button>
+                        </form>
+                    </div>
+                </div>
+              
+            </div>
+          
+        </div>
+    </div>
+</div>

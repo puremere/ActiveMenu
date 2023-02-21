@@ -1,0 +1,17 @@
+﻿@model ActiveMenu.ViewModel.OrderDetailMavadVM
+
+@{
+    if (Model != null)
+    {
+    <p style="margin:5px ; padding:12px; background-color:#eee; opacity:0.5; color:black; border-radius: 6px">
+        @Model.instruction
+    </p>
+
+        foreach (var item in Model.lst)
+        {
+            <p style="margin:5px ; padding:12px; background-color:black; opacity:0.5; color:white; border-radius: 6px"><span> @item.title</span><span style="margin-left:25px">@item.amount gr</span></p>
+        }
+    }
+
+}
+

@@ -7,10 +7,10 @@ namespace ActiveMenu.ViewModel
 {
     public class EndOrderVM
     {
-        public long finalPrice { get; set; }
-        public long orderPrice { get; set; }
-        
-        public long discount { get; set; }
+        public double finalPrice { get; set; }
+        public double orderPrice { get; set; }
+        public double vat { get; set; }
+        public double discount { get; set; }
         public List<Model.Item> lst { get; set; }
     }
 }

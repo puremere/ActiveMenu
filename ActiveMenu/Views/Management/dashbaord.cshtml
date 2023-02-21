@@ -1,0 +1,173 @@
+﻿@model ActiveMenu.ViewModel.dashbaordAdminVM
+
+@{
+    Layout = "/Views/Shared/_managementLayout.cshtml";
+}
+
+<div class="content-inner mt-5 py-0">
+    <div class="row">
+        <div class="col-lg-7 col-xl-8">
+            <div class="card" data-iq-gsap="onStart"
+                 data-iq-opacity="0"
+                 data-iq-position-y="-40"
+                 data-iq-duration=".6"
+                 data-iq-delay=".4"
+                 data-iq-trigger="scroll"
+                 data-iq-ease="none">
+                <div class="card-header">
+                    <h4 class="card-title">Sales Figures</h4>
+                    <small>2023-2024</small>
+                </div>
+                <div class="card-body" data-iq-gsap="onStart"
+                     data-iq-opacity="0"
+                     data-iq-position-y="-40"
+                     data-iq-duration=".6"
+                     data-iq-delay=".6"
+                     data-iq-trigger="scroll"
+                     data-iq-ease="none">
+                    <div id="admin-chart-1" class="admin-chart-1"></div>
+                </div>
+            </div>
+           
+          
+        </div>
+        <div class="col-lg-5 col-xl-4">
+            <div class="card card-primary" data-iq-gsap="onStart"
+                 data-iq-opacity="0"
+                 data-iq-position-y="-40"
+                 data-iq-duration=".6"
+                 data-iq-delay=".8"
+                 data-iq-trigger="scroll"
+                 data-iq-ease="none">
+                <div class="card-body d-flex align-items-center justify-content-between">
+                    <div class="col">
+                        <p class="text-white mt-3 mb-4">Total earning</p>
+                        <h2 class="text-white mb-4">@string.Format("{0:n0}", Model.pricesrt.Sum(x => x)) AEU</h2>
+                        @*<a href="#" class="btn bg-white rounded-pill">View More</a>*@
+                    </div>
+                    <div class="col-2  card mb-0 bg-white card-body">
+                        <div>
+                            <h6 class="heading-title mb-3 text-center">Total Profit</h6>
+                        </div>
+                        <div class=" text-center">
+                            <div id="admin-chart-8"></div>
+                        </div>
+                        <h6 class="heading-title text-primary text-center mt-3">
+                            +0.4% <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M9.77083 3.54199L9.77083 16.042" stroke="#EA6A12" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                                <path d="M4.75213 8.58301L9.77213 3.54134L14.793 8.58301" stroke="#EA6A12" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                            </svg>
+                        </h6>
+
+                    </div>
+                </div>
+            </div>
+           
+        
+        </div>
+    </div>
+
+</div>
+
+
+
+@section scripts{
+    <script>
+        if (jQuery('#admin-chart-1').length) {
+            var myArray = [];
+            @foreach (var d in Model.pricesrt)
+            {
+                @:myArray.push("@d");
+            };
+
+
+            const options = {
+                series: [{
+                    type: 'column',
+                    data: myArray,
+                }],
+                chart: {
+                    height: 350,
+                    type: 'line',
+                    animations: {
+                        enabled: true,
+                        easing: 'easeinout',
+                        speed: 800,
+                        animateGradually: {
+                            enabled: false,
+                            delay: 150
+                        },
+                        dynamicAnimation: {
+                            enabled: true,
+                            speed: 350
+                        }
+                    },
+                    zoom: {
+                        enabled: false,
+                    },
+                    toolbar: {
+                        show: false
+                    }
+                },
+                tooltip: {
+                    enabled: true,
+                },
+                stroke: {
+                    width: [0, 2]
+                },
+                dataLabels: {
+                    enabled: true,
+                    enabledOnSeries: [1],
+                    offsetX: 3.0,
+                    offsetY: -1.6,
+                    style: {
+                        fontSize: '1px',
+                        fontFamily: 'Helvetica, Arial, sans-serif',
+                        fontWeight: 'bold',
+                    },
+                    background: {
+                        enabled: true,
+                        foreColor: '#fff',
+                        color: '#fff',
+                        padding: 10,
+                        borderRadius: 10,
+                        borderWidth: 0,
+                        borderColor: '#fff',
+                        opacity: 1,
+                    }
+
+                },
+                colors: ["#EA6A12", "#EA6A12"],
+                plotOptions: {
+                    bar: {
+                        horizontal: false,
+                        columnWidth: '16%',
+                        endingShape: 'rounded',
+                        borderRadius: 5,
+                    },
+                },
+                legend: {
+                    show: false,
+                    offsetY: -25,
+                    offsetX: -5
+                },
+                xaxis: {
+                    categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+                    labels: {
+                        minHeight: 20,
+                        maxHeight: 20,
+                    }
+                },
+                yaxis: {
+                    labels: {
+                        minWidth: 20,
+                        maxWidth: 20,
+                    }
+                },
+            };
+
+            const chart = new ApexCharts(document.querySelector("#admin-chart-1"), options);
+            chart.render();
+        }
+    </script>
+}

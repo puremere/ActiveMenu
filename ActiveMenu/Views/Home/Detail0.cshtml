@@ -1,0 +1,92 @@
+﻿@model ActiveMenu.ViewModel.detailVM
+@{
+    ViewBag.Title = "Detail";
+    ViewBag.ItemTitle = Model.name;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+
+@*<div style="position:relative" class="headerTop">
+        <div>
+            <a href="/Home/basket" class="cartHolder">
+                <p class="simpleCart_quantityy" style="color:white; margin-left:10px;font-size:20px;"></p>
+                <i class="fal fa-shopping-cart" style=" font-size:20px; color:white"></i>
+            </a>
+
+        </div>
+        <span style="flex:1"></span>
+        <div style=" text-align:right; display:flex; align-items:center">
+            <p style="margin-right:10px ; color:white;font-size:20px; margin-bottom:0">@</p>
+            <i class="fal fa-long-arrow-right" style="font-size:20px; color:white; "></i>
+        </div>
+
+
+    </div>*@
+
+
+<div style="position:absolute; overflow:auto" class="itemparent">
+    <div style="text-align:center;display: flex;justify-content: center;margin-bottom: 25px;">
+        <div style="height:2px; background-color:#3aafd6; width:30%"></div>
+    </div>
+
+    @{
+
+        if (ViewBag.istrue != "")
+        {
+            <div style="position:relative; display:flex; justify-content:center;margin:15px;">
+                <a href="/admin/createItem?catid=@Model.id">
+                    <div style=" padding:15px;color:white; background-color:#3aafd6;text-align:center; border-radius:13px">Add New Item</div>
+                </a>
+            </div>
+        }
+    }
+
+    @foreach (var item in Model.itemList)
+    {
+        @Html.Partial("~/Views/Shared/ItemSection.cshtml", item);
+
+    }
+</div>
+<style>
+
+    .itemparent {
+    }
+</style>
+<style>
+    * {
+        box-sizing: border-box;
+    }
+
+    body {
+        margin: 0;
+        font-family: Arial;
+    }
+
+    .header {
+        text-align: center;
+        padding: 32px;
+    }
+
+    .row {
+        display: -ms-flexbox; /* IE10 */
+        display: flex;
+        -ms-flex-wrap: wrap; /* IE10 */
+        flex-wrap: wrap;
+        padding: 0 4px;
+    }
+   
+    .itemparent::-webkit-scrollbar {
+        display: none;
+    }
+
+    /* Hide scrollbar for IE, Edge and Firefox */
+    .itemparent {
+        -ms-overflow-style: none; /* IE and Edge */
+        scrollbar-width: none; /* Firefox */
+    }
+    
+</style>
+@section scripts{
+
+}

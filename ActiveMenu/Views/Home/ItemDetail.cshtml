@@ -1,6 +1,8 @@
-﻿@model ActiveMenu.Model.Item
+﻿@model ActiveMenu.ViewModel.itemDetailVM
 @{
     ViewBag.Title = "ItemDetail";
+    ViewBag.ItemTitle = Model.item.title;
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <link href="~/Content/slick.css" rel="stylesheet" />
@@ -8,112 +10,566 @@
 <script src="~/Scripts/slick.js"></script>
 
 
+<style>
 
-<div class="imageslider">
 
-    @foreach (var item in Model.imageList.Trim(',').Split(',').ToList())
-    {
-        <img style="" src="~/images/Items/@item" />
+    .inputholder {
+        display: inline-block;
+        margin: 10px
     }
 
+        .inputholder span {
+            color: white
+        }
+
+    .textholder {
+        margin: 30px 10px;
+        display: flex;
+        align-items: center
+    }
+
+        .textholder p {
+            white-space: nowrap;
+            color: white;
+            margin: 10px
+        }
+
+    .buttonHolder {
+        margin: 30px 10px;
+        display: flex;
+        align-items: center
+    }
+
+        .buttonHolder div {
+            width: 50%;
+            margin: 20px
+        }
+</style>
+
+<div style="background-color:black;opacity: 0.98; " class="  modal fade" id="ingredientModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content oof" style="color:white;border-radius:8px">
+
+            <div class="textholder">
+                <p style="">Ingredients : </p>
+                <div id="ingredientModalHolder">
+
+                    @foreach (var item in Model.mavadList)
+                    {
+
+                    <div id="@item.ingID" class="inputholder col-lg-3 col-md-4 col-sm-6">
+                        <input class="" type="checkbox" checked />
+                        <span>@item.title</span>
+
+                    </div>
+
+
+                    }
+                </div>
+            </div>
+
+            <div class="textholder">
+                <p style="">Your Comment : </p>
+                <input id="detaildescadd" class=" countButton" />
+            </div>
+
+
+            <div class="modal-footer" style="border-color:#4d4d4d">
+                <button style="padding:7px 30px" type="button" class="btn btn-secondary oof" data-dismiss="modal" id="cancelingre">Cancel</button>
+                <button style="padding:7px 30px" type="button" class="btn btn-success" id="addDetailIngre">Verify</button>
+            </div>
+        </div>
+    </div>
 </div>
+
+<div class="row" style="height:50px;position:fixed;color:white;left:50px;font-size: 18px;color: white;z-index:999;top:30px">
+    <p><span"><i style="color: white" class="fa fa-long-arrow-left"></i></span></p>
+</div>
+<div class="row" style="height: 50px; position: fixed; color: white; right: 50px; font-size: 18px; color: white; z-index: 999; top: 30px">
+    <p><span"><i style="color:white" class="fa fa-home"></i></span></p>
+</div>
+<div style="margin-top :50px">
+
+    <div class="" style="display:flex; align-items:center; margin-top:0px">
+        <div style="        width: 20%;
+        text-align: center;
+        margin: 7%">
+            <div class="imageslider">
+
+                @foreach (var item in Model.item.imageList.Trim(',').Split(',').ToList())
+                {
+                    <img style="border-radius:12px ; max-width:400px" src="~/images/Items/@ViewBag.username/@item" />
+                }
+
+            </div>
+        </div>
+        <style>
+
+            .cellitem {
+                width: 25%;
+                text-align: center;
+                /*border-right: 1px solid #4d4d4d;*/
+                padding: 10px 15px;
+                display: block !important;
+                margin: 5px
+            }
+
+                .cellitem p, .cellparent p {
+                    color: white
+                }
+
+                .cellitem p {
+                    display: flex;
+                    font-weight: 600;
+                    justify-content: center;
+                    margin: 0;
+                    padding: 5px;
+                }
+
+                    .cellitem p span {
+                        margin-right: 12px;
+                        font-weight: 600
+                    }
+
+            .cellitem2 {
+                padding: 5px;
+                width: 50%;
+            }
+
+                .cellitem2 p {
+                    font-size: 11px
+                }
+
+            .cellparent {
+                display: flex;
+                /*border-top: 1px #4d4d4d solid;
+                border-bottom: 1px #4d4d4d solid;*/
+                padding: 15px;
+            }
+
+            .noborder {
+                border: none;
+                border: none;
+                padding: 5px 25px;
+            }
+        </style>
+        <div style="width:70%">
+            <div class="cellparent">
+                <div class="cellitem  countButton">
+                    <p><span><i class="fa fa-fire"></i></span> Calories</p>
+                    <p>@Model.item.calory</p>
+                </div>
+                <div class="cellitem countButton">
+                    <p> <span><i class="fa fa-fire"></i></span>Protein</p>
+                    <p>@Model.item.Proteins</p>
+                </div>
+                <div class="cellitem countButton">
+                    <p><span><i class="fa fa-fire"></i></span>Carbs</p>
+                    <p>@Model.item.Carbohydrates</p>
+                </div>
+                <div class="cellitem countButton">
+                    <p><span><i class="fa fa-fire"></i></span>Fat</p>
+                    <p>@Model.item.Fats</p>
+                </div>
+            </div>
+            <div class="cellparent noborder">
+                <div style="display:flex;width: 100%;font-weight:600">
+
+                    <p style="width:100%">@Model.item.desctiption</p>
+
+                </div>
+
+
+
+            </div>
+
+            <div class="cellparent noborder">
+                <div style="display:flex;width: 100%;font-weight:600">
+                    @{
+                        string finalstring = "";
+                        foreach (var item in Model.mavadList)
+                        {
+                            finalstring += item.title + " " + "," + " ";
+
+                        }
+                        finalstring = finalstring.Trim(' ').Trim(',');
+                        <p>@finalstring </p>
+                    }
+
+
+                </div>
+            </div>
+            <div class="cellparent noborder">
+                <div style="display:flex;width: 100%;align-items:center">
+                    <div style="width:50%; display:flex">
+                        <p> <h3 style="margin: 0 20px 0 0;color: white;">Price :  </h3> <h3 style="margin: 0 20px 0 0;color: white;"> @Model.item.price AED</h3> </p>
+                    </div>
+                    <div style="width:50%">
+                        <p class="countButton" style="direction:ltr; float:right; padding:15px; margin-left:10px "><a href="/home/basket" style="text-decoration:none; color:white"> <i class="fa fa-shopping-basket"></i></a> </p>
+                        <p class="countButton" style="direction:ltr; float:right">
+                            <i id="@Model.item.itemID" style=" font-size:20px" class="fal fa-minus minusItemFrom"></i>
+                            @{
+                                string iclass = "value" + Model.item.itemID;
+
+                            }
+                            <span class="@iclass allPrice" style="font-size:20px; color:white; margin:0 25px">0</span>
+                            <i id="@Model.item.itemID" style="color:orange;font-size:20px" class="fal fa-plus addItemto"></i>
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            @*<div style="margin-top:20px">
+
+                    <div style="direction:ltr; display:flex; align-items:center">
+                        <i class="fa fa-dot-circle" style="color:orange"></i>
+                        <span style="color:white;font-size:19px ; margin-left:15px;white-space: nowrap;">Item Description</span>
+
+                    </div>
+                    <p class="description">@Model.item.desctiption</p>
+                    <div style="direction:ltr; display:flex; align-items:center; margin-top:30px">
+                        <i class="fa fa-dot-circle" style="color:orange"></i>
+                        <span style="color:white;font-size:19px ; margin-left:15px;white-space: nowrap;">Ingredients</span>
+
+                    </div>
+                    <p class="description">
+                        @{
+                            string srtitem = "";
+                        }
+
+
+                        @foreach (var item in Model.mavadList)
+                        {
+                            srtitem += @item.title + ",";
+
+
+                        }
+                        <span> @srtitem.Trim(',')</span>
+                    </p>
+
+                    <div class="" style="display:flex">
+                        <div style="width:50%" style="flex:1" class="col-6">
+                            <div style="direction:ltr; display:flex; align-items:center; margin-top:30px">
+                                <i class="fa fa-dot-circle" style="color:orange"></i>
+                                <span style="color:white;font-size:19px ; margin-left:15px;white-space: nowrap;">Calories</span>
+
+                            </div>
+                            <p class="description"></p>
+                        </div>
+                        <div style="width:50%" class="col-6">
+                            <div style="direction:ltr; display:flex; align-items:center; margin-top:30px">
+                                <i class="fa fa-dot-circle" style="color:orange"></i>
+                                <span style="color:white;font-size:19px ; margin-left:15px;white-space: nowrap;">Proteins</span>
+
+                            </div>
+                            <p class="description"</p>
+                        </div>
+                    </div>
+                    <div class="" style="display:flex">
+                        <div style="width:50%" class="col-6">
+                            <div style="direction:ltr; display:flex; align-items:center; margin-top:30px">
+                                <i class="fa fa-dot-circle" style="color:orange"></i>
+                                <span style="color:white;font-size:19px ; margin-left:15px;white-space: nowrap;">Carbohydrates</span>
+
+                            </div>
+                            <p class="description">@Model.item.Carbohydrates</p>
+                        </div>
+                        <div style="width:50%" class="col-6">
+                            <div style="direction:ltr; display:flex; align-items:center; margin-top:30px">
+                                <i class="fa fa-dot-circle" style="color:orange"></i>
+                                <span style="color:white;font-size:19px ; margin-left:15px;white-space: nowrap;">Fats</span>
+
+                            </div>
+                            <p class="description">@Model.item.Fats</p>
+                        </div>
+                    </div>
+
+
+
+
+
+                    <div style="align-items:center; border:1px solid white; border-radius:15px; padding:15px; display:flex; margin-top:40px; direction:rtl">
+                        <p style="color:white; font-size:18px; margin:0">Total Payment</p>
+                        <p style="flex:1"></p>
+                        <p style="color:orange; font-size:25px; margin:0">@string.Format("{0:n0}", @Model.item.price)  </p>
+                        <p style="color:white; font-size:18px; margin:0;margin-right:15px; ">$</p>
+                    </div>
+                    <div style="display:flex; align-items:center; margin-top:10px">
+
+                        @if (ViewBag.sabad == "1" || !String.IsNullOrEmpty(ViewBag.istrue))
+                        {
+                            <p class="countButton" style="direction:ltr">
+                                <i id="@Model.item.itemID" style=" font-size:20px" class="fal fa-minus" onclick="removeItem(this)"></i>
+                                @{
+                                    string iclass = "value" + Model.item.itemID;
+
+                                }
+                                <span class="@iclass allPrice" style="font-size:20px; color:white; margin:0 25px">0</span>
+                                <i id="@Model.item.itemID" style="color:orange;font-size:20px" class="fal fa-plus" onclick="addItem(this)"></i>
+                            </p>
+                        }
+
+
+
+                        <p style="flex:1"></p>
+
+
+                        @{
+
+                            if (ViewBag.istrue != "")
+                            {
+                                <div style="display:flex; justify-content:center;margin:15px;">
+                                    <a href="/admin/createItem?item=@Model.item.itemID">
+                                        <div style=" padding:15px;color:white; background-color:#3aafd6;text-align:center; border-radius:13px">Edit</div>
+                                    </a>
+                                    <a style="margin: 0 10px" href="/admin/DeleteItem?item=@Model.item.itemID">
+                                        <div style=" padding:15px;color:white; background-color:#3aafd6;text-align:center; border-radius:13px">Remove</div>
+                                    </a>
+                                </div>
+                            }
+                        }
+
+
+                    </div>
+
+                </div>*@
+        </div>
+
+    </div>
+    <style>
+
+        .imaghld {
+            /*width: 30%;*/
+            margin: 2.5%
+        }
+
+            .imaghld img {
+                max-width: 100%;
+                max-height: 100%;
+                object-fit: cover
+            }
+
+        .contenthld {
+            /*width: 75%;*/
+        }
+
+        .ptitle {
+            color: white;
+            padding: 5px;
+            font-size: 14px;
+            text-align: left;
+            white-space: nowrap
+        }
+
+        .contentrow {
+            display: flex;
+            border-top: 1px solid #4d4d4d;
+            border-bottom: 1px solid #4d4d4d;
+            padding: 10px;
+            direction: ltr
+        }
+
+        .contentChild {
+            padding: 0 10px;
+            border-left: 1px solid #4d4d4d;
+            width: 100%;
+        }
+
+            .contentChild p {
+                color: white;
+            }
+
+        .sliderParent {
+            margin: 10px;
+            padding: 5px
+        }
+
+        .sameParent {
+            /*background: rgb(126,128,126);
+            background: linear-gradient(90deg, rgba(126,128,126,1) 0%, rgba(81,83,81,1) 44%, rgba(60,61,61,1) 100%);*/
+            border-radius: 10px;
+            display: flex !important;
+            direction: ltr;
+        }
+    </style>
+
+    <div class="">
+        @if (Model.itemlist != null)
+        {
+            <div class="row sliderParent">
+                <div class="productList">
+
+                    @**@
+                    @foreach (var item in Model.itemlist.Where(x => x.itemID != Model.item.itemID))
+                    {
+                        <div style=" background-color: rgb(42, 43, 43);border-radius: 10px;">
+
+                            <div class="sameParent">
+                                <div class="imaghld">
+                                    <div class="imgholder">
+                                        <a href="/home/itemDetail/@item.itemID">
+
+                                            <img style="width:100px" src="~/images/Items/@ViewBag.username/@item.imageList.Trim(',').Split(',').ToList().First()" />
+
+                                        </a>
+                                    </div>
+
+                                </div>
+                                <div style=" width:100%; display:flex; padding:5px">
+                                    <div class="" style="flex:1">
+                                        <p class="ptitle" style="font-weight:600">
+                                            @item.title
+                                        </p>
+                                        <p class="ptitle" st>
+                                            Price :   @item.price AED
+                                        </p>
+
+
+                                    </div>
+                                    <div class="">
+                                        <p class="countButton" style="direction:ltr; float:right;height:40px; ">
+                                            <i id="@item.itemID" style=" " class="fal fa-minus minusItemFrom"></i>
+                                            @{
+                                                iclass = "value" + @item.itemID;
+
+                                            }
+                                            <span class="@iclass allPrice" style=" color:white; margin:0 10px">0</span>
+                                            <i id="@item.itemID" style="color:orange;" class="fal fa-plus addItemto"></i>
+                                        </p>
+
+                                    </div>
+
+
+                                </div>
+
+                            </div>
+                            <div class="contenthld">
+
+
+                                <div class="cellparent" style="padding:5px">
+                                    <div class="cellitem cellitem2  countButton">
+                                        <p> Calories</p>
+                                        <p>@Model.item.calory</p>
+                                    </div>
+                                    <div class="cellitem cellitem2 countButton">
+                                        <p> Protein</p>
+                                        <p>@Model.item.Proteins</p>
+                                    </div>
+                                    <div class="cellitem cellitem2 countButton">
+                                        <p>Carbs</p>
+                                        <p>@Model.item.Carbohydrates</p>
+                                    </div>
+                                    <div class="cellitem cellitem2 countButton">
+                                        <p>Fat</p>
+                                        <p>@Model.item.Fats</p>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                        </div>
+
+
+                    }
+                </div>
+            </div>
+
+        }
+    </div>
+</div>
+<input type="text"  id="pingholder" style="display:none"/>
+
+
 
 <style>
     .description {
         font-size: 17px;
         color: white;
-        direction: rtl;
+        direction: ltr;
         margin-top: 15px;
         line-height: 2;
-        text-align:justify
+        text-align: justify;
     }
 
-    .countButton {
-        float: left;
-        padding: 5px;
-        background-color: darkorange;
-        color: white;
-        border-radius: 8px;
-        background-color: #4d4d4d;
-        padding: 10px;
-        display: flex;
-        justify-content: space-between;
-        width: 150px;
-        align-items: center;
-        border: 1px solid white;
-        background-color: #4d4d4d;
-        margin: 25px auto
+    /*.countButton {
+            float: left;
+            padding: 5px;
+            background-color: darkorange;
+            color: white;
+            border-radius: 8px;
+            background-color: #4d4d4d;
+            padding: 10px;
+            display: flex;
+            justify-content: space-between;
+            width: 150px;
+            align-items: center;
+            border: 1px solid white;
+            background-color: #4d4d4d;
+            margin: 25px auto
+        }*/
+    .infoSec {
+        position: relative;
+        z-index: 9999;
+        background-color: #343333;
+        padding: 20px;
+        border-radius: 32px 32px 0 0;
+        width: 100%;
+        padding-top: 40px;
+        background: rgba(255,255,255,0.05);
+        backdrop-filter: blur(10px);
+        border-top: 1px solid rgba(255,255,255,0.2);
+        border-left: 1px solid rgba(255,255,255,0.2);
+        box-shadow: 5px 5px 30px rgb(0 0 0 / 20%);
+        margin-top: -40px;
+        padding-bottom: 100px
+    }
+
+    .blur::before {
+        backdrop-filter: blur(2px) contrast(60%);
+        -webkit-backdrop-filter: blur(2px) contrast(60%);
+        width: contain;
+    }
+
+    .blur {
+        backdrop-filter: blur(2px) contrast(60%);
+        -webkit-backdrop-filter: blur(2px) contrast(60%);
+        width: contain;
     }
 </style>
-<div style=" background-color:#343333; padding:20px; border-radius:32px 32px 0 0 ; margin-top:-30px; position:absolute; width:100%;padding-top:40px;">
-    <p style="text-align:right; font-size:20px; color:white">@Model.title</p>
-    <div style="margin-top:20px">
 
-        <div style="direction:rtl; display:flex; align-items:center">
-            <i class="fa fa-dot-circle" style="color:orange"></i>
-            <span style="color:white;font-size:19px ; margin-right:15px;white-space: nowrap;">معرفی آیتم</span>
-
-        </div>
-        <p class="description">@Model.desctiption</p>
-        <div style="direction:rtl; display:flex; align-items:center; margin-top:30px">
-            <i class="fa fa-dot-circle" style="color:orange"></i>
-            <span style="color:white;font-size:19px ; margin-right:15px;white-space: nowrap;">ترکیبات</span>
-
-        </div>
-        <p class="description">@Model.ingredient</p>
-
-        <div style="align-items:center; border:1px solid white; border-radius:15px; padding:15px; display:flex; margin-top:40px; direction:rtl">
-            <p style="color:white; font-size:18px">مبلغ قابل پرداخت</p>
-            <p style="flex:1"></p>
-            <p style="color:orange; font-size:25px">@string.Format("{0:n0}", @Model.price)  </p>
-            <p style="color:white; font-size:18px; margin-right:15px">تومان</p>
-        </div>
-
-        <p class="countButton">
-            <i id="@Model.itemID" style=" font-size:20px" class="fal fa-minus"></i>
-            @{
-                string iclass = "value" + Model.itemID;
-
-            }
-            <span class="@iclass" style="font-size:16px; color:white">0</span>
-            <i id="@Model.itemID" style="color:orange;font-size:20px" class="fal fa-plus"></i>
-
-        </p>
-    </div>
-</div>
 
 
 @section scripts{
     <script>
-        var getquntity = function () {
-            $.ajax({
-                url: '/Home/getquntitiy',
-                dataType: 'html',
-                success: function (data) {
-                    var total = 0;
-                    var srtcookie = data;
+        //var getquntity = function () {
+        //    $.ajax({
+        //        url: '/Home/getquntitiy',
+        //        dataType: 'html',
+        //        success: function (data) {
+        //            var total = 0;
+        //            var srtcookie = data;
 
-                    if (srtcookie.length > 0) {
-                        srtcookie = srtcookie.replace(/&quot;/g, '"');
-                        JSON.parse(srtcookie).forEach(function (item) {
-                            let valueID = "value" + item.productid;
+        //            if (srtcookie.length > 0) {
+        //                srtcookie = srtcookie.replace(/&quot;/g, '"');
+        //                JSON.parse(srtcookie).forEach(function (item) {
+        //                    let valueID = "value" + item.productid;
 
-                            $("." + valueID).text(item.quantity);
-                            total += parseInt(item.quantity);
-                        });
-                        $(".simpleCart_quantityy").text(total)
+        //                    $("." + valueID).text(item.quantity);
+        //                    total += parseInt(item.quantity);
+        //                });
+        //                $(".simpleCart_quantityy").text(total)
 
-                    } else {
-                        $(".simpleCart_quantityy").text("0")
-                    };
-                }
+        //            } else {
+        //                $(".simpleCart_quantityy").text("0")
+        //            };
+        //        }
 
-            })
-        };
+        //    })
+        //};
 
-        $(document).ready(function () {
-            getquntity();
-        })
+        //$(document).ready(function () {
+        //    getquntity();
+        //})
 
 
 
@@ -122,15 +578,59 @@
 
     </script>
     <script>
-        $(".fa-plus").click(function () {
-           
-            $("#loading").fadeIn()
-          
+
+        var actiontype = "";
+        var itemToadd = "";
+        var mealtoadd = "";
+
+       
+        $("#canceling").click(function (e) {
+
+            $("#ingredientModal").modal('toggle')
+            actiontype = "";
+        })
+        $(".addItemto").click(function (e) {
+            mealtoadd = $(this).attr('id');
+            $("#pingholder").val("");
+            $("#ingredientModalHolder").html("");
+            $.ajax({
+                url: "/Home/getMealMavd",
+                data: {
+                    id: mealtoadd,
+                    
+                },
+                success: function (data) {
+                    $("#ingredientModalHolder").html(data);
+                }
+            })
+            $("#ingredientModal").modal('toggle');
+            actiontype = "plus";
+        })
+        $("#addDetailIngre").click(function () {
+            if (actiontype == "plus") {
+                var id = mealtoadd;
+                var desc = $("#detaildescadd").val();
+                $("#ingredientModal").modal('toggle');
+                // alert(itemToadd);
+                fuplus(id, itemToadd, desc);
+
+            }
+        })
+
+        $(".minusItemFrom").click(function () {
             var id = $(this).attr('id');
+            fuminus(id);
+        })
+
+        var fuplus = function (id, itemToadd, desc) {
+            $("#loading").fadeIn()
+            var itemToadd = $("#pingholder").val(); 
             $.ajax({
                 url: "/Home/addtocart",
                 data: {
                     id: id,
+                    desc: desc,
+                    addtocart: itemToadd,
                 },
                 success: function (data) {
 
@@ -139,19 +639,18 @@
                     $("#loading").fadeOut()
                 }
             })
-        })
+        }
+        var fuminus = function (id) {
 
-        $('.fa-minus').on('click', function () {
-            event.stopPropagation();
 
-            var ID = $(this).attr('id');
+            var ID = id
             let myid = "value" + ID.replace('minus', '');
 
             let newVal = $(this).parent().children(".value").text();
             if (newVal != "0") {
                 $("#loading").fadeIn()
-                let finalVal = parseInt(newVal) - 1;
-                $("." + myid).text(finalVal);
+
+
                 $.ajax({
                     url: '/Home/minusfromcart',
                     dataType: 'html',
@@ -159,6 +658,7 @@
                         id: ID
                     },
                     success: function (data) {
+
                         getquntity();
                         $("#loading").fadeOut()
 
@@ -170,19 +670,43 @@
 
                 });
             }
+        }
 
 
-
-
-
-
-
-
-        });
     </script>
 }
 <script>
     $('.imageslider').slick({
         arrows: false,
     });
+    $('.productList').slick({
+        arrows: false,
+        slidesToShow: 2,
+    });
+    $(".fa-long-arrow-left").click(function (e) {
+        e.preventDefault();
+        window.history.back();
+    })
+    $(".fa-home").click(function (e) {
+        window.location.href = "/home/index";
+    })
 </script>
+<style>
+    .itemparent {
+        position: absolute;
+        overflow: auto;
+        width: 100%
+    }
+
+        .itemparent::-webkit-scrollbar {
+            display: none;
+        }
+
+    /* Hide scrollbar for IE, Edge and Firefox */
+    .itemparent {
+        -ms-overflow-style: none; /* IE and Edge */
+        scrollbar-width: none; /* Firefox */
+    }
+</style>
+
+

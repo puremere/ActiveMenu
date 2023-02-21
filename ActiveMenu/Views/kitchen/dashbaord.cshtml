@@ -1,0 +1,215 @@
+﻿@model IEnumerable<ActiveMenu.ViewModel.currentVM>
+@{
+    ViewBag.Title = "meals";
+    Layout = "~/Views/Shared/_kitchenLayout.cshtml";
+}
+
+    <main class="main-content">
+
+
+
+        <div id="ingmodal" class="modal fade " tabindex="-1" style="display: none;" aria-modal="true" role="dialog">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+
+                    <div class="modal-body">
+                        <p style="margin-left:15px">this meal will be contain following ingredients</p>
+                        <div id="ingHolder">
+
+                        </div>
+                    </div>
+                  
+                </div>
+            </div>
+        </div>
+        <div id="compMeal" class="modal fade " tabindex="-1" style="display: none;" aria-modal="true" role="dialog">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+
+                    <div class="modal-body">
+                        <p style="margin-left:15px">Are you sure removing this item?</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary" id="endMealButton">Verify</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+        <style>
+            .card-body img {
+                max-width: 70%;
+                max-height: 100%;
+                object-fit: scale-down;
+
+            }
+        </style>
+        <div class="content-inner mt-5 py-0">
+            <div class="container-fluid">
+                <div class="row">
+                    @*<div class="row" style="margin:20px 0">
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label class="form-label" for="exampleInputdate">Item Title</label>
+                                <div class="input-group search-input">
+
+                                    <span style="cursor:pointer" class="input-group-text" id="search-input">
+                                        <svg width="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <circle cx="11.7669" cy="11.7666" r="8.98856" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></circle>
+                                            <path d="M18.0186 18.4851L21.5426 22" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                                        </svg>
+                                    </span>
+                                    <input id="itemq" type="search" class="form-control" placeholder="Search...">
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>*@
+                    <style>
+                        .catHead button {
+                            margin: 2px;
+                            float: right;
+                            padding: 5px
+                        }
+
+                        .titlecurrent {
+                            text-align: center;
+                            width: 100%;
+                            font-weight: 600;
+                            font-size: 16px !important;
+                            margin: 0;
+                        }
+
+                        .collection {
+                            display: flex;
+                        }
+                            .collection p, .collection div p {
+                                font-weight: 600;
+                                color: #4d4d4d;
+                                margin-bottom:5px
+                            }
+
+                        .el2 {
+                            flex: 1;
+                            direction: rtl;
+                            font-weight: 600;
+                            font-size:16px
+                        }
+
+                        .green {
+                            color: green
+                        }
+
+                        .black {
+                            color: black
+                        }
+                    </style>
+                    @if (Model != null)
+                    {
+                        foreach (var item in @Model)
+                        {
+                            string imageItem = item.itemImage.TrimEnd(',').Split(',').ToList().First();
+                            string url = "/images/Items/" + @ViewBag.username + "/" + imageItem;
+                            string title = item.itemordertitle;
+
+                            <div class="col-sm-12 col-lg-2" id="@item.orderdetailID">
+                                <div class="card">
+                                    <div class="card-header d-flex justify-content-between" style="color: black;font-weight: 600;margin: 0;">
+
+                                        <p class="titlecurrent">@item.itemordertitle</p>
+
+                                    </div>
+                                    <div class="" style="padding:10px;">
+                                        <div class="collection">
+                                            <p class="">itemCount : </p>
+                                            <p class="el2 black">@item.itemorderCount</p>
+                                        </div>
+                                        <div class="collection">
+                                            <p class="">Table : </p>
+                                            <p class="el2 green">@item.orderplace</p>
+                                        </div>
+                                        <div class="collection">
+                                            <p class="">Notes : </p>
+                                            <p class="">@item.orderDetailDesc</p>
+                                        </div>
+
+
+                                        <div style="padding:0px 0 20px 0;border-bottom:1px solid #ddd; text-align:center">
+
+                                            <button style="font-size:12px"  idto="@item.orderdetailID" type="button" class="btn btn-success rounded-pill  ingmodalbutt">View</button>
+                                        </div>
+
+
+                                    </div>
+                                    <div class="card-body gotomeal" style="text-align:center" >
+                                        <img  src="@url" class="img-thumbnail" alt="Responsive image">
+
+                                        <div style="margin-top: 10px;padding: 0px 0 5px 0;text-align:center">
+
+                                            <button style="font-size:12px" idto="@item.orderdetailID" type="button" class="btn btn-success rounded-pill  compmodalbutt">Compeleted</button>
+                                        </div>
+                                    </div>
+
+
+                                </div>
+
+                            </div>
+
+                        }
+                    }
+
+
+
+
+                </div>
+            </div>
+        </div>
+        @section scripts{
+            <script>
+                var idtoremove;
+                $(".ingmodalbutt").click(function () {
+
+
+                    var id = $(this).attr('idto');
+                 
+                    $.ajax({
+                        url: "/Kitchen/getOrderDetailMavad",
+                        data: {
+                            ID: id,
+                            
+                        },
+                        success: function (data) {
+                            $("#ingHolder").html(data);
+                            $("#ingmodal").modal("toggle");
+                        }
+                    })
+                    //window.location.href = "/Management/createItem?item=" + id;
+                })
+                $(".compmodalbutt").click(function () {
+                    idtoremove = $(this).attr('idto');
+                    var el = $("#" + idtoremove);
+
+                    $.ajax({
+                        url: "/Kitchen/EndOrderDetail",
+                        data: {
+                            id: idtoremove
+                        },
+                        success: function (data) {
+                            el.remove();
+                          
+                        }
+                    })  
+                })
+
+                $("#endMealButton").click(function () {
+                   
+
+                })
+               
+            </script>
+        }
+    </main>

@@ -1,0 +1,32 @@
+﻿@model  IEnumerable<ActiveMenu.ViewModel.mavadItemVM>
+
+@foreach (var item in Model)
+{
+
+    <div id="@item.ingID" class="inputholder col-lg-3 col-md-4 col-sm-6">
+        <input class="" type="checkbox" checked />
+        <span>@item.title</span>
+
+    </div>
+
+
+}
+
+
+<script>
+    $(".inputholder input").change(function () {
+        if ($(this).is(':checked')) {
+            var id = $(this).parent().attr('id');
+            itemToadd = $("#pingholder").val();
+            itemToadd = itemToadd.replace(id + ",", "");
+            $("#pingholder").val(itemToadd);
+
+        }
+        else {
+            var id = $(this).parent().attr('id');
+            itemToadd = $("#pingholder").val();
+            itemToadd += id + ",";
+            $("#pingholder").val(itemToadd);
+        }
+    })
+</script>

@@ -1,0 +1,35 @@
+﻿@model ActiveMenu.ViewModel.orderDetailVM
+
+@{ 
+    string imageItem = Model.itemImage.TrimEnd(',').Split(',').ToList().First();
+
+}
+
+
+<div class="itemHolder" >
+    <div  >
+        <div style="display:flex;padding-right:12px ">
+            <div class="itemImageHolder"   style="" >
+                <img class="imgItem" src="~/images/Items/@ViewBag.username/@imageItem" />
+            </div>
+            <div style="width:100%; padding:5px;padding-right:25px">
+                <h4 class="title">@Model.itemTitle</h4>
+                <h5 class="desciption">@Model.itemDesc</h5>
+
+                <div style="align-items:center;border:1px solid white;border-radius:15px;padding: 5px 10px;display:flex;margin-top: 15px;direction:ltr">
+                    <p style="color:white; font-size:12px; margin:0">Order Count:</p>
+                    <p style="flex:1"></p>
+                    <p style="color:orange; font-size:20px; margin:0">@Model.itemCount </p>
+                   
+                </div>
+               
+            </div>
+        </div>
+
+    </div>
+        <div>
+           
+        </div>
+</div>
+
+

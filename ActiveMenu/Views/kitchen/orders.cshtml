@@ -1,0 +1,228 @@
+﻿@model IEnumerable<ActiveMenu.Model.order>
+@{
+    ViewBag.Title = "orders";
+    Layout = "~/Views/Shared/_kitchenLayout.cshtml";
+}
+
+
+
+
+
+
+<div class="content-inner mt-5 py-0">
+    <div class="row">
+
+        <div class="col-sm-12">
+            <div class="card">
+                <div class="card-header d-flex justify-content-between border-0">
+                    <div class="header-title ">
+                        <h4 class="card-title">Order List</h4>
+                    </div>
+                </div>
+                <div class="card-body p-0">
+                    <div class="table-responsive">
+                        <table id="basic-table" class="table table-striped table-shadow mb-0" role="grid">
+                            <thead class="border-0">
+                                <tr>
+                                    <th>Order Number</th>
+                                    <th>Order Price</th>
+                                    <th>Location</th>
+                                    <th></th>
+                                    <th></th>
+
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model)
+                                {
+
+                                    <tr id="@item.orderID">
+                                        <td>
+                                            <div class="d-flex align-items-center">
+                                                @*<img class="rounded img-fluid avatar-40 me-3 bg-soft-primary" src="../../assets/images/avatars/06.png" alt="profile">*@
+                                                <h6>@item.orderNumber</h6>
+                                            </div>
+                                        </td>
+
+                                        <td>
+                                            <div class="d-flex align-items-center">
+                                                <h6>@item.price</h6>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="d-flex align-items-center">
+                                                <h6>@item.place</h6>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <a href="/kitchen/meals?id=@item.orderID.ToString()">
+                                                <button type="button" class="btn btn-outline-success mt-2">View Detail</button>
+                                            </a>
+
+                                        </td>
+                                        <td>
+                                            <button onclick="showFinish(this)" newitem="@item.orderID" type="button" class="btn btn-outline-success mt-2">End Order</button>
+                                        </td>
+                                        <td>
+                                            <button onclick="showFinish2(this)" newitem="@item.orderID" type="button" class="btn btn-outline-danger mt-2">reject Order</button>
+                                        </td>
+
+
+                                    </tr>
+                                }
+
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+@section scripts{
+    <script src="~/Scripts/toastr.js"></script>
+    <script>
+
+        var toBeDel = "";
+        $(".removeQR").click(function () {
+            var id = $(this).attr('newitem');
+            toBeDel = id;
+            $("#removeQRModal").modal('toggle');
+        })
+        $("#verifyQR").click(function () {
+            $("#removeQRModal").modal('toggle');
+            $.ajax({
+                url: "/admin/RemoveQR",
+                data: {
+                    id: toBeDel
+                },
+                success: function () {
+                    $("#" + toBeDel).fadeOut();
+                }
+            })
+        })
+        function addTableID(element) {
+            var id = element.getAttribute("newitem");
+            $.ajax({
+                url: "/admin/changeTB",
+                data: {
+                    id: id
+                },
+                success: function () {
+                    window.location.href = "/Home/index";
+                }
+            })
+        }
+        function copyToClipboard(element) {
+            var $temp = $("<input>");
+            $("body").append($temp);
+            var url = $(element).attr('itemurl');
+            $temp.val(url).select();
+            document.execCommand("copy");
+            $temp.remove();
+        }
+        function copyUrl(element) {
+            copyToClipboard(element);
+            toastr.options = {
+                "debug": false,
+                "positionClass": "toast-top-full-width",
+                "onclick": null,
+                "fadeIn": 300,
+                "fadeOut": 1000,
+                "timeOut": 15000,
+                "extendedTimeOut": 10000,
+
+            }
+            toastr.success('done');
+
+        }
+        $("#startQrbutton").click(function () {
+            $("#addQRModal").modal('toggle');
+        })
+        $("#addQR").click(function () {
+            var name = $("#placeinput").val();
+            $.ajax({
+                url: "/Admin/addQr",
+                data: {
+                    name: name
+                },
+                success: function (data) {
+                    if (data == 200) {
+
+                        window.location.reload();
+                    }
+                }
+            })
+        })
+
+    </script>
+    <script>
+        var orderToDelete;
+        var showFinish = function (ele) {
+
+            orderToDelete = $(ele).attr('newitem');
+
+            $("#finalModal").show();
+        };
+        var cancelEnd = function () {
+            $("#finalModal").hide();
+        }
+        var verifyEnd = function () {
+
+            $("#finalModal").hide();
+
+            $.ajax({
+                url: "/admin/endOrder",
+                data: {
+                    orderSrt: orderToDelete,
+                },
+                success: function (data) {
+                    if (data == "200") {
+                        $("#" + orderToDelete).hide();
+                        $("#cancelVerif").click();
+
+                    }
+                }
+            })
+        };
+
+
+
+
+        var orderToDelete2;
+        var showFinish2 = function (ele) {
+
+            orderToDelete = $(ele).attr('newitem');
+
+            $("#finalModal2").show();
+        };
+        var cancelEnd2 = function () {
+            $("#finalModal2").hide();
+        }
+        var verifyEnd2 = function () {
+
+            $("#finalModal2").hide();
+
+            $.ajax({
+                url: "/admin/rejectOrder",
+                data: {
+                    orderSrt: orderToDelete,
+                },
+                success: function (data) {
+                    if (data == "200") {
+                        $("#" + orderToDelete).hide();
+                        $("#cancelVerif").click();
+
+                    }
+                }
+            })
+        };
+    </script>
+
+
+}
+

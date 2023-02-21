@@ -6749,9 +6749,9 @@ button.close {
     display: inline-block !important;
   }
 }
-@media print {
+/*@media print {
   .hidden-print {
     display: none !important;
   }
-}
+}*/
 /*# sourceMappingURL=bootstrap.css.map */

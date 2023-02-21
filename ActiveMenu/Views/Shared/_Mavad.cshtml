@@ -1,0 +1,127 @@
+﻿
+
+
+<div style="" class="  modal fade" id="removeInventoryModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content oof" style="color:white;border-radius:8px">
+
+            <div style="font-size:14px; padding:20px; text-align:center" class="modal-body">
+                Are you sure removing this item?
+            </div>
+            <div class="modal-footer" style="border-color:#4d4d4d">
+                <button style="padding:7px 30px" type="button" class="btn btn-secondary oof pointer" data-dismiss="modal" id="cancelQR">Cancel</button>
+                <button style="padding:7px 30px" type="button" class="btn btn-success pointer" id="verifyDeleteInventory">Verify</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div style="" class="   modal fade" id="addInventoryAmontModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content oof" style="color:white;border-radius:8px">
+
+            
+            <div style="font-size: 14px; padding: 20px; text-align: center" class="modal-body">
+
+                <input id="inventoryAmount" class="inputnumber inventoryinput form-control" style="color:white;border:none; direction:rtl;background-color: transparent;margin: auto;direction: ltr;" placeholder=" How much do you want to add ?" />
+            </div>
+            <div class="modal-footer" style="border-color:#4d4d4d">
+                <button style="padding:7px 30px" type="button" class="btn btn-secondary oof pointer" data-dismiss="modal" id="cancelInventory">Cancel</button>
+                <button style="padding:7px 30px" type="button" class="btn btn-success pointer" id="verifyInventory">Verify</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@model IEnumerable<ActiveMenu.Model.mavad>
+@foreach (var item in Model)
+{
+    string title = @item.title;
+    string ID = "" + @item.mavadID;
+    <div style="        position: relative;
+        margin: 10px
+" id="@ID">
+        <div class="menuTitle">
+            <p style="text-align:center; margin:10px 0; font-size:18px"> @title </p>
+            <div id="" style="align-items:center; width:100%;display:flex;justify-content:center;margin:15px 0;border: 1px solid #4d4d4d;border-radius: 8px;display: flex;">
+
+
+                <p style="margin:10px;width: 100%;text-align: center;">Current Amount</p>
+                <p style="margin:10px;font-size:24px;width: 100%;text-align: center;"> @string.Format("{0:n0}", @item.mojoodi)  g</p>
+            </div>
+            <div id="" style="width:100%; display:flex; justify-content:center;margin:15px 0 ;">
+
+                <div id="showFinish" class="buttonCss">
+                    <p style="margin:0" class="removeInventory pointer" newitem="@ID">
+                        Remove Item
+                    </p>
+                </div>
+                <div id="showFinish" class="buttonCss inventmodalbutton"  newitem="@ID">
+                    <p style="margin:0" class="endOrder pointer">
+                        Add Inventory
+                    </p>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+}
+
+<script>
+    var toBeDel = "";
+    $(".removeInventory").click(function () {
+        var id = $(this).attr('newitem');
+        toBeDel = id;
+        $("#removeInventoryModal").modal('toggle');
+    })
+    $(".inventmodalbutton").click(function () {
+        var id = $(this).attr('newitem');
+        toBeDel = id;
+        $("#addInventoryAmontModal").modal('toggle');
+        
+    })
+    $("#verifyDeleteInventory").click(function () {
+        $("#removeInventoryModal").modal('toggle');
+        $.ajax({
+            url: "/admin/RemoveInventory",
+            data: {
+                id: toBeDel
+            },
+            success: function () {
+                $("#" + toBeDel).fadeOut();
+            }
+        })
+    })
+    $("#verifyInventory").click(function () {
+        var amount = $("#inventoryAmount").val();
+        $("#addInventoryAmontModal").modal('toggle');
+
+        //alert(amount);
+        //alert(toBeDel);
+        $.ajax({
+            url: "/admin/addInventoryAmount",
+            data: {
+                id: toBeDel,
+                amount: amount.replace(",","")
+            },
+            success: function () {
+                getQR();
+            }
+        })
+    })
+    $('input.inputnumber').keyup(function (event) {
+        if (event.which >= 37 && event.which <= 40) return;
+        $(this).val(function (index, value) {
+            return value
+                // Keep only digits and decimal points:
+                .replace(/[^\d.]/g, "")
+                // Remove duplicated decimal point, if one exists:
+                .replace(/^(\d*\.)(.*)\.(.*)$/, '$1$2$3')
+                // Keep only two digits past the decimal point:
+                .replace(/\.(\d{2})\d+/, '.$1')
+                // Add thousands separators:
+                .replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+        });
+    });
+
+</script>

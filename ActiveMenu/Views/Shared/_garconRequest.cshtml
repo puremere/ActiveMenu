@@ -1,0 +1,63 @@
+﻿
+
+
+<div style="" class=" oof modal fade" id="removeQRModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content oof" style="color:white;border-radius:8px">
+
+            <div style="font-size:14px; padding:20px; text-align:center" class="modal-body">
+                آیا از  حذف آیتم اطمینان دارید
+            </div>
+            <div class="modal-footer" style="border-color:#4d4d4d">
+                <button style="padding:7px 30px" type="button" class="btn btn-secondary oof" data-dismiss="modal" id="cancelQR">Cancel</button>
+                <button style="padding:7px 30px" type="button" class="btn btn-success" id="verifyQR">Verify</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@model IEnumerable<ActiveMenu.Model.place>
+@foreach (var item in Model)
+{
+    string title = @item.title;
+    string ID = "" + @item.placeID;
+    <div style="position:relative" id="@ID">
+        <div class="menuTitle">
+           
+            <p style="text-align:right; margin:10px 0;margin:20px; direction:rtl;"> @title: </p>
+         
+            <p style="text-align:right; margin:10px 0;margin:20px;direction:rtl;"> @item.message </p>
+
+            <div id="" style="width:100%; display:flex; justify-content:center;margin:15px 0 ;">
+
+                <div id="verifyComment" class="buttonCss" newitem="@ID">
+                    <p style="margin:0" class="" >
+                        Verify
+                    </p>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+}
+
+<script>
+    var toBeDel = "";
+   
+    $("#verifyComment").click(function () {
+        var attr = $(this).attr('newitem')
+        
+        $.ajax({
+            url: "/admin/verifyComment",
+            data: {
+                id: attr
+            },
+            success: function () {
+                $("#" + attr).fadeOut();
+            }
+        })
+    })
+    
+
+</script>

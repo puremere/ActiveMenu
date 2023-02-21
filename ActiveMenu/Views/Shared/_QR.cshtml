@@ -1,0 +1,118 @@
+﻿
+
+
+    <div style="" class="  oof modal fade" id="removeQRModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content oof" style="color:white;border-radius:8px">
+
+                <div style="font-size:14px; padding:20px; text-align:center" class="modal-body">
+                    Are you sure removing this item
+                </div>
+                <div class="modal-footer" style="border-color:#4d4d4d">
+                    <button style="padding:7px 30px" type="button" class="btn btn-secondary oof" data-dismiss="modal" id="cancelQR">Cancel</button>
+                    <button style="padding:7px 30px" type="button" class="btn btn-success" id="verifyQR">Verify</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+@model IEnumerable<ActiveMenu.Model.place>
+@foreach (var item in Model)
+{
+    string title = @item.title;
+    string ID = "" + @item.placeID;
+    <div style="position:relative; margin:10px" id="@ID">
+        <div class="menuTitle">
+            <p style="text-align:center; margin:10px 0"> @title </p>
+            <div id="" style="width:100%; display:flex; justify-content:center;margin:15px 0 ;">
+
+              
+                <div id="showFinish" class="buttonCss" onclick="copyUrl(this)" itemurl="@item.url">
+                    <p style="margin:0" class="endOrder pointer" newitem="@ID">
+                        Copy Link
+                    </p>
+                </div>
+                <div id="showFinish" class="buttonCss">
+                    <a href="/admin/downloadQr?id=@item.placeID" style="color:white; text-decoration:none">
+                        <p style="margin:0" class="endOrder pointer">
+                           Download QR
+                        </p>
+                    </a>
+
+                </div>
+            </div>
+            <div id="" style="width:100%; display:flex; justify-content:center;margin:15px 0 ;">
+
+                <div id="showFinish" class="buttonCss">
+                    <p style="margin:0" class="removeQR pointer" newitem="@ID">
+                        Remove
+                    </p>
+                </div>
+                <div id="showFinish" class="buttonCss" onclick="addTableID(this)" newitem="@ID">
+                    <p style="margin:0" class="endOrder pointer" >
+                        Set New Order
+                    </p>
+                </div>
+               
+            </div>
+        </div>
+
+    </div>
+}
+
+<script>
+    var toBeDel = "";
+    $(".removeQR").click(function () {
+        var id = $(this).attr('newitem');
+        toBeDel = id;
+        $("#removeQRModal").modal('toggle');
+    })
+    $("#verifyQR").click(function () {
+        $("#removeQRModal").modal('toggle');
+        $.ajax({
+            url: "/admin/RemoveQR",
+            data: {
+                id : toBeDel
+            },
+            success: function () {
+                $("#" + toBeDel).fadeOut();
+            }
+        })
+    })
+    function addTableID(element) {
+        var id = element.getAttribute("newitem");
+        $.ajax({
+            url: "/admin/changeTB",
+            data: {
+                id: id
+            },
+            success: function () {
+                window.location.href = "/Home/index";
+            }
+        })
+    }
+    function copyToClipboard(element) {
+        var $temp = $("<input>");
+        $("body").append($temp);
+        var url = $(element).attr('itemurl');
+        $temp.val(url).select();
+        document.execCommand("copy");
+        $temp.remove();
+    }
+    function copyUrl(element) {
+        copyToClipboard(element);
+        toastr.options = {
+            "debug": false,
+            "positionClass": "toast-top-full-width",
+            "onclick": null,
+            "fadeIn": 300,
+            "fadeOut": 1000,
+            "timeOut": 15000,
+            "extendedTimeOut": 10000,
+
+        }
+        toastr.success('done');
+
+    }
+    
+</script>

@@ -1,85 +1,106 @@
 ﻿@model ActiveMenu.ViewModel.EndOrderVM
-<div style="" class="headerTop" >
-    <div class="backToList" style="">
-        <div >
 
-            <i class="fal fa-times" style=" font-size:20px; color:white"></i>
+@{
+    ViewBag.Title = "basket";
+    ViewBag.ItemTitle = "Basket";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+
+
+
+    <div style="position:absolute; width:100%; overflow:auto;display:flex">
+        <div style="position:relative; padding:10px; width:50% " class="itemparent">
+            <div style="text-align:center;display: flex;justify-content: center;margin-bottom: 25px;">
+                <div style="height:2px; background-color:#3aafd6; width:30%"></div>
+            </div>
+
+            @foreach (var item in Model.lst)
+            {
+                @Html.Partial("~/Views/Shared/ItemSection.cshtml", item);
+            }
         </div>
 
-    </div>
-    <span style="flex:1"></span>
-    <div style=" text-align:right; display:flex">
-        <p style="margin-right:10px ; color:white;font-size:18px">سفارشات شما</p>
-       
-    </div>
 
-</div>
 
-<div style=" ">
-    @{
-        if (Model.lst != null)
-        {
-            foreach (var item in Model.lst  )
-            {
+        <style>
 
-                @Html.Partial("~/Views/Shared/ItemSection.cshtml", item);
-
+            .reportParent {
+                width: 100%;
+                display: flex;
+                direction: ltr;
+                padding: 5px 15px;
+                border-bottom: 1px solid #343333;
             }
 
+                .reportParent span {
+                    color: white;
+                    font-size: 14px;
+                }
+
+            .flex1 {
+                flex: 1
+            }
+        </style>
+        @{ 
+            double vatprice = ((@Model.vat * @Model.finalPrice)/100);
+            string srt = "";
         }
-    }
-</div>
+        <div style="  width: 100%;  position: fixed;   padding:10px; width: 50%; right: -1px;" class="">
+
+            <div class="reportParent">
+                <span>Total Amount</span>
+                <span class="flex1"></span>
+                <p> <span id="orderTotal" style="margin-right:10px"> @String.Format("{0:n0}", @Model.orderPrice)</span><span>AED</span></p>
+            </div>
+            <div class="reportParent">
+                <span>Discount Amount</span>
+                <span class="flex1"></span>
+                <p> <span id="discount" style="margin-right:10px">@Model.discount</span><span>AED</span></p>
+            </div>
+            <div class="reportParent">
+                <span>Vat </span>
+                <span class="flex1"></span>
+                <p> <span id="Vat" style="margin-right:10px">@vatprice</span><span>AED</span></p>
+            </div>
+            <div class="reportParent">
+                <span>Total Payment</span>
+                <span class="flex1"></span>
+                <p>
+                    <span id="total" style="        margin-right: 10px;
+        font-size: 20px;
+        font-weight: 600;
+        color: orange"> @String.Format("{0:n0}", @vatprice + @Model.finalPrice) </span><span>AED</span>
+        </p>
+
+        </div>
 
 
-<style>
-    .itemparent {
-        padding: 10px 15px;
-        border-bottom: 1px solid #343333;
-        display: block;
-        width: 100%;
-      
-    }
-    .reportParent {
-        width: 100%;
-        display: flex;
-        direction: rtl;
-        padding: 5px 15px;
-        border-bottom: 1px solid #343333;
-    }
-    .reportParent span {
-        color: white;
-        font-size:14px;
-    }
-    .flex1{
-        flex:1
-    }
-</style>
-<div style="" class="itemparent">
-
-    <div class="reportParent">
-        <span>جمع مبلغ سفارش</span>
-        <span class="flex1"></span>
-        <p> <span id="orderTotal" style="margin-left:10px"> @String.Format("{0:n0}", @Model.orderPrice)</span><span>تومان</span></p>
-    </div>
-    <div class="reportParent">
-        <span>مبلغ تخفیف</span>
-        <span class="flex1"></span>
-        <p> <span id="discount"  style="margin-left:10px">@Model.discount</span><span>تومان</span></p>
-    </div>
-    <div class="reportParent">
-        <span>جمع کل پرداختی</span>
-        <span class="flex1"></span>
-        <p><span id="total"  style="margin-left:10px; font-size:20px; font-weight:600; color:orange"> @String.Format("{0:n0}", @Model.finalPrice) </span><span>تومان</span></p>
-
+        <div id="addOrder" style="display:flex; justify-content:center;margin:15px;">
+            <div style="cursor:pointer; width:50%; padding:20px;color:white; background-color:#3aafd6;text-align:center; border-radius:13px">Register Order</div>
+        </div>
+        </div>
     </div>
 
-
-    <div id="addOrder" style="display:flex; justify-content:center;margin:15px;">
-        <div style="width:50%; padding:20px;color:white; background-color:orange;text-align:center; border-radius:13px">ثبت سفارش</div>
-    </div>
-</div>
 
 @section scripts{
+
+     @if(ViewBag.error == "1")
+     {
+         <script>
+             toastr.options = {
+                 "debug": false,
+                 "positionClass": "toast-top-full-width",
+                 "onclick": null,
+                 "fadeIn": 300,
+                 "fadeOut": 1000,
+                 "timeOut": 10000,
+                 "extendedTimeOut": 10000,
+             }
+             toastr.error('choos table first');
+         </script>
+     }
     <script>
         $("#addOrder").click(function () {
             window.location.href = "/Home/setOrder"
@@ -140,7 +161,7 @@
                 success: function (data) {
 
 
-                    getquntity();
+                    window.location.reload();
                     $("#loading").fadeOut()
                 }
             })
@@ -163,7 +184,7 @@
                         id: ID
                     },
                     success: function (data) {
-                        getquntity();
+                        window.location.reload();
                         $("#loading").fadeOut()
 
                     },
@@ -182,6 +203,18 @@
 
 
 
+        });
+    </script>
+
+    <script>
+        window.addEventListener("pageshow", function (event) {
+            var historyTraversal = event.persisted ||
+                (typeof window.performance != "undefined" &&
+                    window.performance.navigation.type === 2);
+            if (historyTraversal) {
+                // Handle page restore.
+                window.location.href = "/home/index";
+            }
         });
     </script>
 }

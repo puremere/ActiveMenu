@@ -1,65 +1,335 @@
 ﻿@model ActiveMenu.ViewModel.detailVM
-@{
-    ViewBag.Title = "Detail";
-    ViewBag.ItemTitle = Model.name;
-}
+
+<html lang="en">
+<head>
+
+    <meta charset="UTF-8">
+
+    <title>Menumotive | application</title>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Swiper/4.4.2/css/swiper.min.css">
+    <link href="~/Content/fontawesome-all.css" rel="stylesheet" />
+    <link href="~/Content/toastr.css" rel="stylesheet" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="manifest" href="/site.webmanifest">
+    <meta name="msapplication-TileColor" content="#da532c">
+    <meta name="theme-color" content="#ffffff">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Swiper/4.4.2/css/swiper.min.css">
+
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: #fff;
+            font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
+            font-size: 14px;
+            color: #000;
+            background-color: #212121;
+            margin: 0;
+            padding: 0;
+        }
+
+        .swiper-container {
+            width: 100%;
+            /*padding-top: 50px;
+            padding-bottom: 50px;*/
+        }
+
+        .swiper-slide {
+            background-position: center;
+            background-size: cover;
+            width: 350px;
+            /*background-color: #fff;*/
+            overflow: hidden;
+            border-radius: 8px;
+        }
+
+        .picture {
+            width: 100%;
+           
+            overflow: hidden;
+        }
+
+            .picture img {
+                display: block;
+                max-width: 100%;
+                max-height: 100%;
+                -o-object-fit: cover;
+                object-fit: cover;
+            }
+
+        .detail {
+            padding: 25px 20px;
+            font-weight: 600;
+            text-align: center;
+        }
+
+            .detail h3 {
+                margin: 0;
+                font-size: 20px;
+                color: white;
+                margin:10px;
+            }
+
+            .detail span {
+                display: block;
+                font-size: 16px;
+                margin: 10px 0;
+                color: white;
+            }
+    </style>
+
+    <script>
+        window.console = window.console || function (t) { };
+    </script>
 
 
 
-@*<div style="position:relative" class="headerTop">
-    <div>
-        <a href="/Home/basket" class="cartHolder">
-            <p class="simpleCart_quantityy" style="color:white; margin-left:10px;font-size:20px;"></p>
-            <i class="fal fa-shopping-cart" style=" font-size:20px; color:white"></i>
-        </a>
+    <script>
+        if (document.location.search.match(/type=embed/gi)) {
+            window.parent.postMessage("resize", "*");
+        }
+    </script>
+    <style>
+        .parentBlur {
+            /* The image used */
+            /* Add the blur effect */
+            /*filter: blur(8px);
+            -webkit-filter: blur(4px);*/
+            /* Full height */
+            height: 100%;
+            /* Center and scale the image nicely */
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover !important;
+            position: fixed;
+            width: 100%;
+            bottom: 0;
+            opacity: 0.5;
+        }
+    </style>
+    <link href="~/Content/fontawesome-all.css" rel="stylesheet" />
+</head>
+
+<body translate="no" data-new-gr-c-s-check-loaded="14.1095.0" data-gr-ext-installed="">
+    <div class="row oof" style="height:50px;position:fixed;color:white;left:50px;top: 20px;font-size: 22px;color: white;z-index:999">
+        <p><a href="/home/basket"><i style="color:white" class="fa fa-shopping-cart"></i></a></p>
+    </div>
+    <div class="row oof" style="height:50px;position:fixed;color:white;right:50px;top: 20px;font-size: 22px;color: white;z-index:999">
+        <p><a href="/home/index"><i style="color:white" class="fa fa-home"></i></a></p>
+    </div>
+
+    <div style="background: url('../../images/app/back.jpg')" class="parentBlur">
 
     </div>
-    <span style="flex:1"></span>
-    <div style=" text-align:right; display:flex; align-items:center">
-        <p style="margin-right:10px ; color:white;font-size:20px; margin-bottom:0">@</p>
-        <i class="fal fa-long-arrow-right" style="font-size:20px; color:white; "></i>
+    <!-- Slider main container -->
+    <div class="swiper-container swiper-container-coverflow swiper-container-3d swiper-container-horizontal" style="cursor: grab; height:90vh">
+        <!-- Additional required wrapper -->
+        <div class="swiper-wrapper" style="transition-duration: 0ms; transform: translate3d(235.5px, 0px, 0px); perspective-origin: 160px 50%;">
+            <!-- Slides -->
+
+
+            @if (Model.itemList.Count() > 0)
+            {
+                var item = Model.itemList[0];
+
+
+                string imageItem = item.imageList.TrimEnd(',').Split(',').ToList().First();
+                string url = "/images/Items/" + @ViewBag.username + "/" + @imageItem;
+                string calssname = "swiper-slide swiper-slide-active";
+
+
+
+                <div idtogo="@item.itemID" class="@calssname" style="transition-duration: 0ms; transform: translate3d(0px, 0px, 0px) rotateX(0deg) rotateY(0deg); z-index: 1;">
+                    <div class="picture">
+                        <img src="@url" alt="">
+                    </div>
+                    <div class="detail">
+                        <h3> @item.title</h3>
+                        @*<span> @item.desctiption</span>*@
+                        <h3> @item.price AED</h3>
+                    </div>
+                </div>
+            }
+
+            @if (Model.itemList.Count() > 1)
+            {
+                var item = Model.itemList[1];
+
+
+                string imageItem = item.imageList.TrimEnd(',').Split(',').ToList().First();
+                string url = "/images/Items/" + @ViewBag.username + "/" + @imageItem;
+                string calssname = "swiper-slide swiper-slide-next";
+
+
+
+                <div idtogo="@item.itemID" class="@calssname" style="transition-duration: 0ms; transform: translate3d(0px, 0px, 0px) rotateX(0deg) rotateY(0deg); z-index: 1;">
+                    <div class="picture">
+                        <img src="@url" alt="">
+                    </div>
+                    <div class="detail">
+                        <h3> @item.title</h3>
+                        @*<span> @item.desctiption</span>*@
+                        <h3> @item.price AED</h3>
+                    </div>
+                </div>
+            }
+            @if (Model.itemList.Count() > 2)
+            {
+                for (int i = 2; i <= Model.itemList.Count() - 1; i++)
+                {
+                    var item = Model.itemList[i];
+
+
+                    string imageItem = item.imageList.TrimEnd(',').Split(',').ToList().First();
+                    string url = "/images/Items/" + @ViewBag.username + "/" + @imageItem;
+                    string calssname = "swiper-slide";
+
+
+
+                    <div idtogo="@item.itemID" class="@calssname" style="transition-duration: 0ms; transform: translate3d(0px, 0px, 0px) rotateX(0deg) rotateY(0deg); z-index: 1;">
+                        <div class="picture">
+                            <img src="@url" alt="">
+                        </div>
+                        <div class="detail">
+                            <h3> @item.title</h3>
+                            @*<span> @item.desctiption</span>*@
+                            <h3> @item.price AED</h3>
+                        </div>
+                    </div>
+                }
+
+            }
+
+
+            @*
+
+                switch (index)
+                {
+                case 0:
+                calssname = "";
+                break;
+                case 1:
+                calssname = "";
+                break;
+                default:
+                calssname = "swiper-slide";
+                break;
+
+
+                }
+
+
+
+
+            *@
+
+
+        </div>
+        <!-- If we need pagination -->
+        <div class="swiper-pagination swiper-pagination-bullets"><span class="swiper-pagination-bullet swiper-pagination-bullet-active"></span><span class="swiper-pagination-bullet"></span><span class="swiper-pagination-bullet"></span><span class="swiper-pagination-bullet"></span><span class="swiper-pagination-bullet"></span><span class="swiper-pagination-bullet"></span></div>
+
+        <!-- If we need navigation buttons -->
+        <!--     <div class="swiper-button-prev"></div> -->
+        <!--     <div class="swiper-button-next"></div> -->
+        <!-- If we need scrollbar -->
+        <div class="swiper-scrollbar"></div>
+        <span class="swiper-notification" aria-live="assertive" aria-atomic="true"></span>
     </div>
+    <script src="~/Scripts/jquery-3.3.1.js"></script>
+    <script src="https://cpwebassets.codepen.io/assets/common/stopExecutionOnTimeout-2c7831bb44f98c1391d6a4ffda0e1fd302503391ca806e7fcc7b9b87197aec26.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/4.4.2/js/swiper.min.js"></script>
+    <script id="rendered-js">
+        var swiper = new Swiper(".swiper-container", {
+            effect: "coverflow",
+            grabCursor: true,
+            centeredSlides: true,
+            slidesPerView: "auto",
+            coverflowEffect: {
+                rotate: 20,
+                stretch: 0,
+                depth: 350,
+                modifier: 1,
+                slideShadows: true
+            },
+
+            pagination: {
+                el: ".swiper-pagination"
+            }
+        });
+        //# sourceURL=pen.js
+    </script>
 
 
-</div>*@
+    <style>
+        /* style the elements with CSS */
+        #pleaserotate-graphic {
+            fill: #fff;
+        }
+
+        #pleaserotate-backdrop {
+            color: #fff;
+            background-color: #000;
+        }
+
+        .swiper-pagination-bullets {
+            display: none;
+        }
+
+        .swiper-container-3d .swiper-slide-shadow-right, .swiper-container-3d .swiper-slide-shadow-left {
+            background-image: unset !important
+        }
+
+        .swiper-slide {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+    </style>
+
+    <script>
+        //var PleaseRotateOptions = {
+        //    startOnPageLoad: true,
+        //    onHide: function () { },
+        //    onShow: function () { },
+        //    forcePortrait: true,
+        //    message: "Please Rotate Your Device",
+        //    subMessage: "(or click to continue)",
+        //    allowClickBypass: true,
+        //    onlyMobile: true,
+        //    zIndex: 1000,
+        //    iconNode: null
+        //};
+        /* you can pass in options here */
+        PleaseRotateOptions = {
+            forcePortrait: false, // if you would prefer to force portrait mode,
+            forceLandscape: true
+        };
+        // PleaseRotate.start(PleaseRotateOptions)
+    </script>
+    <script src="~/Scripts/pleaseRotate.js"></script>
+    <script>
+        $(".swiper-slide").click(function () {
+            var id = $(this).attr('idtogo');
+            window.location.href = "/Home/itemDetail/" + id;
+
+        })
+
+    </script>
 
 
-<div style="position:relative" class="itemparent">
-    <div style="text-align:center;display: flex;justify-content: center;margin-bottom: 25px;">
-        <div style="height:2px; background-color:orange; width:30%"></div>
-    </div>
 
-    @foreach (var item in Model.itemList)
-    {
-        @Html.Partial("~/Views/Shared/ItemSection.cshtml", item);
 
-    }
-</div>
-<style>
+</body>
 
-    .itemparent {
-       
-    }
-
-    .itemHolder {
-        margin: 10px;
-        background: rgba(255,255,255,0.05);
-        backdrop-filter: blur(10px);
-        border-top: 1px solid rgba(255,255,255,0.2);
-        border-left: 1px solid rgba(255,255,255,0.2);
-        box-shadow: 5px 5px 30px rgba(0,0,0,0.2);
-        width:80%;
-    }
-
-    .countButton {
-        background: rgba(255,255,255,0.05);
-        backdrop-filter: blur(10px);
-        border-top: 1px solid rgba(255,255,255,0.2);
-        border-left: 1px solid rgba(255,255,255,0.2);
-        box-shadow: 5px 5px 30px rgba(0,0,0,0.2);
-    }
-</style>
-
-@section scripts{
-
-}
+</html>
