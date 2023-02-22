@@ -906,11 +906,30 @@ namespace ActiveMenu.Controllers
             if (model.imagefile != null)
             {
                 var fileName = Path.GetFileName(model.imagefile.FileName);
-
+              
                 var path = Path.Combine(Server.MapPath("/images/Logo/" + username + "/"), fileName);
                 model.imagefile.SaveAs(path);
+
+
+                string pathString = "~/images/app";
+                string tempPath = Path.Combine(Server.MapPath(pathString), "sample.jpg");
+                string finalPath = Path.Combine(Server.MapPath(pathString), "final.png");
+
+                using (System.Drawing.Image image = System.Drawing.Image.FromFile(tempPath))
+                using (System.Drawing.Image watermarkImage = System.Drawing.Image.FromFile(path))
+                using (System.Drawing.Graphics imageGraphics = System.Drawing.Graphics.FromImage(image))
+                using (System.Drawing.TextureBrush watermarkBrush = new System.Drawing.TextureBrush(watermarkImage))
+                {
+                    int x = (image.Width / 2 - watermarkImage.Width / 2);
+                    int y = (image.Height / 2 - watermarkImage.Height / 2 + 76);
+                    watermarkBrush.TranslateTransform(x, y);
+                    imageGraphics.FillRectangle(watermarkBrush, new System.Drawing.Rectangle(new System.Drawing.Point(x, y), new System.Drawing.Size(watermarkImage.Width + 1, watermarkImage.Height)));
+                    //path = path.Replace("Logo", "QrBase");
+                    image.Save(finalPath);
+                }
             }
 
+          
             return RedirectToAction("dashbaord");
         }
 

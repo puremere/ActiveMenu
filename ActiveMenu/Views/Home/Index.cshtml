@@ -32,7 +32,7 @@
             color: #000;
             background-color: #212121;
             margin: 0;
-            padding: 0;
+            
         }
 
         .swiper-container {
@@ -54,6 +54,8 @@
             width: 100%;
             
             overflow: hidden;
+            display:flex;
+            justify-content:center;
         }
 
             .picture img {
@@ -61,7 +63,7 @@
                 max-width: 100%;
                 max-width: 100%;
                 -o-object-fit: cover;
-                object-fit: cover;
+                object-fit: scale-down;
             }
 
         .detail {
@@ -115,7 +117,7 @@
             position: fixed;
             width: 100%;
             bottom: 0;
-            opacity: 0.3;
+            opacity: 0.8;
         }
 
         .messageDiv {
@@ -156,13 +158,7 @@
 
     </div>
     <style>
-        .menuOpen {
-            position: absolute;
-            left: 50px;
-            top: 50px;
-            color: white;
-            z-index: 999;
-        }
+       
 
         .sidenav {
             height: 100%; /* 100% Full-height */
@@ -206,6 +202,14 @@
             transition: margin-left .5s;
         }
 
+        .oof {
+            background: rgba(255,255,255,0.05);
+            backdrop-filter: blur(10px);
+            box-shadow: 5px 5px 30px rgba(0,0,0,0.2);
+            color: white;
+        }
+
+       
         /* On smaller screens, where height is less than 450px, change the style of the sidenav (less padding and a smaller font size) */
         @@media screen and (max-height: 450px) {
             .sidenav {
@@ -216,6 +220,38 @@
                     font-size: 18px;
                 }
         }
+        .countButton {
+            float: left;
+            padding: 5px;
+            color: white;
+            border-radius: 15px;
+            background-color: #343333;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0;
+            align-items: center;
+            background: rgba(255,255,255,0.05);
+            backdrop-filter: blur(10px);
+            border-top: 1px solid rgba(255,255,255,0.2);
+            border-left: 1px solid rgba(255,255,255,0.2);
+            box-shadow: 5px 5px 30px rgba(0,0,0,0.2);
+            margin: 0 5px
+        }
+        .iconholder {
+            height: 50px;
+            position: fixed;
+            color: white;
+            left:48px;
+            top: 48px;
+            font-size: 20px;
+            color: white;
+            z-index: 999;
+            display:flex;
+            align-items:center;
+
+        }
+        
     </style>
     <div id="mySidenav" class="sidenav">
         <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
@@ -224,9 +260,20 @@
         </div>
 
     </div>
-    <span class="menuOpen" onclick="openNav()"> <i style="font-size:20px" class="fa fa-shopping-cart"></i></span>
+    <div class="iconholder" >
+        <div class="row countButton " style="left: 50px;">
+            <span class="menuOpen" onclick="openNav()"> <i style="font-size:20px" class="fa fa-shopping-cart"></i></span>
+        </div>
+        <div class="row countButton " style="left: 150px;">
+            <span class="searchIcon" onclick="gotosearch()"> <i style="font-size:20px" class="fa fa-search"></i></span>
+        </div>
+    </div>
+    
+    @*<span class="backIcon" onclick="openNav()"> <i style="font-size:20px" class="fa fa-arrow-left"></i></span>*@
+   
+
     <!-- Slider main container -->
-    <div id="main" class="swiper-container swiper-container-coverflow swiper-container-3d swiper-container-horizontal" style="cursor: grab;height:80vh">
+    <div id="main" class="swiper-container swiper-container-coverflow swiper-container-3d swiper-container-horizontal" style="cursor: grab;height:60vh">
 
         <!-- Additional required wrapper -->
         <div class="swiper-wrapper" style="transition-duration: 0ms; transform: translate3d(235.5px, 0px, 0px); perspective-origin: 160px 50%;">
@@ -242,8 +289,9 @@
                 string calssname = "swiper-slide swiper-slide-active";
 
 
-
-                <div idtogo="@item.categoryID" class="@calssname" style="transition-duration: 0ms; transform: translate3d(0px, 0px, 0px) rotateX(0deg) rotateY(0deg); z-index: 1;">
+                <div idtogo="@item.categoryID" class="@calssname" style="        transition-duration: 0ms;
+        transform: translate3d(0px, 0px, 0px) rotateX(0deg) rotateY(0deg);
+        z-index: 1;">
                     <div class="picture">
                         <img src="@url" alt="">
                     </div>
@@ -429,11 +477,16 @@
 
 
     <script>
+        function gotosearch() {
+            window.location.href = "/Home/search";
+        }
         function openNav() {
             document.getElementById("mySidenav").style.width = "350px";
             document.getElementById("main").style.marginLeft = "350px";
             document.body.style.backgroundColor = "rgba(0,0,0,0.8)";
             $(".menuOpen").hide();
+            $(".searchIcon").hide();
+
         }
 
         /* Set the width of the side navigation to 0 and the left margin of the page content to 0, and the background color of body to white */
@@ -442,6 +495,7 @@
             document.getElementById("main").style.marginLeft = "0";
             document.body.style.backgroundColor = "";
             $(".menuOpen").show();
+            $(".searchIcon").show();
 
         }
     </script>
@@ -546,11 +600,11 @@
     @if (ViewBag.closed == "1")
     {
         <script>
-           
+
             $(".messageDiv").css('visibility', "visible");
         </script>
     }
-    @{ 
+    @{
         if (ViewBag.endorder != null)
         {
             <script>
@@ -565,7 +619,7 @@
                 }
                 toastr.success('Your Order Is Registered Successfully');
             </script>
-          
+
         }
     }
 

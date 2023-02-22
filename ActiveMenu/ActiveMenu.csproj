@@ -941,6 +941,7 @@
     <Content Include="Views\kitchen\Current.cshtml" />
     <Content Include="Views\Shared\_orderDetailMavad.cshtml" />
     <Content Include="Views\Shared\_mavadList.cshtml" />
+    <Content Include="Views\Home\search.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

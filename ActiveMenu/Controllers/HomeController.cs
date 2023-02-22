@@ -164,11 +164,11 @@ namespace ActiveMenu.Controllers
             int openning = Int32.Parse(rst.oppening.Hour.ToString());
             int closing = Int32.Parse(rst.colsing.Hour.ToString());
             int hour = Int32.Parse(DateTime.Now.AddHours(11).Hour.ToString());
-            
+
             if (hour < openning || hour > closing)
             {
                 //ViewBag.closed = "1";
-               // ViewBag.time = openning + "/" + closing + "serverTime : "+ DateTime.Now.ToString();
+                // ViewBag.time = openning + "/" + closing + "serverTime : "+ DateTime.Now.ToString();
 
                 Response.Cookies["sabad"].Value = "0";
             }
@@ -214,6 +214,50 @@ namespace ActiveMenu.Controllers
             return View(model);
         }
 
+        public ActionResult search(string q)
+        {
+
+            ViewBag.username = Request.Cookies["username"].Value as string;
+            List<Item> itemlist = new List<Item>();
+            if (q != null)
+            {
+                List<mavad> itemvaluelist0 = dbcontext.mavads.Where(x => x.title.Contains(q)).Select(x=>x).ToList();
+                List<Guid> itemvaluelist = dbcontext.mavads.Where(x => x.title.Contains(q)).Select(x=>x.mavadID).ToList();
+
+
+
+                itemlist = (from i in dbcontext.items
+                            join im in dbcontext.mavadItems
+                            on i.itemID equals im.itemID
+                            where itemvaluelist.Contains(im.mavadID) || i.title.Contains(q)
+                            select i).ToList();
+            }
+
+
+            foreach (var item in itemlist)
+            {
+                List<mavadItemVM> mavadList = (from m in dbcontext.mavads   //.Join .Where(x => x.itemID == rst.itemguid).ToList();
+                                               join mi in dbcontext.mavadItems
+                                               on m.mavadID equals mi.mavadID
+                                               where mi.itemID == item.itemID
+                                               select new mavadItemVM
+                                               {
+                                                   amount = mi.amount,
+                                                   title = m.title,
+                                                   ingID = mi.mavadID.ToString()
+
+                                               }).ToList();
+
+                item.ingredient = "";
+                foreach (var mavd in mavadList)
+                {
+                    item.ingredient += mavd.title + ",";
+
+                }
+                item.ingredient = item.ingredient.Trim(',');
+            }
+            return View(itemlist);
+        }
         public ActionResult Pager(string val)
         {
             string gu = Request.Cookies["gu"].Value;
@@ -232,12 +276,24 @@ namespace ActiveMenu.Controllers
         //{
 
         //}
-        public ActionResult Detail(Guid id)
+        public ActionResult Detail(Guid id, string q)
         {
             ViewBag.Message = "Your application description page.";
             category cat = dbcontext.categories.SingleOrDefault(x => x.categoryID == id);
 
-            List<Item> itemList = dbcontext.items.Where(x => x.categoryID == id && x.isDisabled == 0).ToList();
+            var itemListq = dbcontext.items.Where(x => x.isDisabled == 0);
+            if (id != null)
+            {
+                itemListq = itemListq.Where(x => x.categoryID == id);
+            }
+            if (q != null)
+            {
+                itemListq = itemListq.Where(x => x.title.Contains(q));
+            }
+
+            List<Item> itemList = itemListq.ToList();
+
+
 
 
             detailVM model = new detailVM()
@@ -316,7 +372,7 @@ namespace ActiveMenu.Controllers
         }
 
         public string addtocart(string id, string addtocart, string desc)
-        
+
         {
 
             string str = id;
@@ -560,7 +616,7 @@ namespace ActiveMenu.Controllers
             return View(model);
 
         }
-       
+
         public ActionResult setOrder()
         {
 
@@ -621,7 +677,7 @@ namespace ActiveMenu.Controllers
                     orderID = orderID,
                     orderDetailID = orderdetailID,
                     price = selitem.price,
-                     description = item.description
+                    description = item.description
                 });
 
                 foreach (var mavadChosen in lstmavaitem)

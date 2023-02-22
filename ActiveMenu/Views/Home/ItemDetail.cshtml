@@ -10,41 +10,22 @@
 <script src="~/Scripts/slick.js"></script>
 
 
-<style>
+<div class="iconholder leftP">
+    <div class="row countButton " style="left: 50px;">
+        <span class="" onclick="openNav()"> <i style="color:white" class="fa fa-long-arrow-left"></i></span>
+    </div>
+    <div class="row countButton " style="left: 50px;">
+        <span class="" onclick="openNav()"><a href="/home/search"><i style="color:white" class="fa fa-search"></i></a></span>
+    </div>
+
+</div>
+<div class="iconholder rightP">
+    <div class="row countButton " style="left: 50px;">
+        <span class="" onclick="openNav()"> <a href="/home/index"><i style="color:white" class="fa fa-home"></i></a></span>
+    </div>
+</div>
 
 
-    .inputholder {
-        display: inline-block;
-        margin: 10px
-    }
-
-        .inputholder span {
-            color: white
-        }
-
-    .textholder {
-        margin: 30px 10px;
-        display: flex;
-        align-items: center
-    }
-
-        .textholder p {
-            white-space: nowrap;
-            color: white;
-            margin: 10px
-        }
-
-    .buttonHolder {
-        margin: 30px 10px;
-        display: flex;
-        align-items: center
-    }
-
-        .buttonHolder div {
-            width: 50%;
-            margin: 20px
-        }
-</style>
 
 <div style="background-color:black;opacity: 0.98; " class="  modal fade" id="ingredientModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
     <div class="modal-dialog" role="document">
@@ -57,11 +38,11 @@
                     @foreach (var item in Model.mavadList)
                     {
 
-                    <div id="@item.ingID" class="inputholder col-lg-3 col-md-4 col-sm-6">
-                        <input class="" type="checkbox" checked />
-                        <span>@item.title</span>
+                        <div id="@item.ingID" class="inputholder col-lg-3 col-md-4 col-sm-6">
+                            <input class="" type="checkbox" checked />
+                            <span>@item.title</span>
 
-                    </div>
+                        </div>
 
 
                     }
@@ -82,13 +63,8 @@
     </div>
 </div>
 
-<div class="row" style="height:50px;position:fixed;color:white;left:50px;font-size: 18px;color: white;z-index:999;top:30px">
-    <p><span"><i style="color: white" class="fa fa-long-arrow-left"></i></span></p>
-</div>
-<div class="row" style="height: 50px; position: fixed; color: white; right: 50px; font-size: 18px; color: white; z-index: 999; top: 30px">
-    <p><span"><i style="color:white" class="fa fa-home"></i></span></p>
-</div>
-<div style="margin-top :50px">
+
+<div style="margin-top :120px ; margin-right:45px ; margin-left:45px">
 
     <div class="" style="display:flex; align-items:center; margin-top:0px">
         <div style="        width: 20%;
@@ -103,58 +79,9 @@
 
             </div>
         </div>
-        <style>
-
-            .cellitem {
-                width: 25%;
-                text-align: center;
-                /*border-right: 1px solid #4d4d4d;*/
-                padding: 10px 15px;
-                display: block !important;
-                margin: 5px
-            }
-
-                .cellitem p, .cellparent p {
-                    color: white
-                }
-
-                .cellitem p {
-                    display: flex;
-                    font-weight: 600;
-                    justify-content: center;
-                    margin: 0;
-                    padding: 5px;
-                }
-
-                    .cellitem p span {
-                        margin-right: 12px;
-                        font-weight: 600
-                    }
-
-            .cellitem2 {
-                padding: 5px;
-                width: 50%;
-            }
-
-                .cellitem2 p {
-                    font-size: 11px
-                }
-
-            .cellparent {
-                display: flex;
-                /*border-top: 1px #4d4d4d solid;
-                border-bottom: 1px #4d4d4d solid;*/
-                padding: 15px;
-            }
-
-            .noborder {
-                border: none;
-                border: none;
-                padding: 5px 25px;
-            }
-        </style>
+       
         <div style="width:70%">
-            <div class="cellparent">
+            <div class="cellparent" style="margin-bottom:15px">
                 <div class="cellitem  countButton">
                     <p><span><i class="fa fa-fire"></i></span> Calories</p>
                     <p>@Model.item.calory</p>
@@ -218,179 +145,12 @@
                     </div>
                 </div>
             </div>
-
-            @*<div style="margin-top:20px">
-
-                    <div style="direction:ltr; display:flex; align-items:center">
-                        <i class="fa fa-dot-circle" style="color:orange"></i>
-                        <span style="color:white;font-size:19px ; margin-left:15px;white-space: nowrap;">Item Description</span>
-
-                    </div>
-                    <p class="description">@Model.item.desctiption</p>
-                    <div style="direction:ltr; display:flex; align-items:center; margin-top:30px">
-                        <i class="fa fa-dot-circle" style="color:orange"></i>
-                        <span style="color:white;font-size:19px ; margin-left:15px;white-space: nowrap;">Ingredients</span>
-
-                    </div>
-                    <p class="description">
-                        @{
-                            string srtitem = "";
-                        }
-
-
-                        @foreach (var item in Model.mavadList)
-                        {
-                            srtitem += @item.title + ",";
-
-
-                        }
-                        <span> @srtitem.Trim(',')</span>
-                    </p>
-
-                    <div class="" style="display:flex">
-                        <div style="width:50%" style="flex:1" class="col-6">
-                            <div style="direction:ltr; display:flex; align-items:center; margin-top:30px">
-                                <i class="fa fa-dot-circle" style="color:orange"></i>
-                                <span style="color:white;font-size:19px ; margin-left:15px;white-space: nowrap;">Calories</span>
-
-                            </div>
-                            <p class="description"></p>
-                        </div>
-                        <div style="width:50%" class="col-6">
-                            <div style="direction:ltr; display:flex; align-items:center; margin-top:30px">
-                                <i class="fa fa-dot-circle" style="color:orange"></i>
-                                <span style="color:white;font-size:19px ; margin-left:15px;white-space: nowrap;">Proteins</span>
-
-                            </div>
-                            <p class="description"</p>
-                        </div>
-                    </div>
-                    <div class="" style="display:flex">
-                        <div style="width:50%" class="col-6">
-                            <div style="direction:ltr; display:flex; align-items:center; margin-top:30px">
-                                <i class="fa fa-dot-circle" style="color:orange"></i>
-                                <span style="color:white;font-size:19px ; margin-left:15px;white-space: nowrap;">Carbohydrates</span>
-
-                            </div>
-                            <p class="description">@Model.item.Carbohydrates</p>
-                        </div>
-                        <div style="width:50%" class="col-6">
-                            <div style="direction:ltr; display:flex; align-items:center; margin-top:30px">
-                                <i class="fa fa-dot-circle" style="color:orange"></i>
-                                <span style="color:white;font-size:19px ; margin-left:15px;white-space: nowrap;">Fats</span>
-
-                            </div>
-                            <p class="description">@Model.item.Fats</p>
-                        </div>
-                    </div>
-
-
-
-
-
-                    <div style="align-items:center; border:1px solid white; border-radius:15px; padding:15px; display:flex; margin-top:40px; direction:rtl">
-                        <p style="color:white; font-size:18px; margin:0">Total Payment</p>
-                        <p style="flex:1"></p>
-                        <p style="color:orange; font-size:25px; margin:0">@string.Format("{0:n0}", @Model.item.price)  </p>
-                        <p style="color:white; font-size:18px; margin:0;margin-right:15px; ">$</p>
-                    </div>
-                    <div style="display:flex; align-items:center; margin-top:10px">
-
-                        @if (ViewBag.sabad == "1" || !String.IsNullOrEmpty(ViewBag.istrue))
-                        {
-                            <p class="countButton" style="direction:ltr">
-                                <i id="@Model.item.itemID" style=" font-size:20px" class="fal fa-minus" onclick="removeItem(this)"></i>
-                                @{
-                                    string iclass = "value" + Model.item.itemID;
-
-                                }
-                                <span class="@iclass allPrice" style="font-size:20px; color:white; margin:0 25px">0</span>
-                                <i id="@Model.item.itemID" style="color:orange;font-size:20px" class="fal fa-plus" onclick="addItem(this)"></i>
-                            </p>
-                        }
-
-
-
-                        <p style="flex:1"></p>
-
-
-                        @{
-
-                            if (ViewBag.istrue != "")
-                            {
-                                <div style="display:flex; justify-content:center;margin:15px;">
-                                    <a href="/admin/createItem?item=@Model.item.itemID">
-                                        <div style=" padding:15px;color:white; background-color:#3aafd6;text-align:center; border-radius:13px">Edit</div>
-                                    </a>
-                                    <a style="margin: 0 10px" href="/admin/DeleteItem?item=@Model.item.itemID">
-                                        <div style=" padding:15px;color:white; background-color:#3aafd6;text-align:center; border-radius:13px">Remove</div>
-                                    </a>
-                                </div>
-                            }
-                        }
-
-
-                    </div>
-
-                </div>*@
         </div>
 
     </div>
     <style>
 
-        .imaghld {
-            /*width: 30%;*/
-            margin: 2.5%
-        }
-
-            .imaghld img {
-                max-width: 100%;
-                max-height: 100%;
-                object-fit: cover
-            }
-
-        .contenthld {
-            /*width: 75%;*/
-        }
-
-        .ptitle {
-            color: white;
-            padding: 5px;
-            font-size: 14px;
-            text-align: left;
-            white-space: nowrap
-        }
-
-        .contentrow {
-            display: flex;
-            border-top: 1px solid #4d4d4d;
-            border-bottom: 1px solid #4d4d4d;
-            padding: 10px;
-            direction: ltr
-        }
-
-        .contentChild {
-            padding: 0 10px;
-            border-left: 1px solid #4d4d4d;
-            width: 100%;
-        }
-
-            .contentChild p {
-                color: white;
-            }
-
-        .sliderParent {
-            margin: 10px;
-            padding: 5px
-        }
-
-        .sameParent {
-            /*background: rgb(126,128,126);
-            background: linear-gradient(90deg, rgba(126,128,126,1) 0%, rgba(81,83,81,1) 44%, rgba(60,61,61,1) 100%);*/
-            border-radius: 10px;
-            display: flex !important;
-            direction: ltr;
-        }
+    
     </style>
 
     <div class="">
@@ -477,113 +237,21 @@
         }
     </div>
 </div>
-<input type="text"  id="pingholder" style="display:none"/>
+<input type="text" id="pingholder" style="display:none" />
 
 
-
-<style>
-    .description {
-        font-size: 17px;
-        color: white;
-        direction: ltr;
-        margin-top: 15px;
-        line-height: 2;
-        text-align: justify;
-    }
-
-    /*.countButton {
-            float: left;
-            padding: 5px;
-            background-color: darkorange;
-            color: white;
-            border-radius: 8px;
-            background-color: #4d4d4d;
-            padding: 10px;
-            display: flex;
-            justify-content: space-between;
-            width: 150px;
-            align-items: center;
-            border: 1px solid white;
-            background-color: #4d4d4d;
-            margin: 25px auto
-        }*/
-    .infoSec {
-        position: relative;
-        z-index: 9999;
-        background-color: #343333;
-        padding: 20px;
-        border-radius: 32px 32px 0 0;
-        width: 100%;
-        padding-top: 40px;
-        background: rgba(255,255,255,0.05);
-        backdrop-filter: blur(10px);
-        border-top: 1px solid rgba(255,255,255,0.2);
-        border-left: 1px solid rgba(255,255,255,0.2);
-        box-shadow: 5px 5px 30px rgb(0 0 0 / 20%);
-        margin-top: -40px;
-        padding-bottom: 100px
-    }
-
-    .blur::before {
-        backdrop-filter: blur(2px) contrast(60%);
-        -webkit-backdrop-filter: blur(2px) contrast(60%);
-        width: contain;
-    }
-
-    .blur {
-        backdrop-filter: blur(2px) contrast(60%);
-        -webkit-backdrop-filter: blur(2px) contrast(60%);
-        width: contain;
-    }
-</style>
 
 
 
 @section scripts{
-    <script>
-        //var getquntity = function () {
-        //    $.ajax({
-        //        url: '/Home/getquntitiy',
-        //        dataType: 'html',
-        //        success: function (data) {
-        //            var total = 0;
-        //            var srtcookie = data;
-
-        //            if (srtcookie.length > 0) {
-        //                srtcookie = srtcookie.replace(/&quot;/g, '"');
-        //                JSON.parse(srtcookie).forEach(function (item) {
-        //                    let valueID = "value" + item.productid;
-
-        //                    $("." + valueID).text(item.quantity);
-        //                    total += parseInt(item.quantity);
-        //                });
-        //                $(".simpleCart_quantityy").text(total)
-
-        //            } else {
-        //                $(".simpleCart_quantityy").text("0")
-        //            };
-        //        }
-
-        //    })
-        //};
-
-        //$(document).ready(function () {
-        //    getquntity();
-        //})
-
-
-
-
-
-
-    </script>
+ 
     <script>
 
         var actiontype = "";
         var itemToadd = "";
         var mealtoadd = "";
 
-       
+
         $("#canceling").click(function (e) {
 
             $("#ingredientModal").modal('toggle')
@@ -597,7 +265,7 @@
                 url: "/Home/getMealMavd",
                 data: {
                     id: mealtoadd,
-                    
+
                 },
                 success: function (data) {
                     $("#ingredientModalHolder").html(data);
@@ -624,7 +292,7 @@
 
         var fuplus = function (id, itemToadd, desc) {
             $("#loading").fadeIn()
-            var itemToadd = $("#pingholder").val(); 
+            var itemToadd = $("#pingholder").val();
             $.ajax({
                 url: "/Home/addtocart",
                 data: {
@@ -690,8 +358,116 @@
     $(".fa-home").click(function (e) {
         window.location.href = "/home/index";
     })
+    $(".fa-search").click(function (e) {
+        window.location.href = "/home/search";
+    })
 </script>
+
 <style>
+
+    .cellitem {
+        width: 25%;
+        text-align: center;
+        /*border-right: 1px solid #4d4d4d;*/
+        padding: 10px !important;
+        display: block !important;
+        margin: 5px
+    }
+
+        .cellitem p, .cellparent p {
+            color: white
+        }
+
+        .cellitem p {
+            display: flex;
+            font-weight: 600;
+            justify-content: center;
+            margin: 0;
+            padding: 5px;
+        }
+
+            .cellitem p span {
+                margin-right: 12px;
+                font-weight: 600
+            }
+
+    .cellitem2 {
+        padding: 5px !important;
+        width: 50%;
+    }
+
+        .cellitem2 p {
+            font-size: 11px;
+            
+        }
+
+    .cellparent {
+        display: flex;
+        /*border-top: 1px #4d4d4d solid;
+                border-bottom: 1px #4d4d4d solid;*/
+        padding:px;
+    }
+
+    .noborder {
+        border: none;
+        border: none;
+        padding: 10px;
+        padding-right:0
+    }
+    .imaghld {
+        /*width: 30%;*/
+        margin: 2.5%
+    }
+
+        .imaghld img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: cover
+        }
+
+    .contenthld {
+        /*width: 75%;*/
+    }
+
+    .ptitle {
+        color: white;
+        padding: 5px;
+        font-size: 14px;
+        text-align: left;
+        white-space: nowrap
+    }
+
+    .contentrow {
+        display: flex;
+        border-top: 1px solid #4d4d4d;
+        border-bottom: 1px solid #4d4d4d;
+        padding: 10px;
+        direction: ltr
+    }
+
+    .contentChild {
+        padding: 0 10px;
+        border-left: 1px solid #4d4d4d;
+        width: 100%;
+    }
+
+        .contentChild p {
+            color: white;
+        }
+
+    .sliderParent {
+        margin: 10px 0;
+        padding: 5px
+    }
+
+    .sameParent {
+        /*background: rgb(126,128,126);
+            background: linear-gradient(90deg, rgba(126,128,126,1) 0%, rgba(81,83,81,1) 44%, rgba(60,61,61,1) 100%);*/
+        border-radius: 10px;
+        display: flex !important;
+        direction: ltr;
+    }
+
     .itemparent {
         position: absolute;
         overflow: auto;
@@ -707,6 +483,115 @@
         -ms-overflow-style: none; /* IE and Edge */
         scrollbar-width: none; /* Firefox */
     }
+
+    .description {
+        font-size: 17px;
+        color: white;
+        direction: ltr;
+        margin-top: 15px;
+        line-height: 2;
+        text-align: justify;
+    }
+
+
+    .infoSec {
+        position: relative;
+        z-index: 9999;
+        background-color: #343333;
+        padding: 20px;
+        border-radius: 32px 32px 0 0;
+        width: 100%;
+        padding-top: 40px;
+        background: rgba(255,255,255,0.05);
+        backdrop-filter: blur(10px);
+        border-top: 1px solid rgba(255,255,255,0.2);
+        border-left: 1px solid rgba(255,255,255,0.2);
+        box-shadow: 5px 5px 30px rgb(0 0 0 / 20%);
+        margin-top: -40px;
+        padding-bottom: 100px
+    }
+
+    .blur::before {
+        backdrop-filter: blur(2px) contrast(60%);
+        -webkit-backdrop-filter: blur(2px) contrast(60%);
+        width: contain;
+    }
+
+    .blur {
+        backdrop-filter: blur(2px) contrast(60%);
+        -webkit-backdrop-filter: blur(2px) contrast(60%);
+        width: contain;
+    }
+
+    .countButton {
+        float: left;
+        margin: 5px;
+        color: white;
+        border-radius: 15px;
+        background-color: #343333;
+        padding: 13px;
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 0;
+        align-items: center;
+        background: rgba(255,255,255,0.05);
+        backdrop-filter: blur(10px);
+        border-top: 1px solid rgba(255,255,255,0.2);
+        border-left: 1px solid rgba(255,255,255,0.2);
+        box-shadow: 5px 5px 30px rgba(0,0,0,0.2);
+    }
+
+    .iconholder {
+        height: 50px;
+        position: fixed;
+        color: white;
+        top: 20px;
+        font-size: 20px;
+        color: white;
+        z-index: 999;
+        display: flex;
+        align-items: center;
+    }
+
+    .leftP {
+        left: 28px;
+    }
+
+    .rightP {
+        right: 28px;
+    }
+
+    .inputholder {
+        display: inline-block;
+        margin: 10px
+    }
+
+        .inputholder span {
+            color: white
+        }
+
+    .textholder {
+        margin: 30px 10px;
+        display: flex;
+        align-items: center
+    }
+
+        .textholder p {
+            white-space: nowrap;
+            color: white;
+            margin: 10px
+        }
+
+    .buttonHolder {
+        margin: 30px 10px;
+        display: flex;
+        align-items: center
+    }
+
+        .buttonHolder div {
+            width: 50%;
+            margin: 20px
+        }
 </style>
 
 

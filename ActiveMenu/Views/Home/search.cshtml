@@ -1,0 +1,132 @@
+﻿
+
+
+
+@model IEnumerable<ActiveMenu.Model.Item>
+
+@{
+    ViewBag.Title = "basket";
+    ViewBag.ItemTitle = "Basket";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<div class="iconholder leftP">
+    <div class="row countButton " style="left: 50px;">
+        <span class="" onclick="openNav()"> <i style="color:white" class="fa fa-long-arrow-left"></i></span>
+    </div>
+  
+
+</div>
+<div class="iconholder rightP">
+    <div class="row countButton " style="left: 50px;">
+        <span class="" onclick="openNav()"> <a href="/home/index"><i style="color:white" class="fa fa-home"></i></a></span>
+    </div>
+</div>
+
+
+<div style="position:relative;width: 70%;margin: auto;margin-top: 20px;display:flex">
+    <input placeholder="search your meal or ingredient" id="seachinput" class="countButton" style="  padding: 10px;  border-radius: 10px; width: 70%" />
+    <i class="fa fa-search" style="position:absolute;top: 22px;right: 110px;color: white;z-index: 99;"></i>
+    <div id="serachBtn" class="countButton" style="width:30%; text-align:center; "><p style="color:white; margin:0; width:100%">search</p></div>
+</div>
+<div style="position: absolute; width: 100%; overflow: auto; display: flex; justify-content: center; top: 100px">
+
+
+    <div style="position:relative;width:70%; " class="itemparent">
+
+
+
+        @if (Model != null)
+        {
+            foreach (var item in Model)
+            {
+                @Html.Partial("~/Views/Shared/ItemSection.cshtml", item);
+            }
+        }
+        else
+        {
+
+        }
+
+
+    </div>
+
+
+
+    <style>
+        .reportParent {
+            width: 100%;
+            display: flex;
+            direction: ltr;
+            padding: 5px 15px;
+            border-bottom: 1px solid #343333;
+        }
+
+            .reportParent span {
+                color: white;
+                font-size: 14px;
+            }
+
+        .flex1 {
+            flex: 1
+        }
+        .countButton {
+            float: left;
+            margin: 5px;
+            color: white;
+            border-radius: 15px;
+            background-color: #343333;
+            padding: 13px;
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0;
+            align-items: center;
+            background: rgba(255,255,255,0.05);
+            backdrop-filter: blur(10px);
+            border-top: 1px solid rgba(255,255,255,0.2);
+            border-left: 1px solid rgba(255,255,255,0.2);
+            box-shadow: 5px 5px 30px rgba(0,0,0,0.2);
+        }
+
+        .iconholder {
+            height: 50px;
+            position: fixed;
+            color: white;
+            top: 20px;
+            font-size: 14px;
+            color: white;
+            z-index: 999;
+            display: flex;
+            align-items: center;
+        }
+
+        .leftP {
+            left: 28px;
+        }
+
+        .rightP {
+            right: 28px;
+        }
+    </style>
+
+
+</div>
+
+
+<script>
+    $("#serachBtn").click(function () {
+        var q = $("#seachinput").val();
+        window.location.href = "/Home/search?q=" + q;
+    })
+    $(".fa-long-arrow-left").click(function (e) {
+        e.preventDefault();
+        window.history.back();
+    })
+    $(".fa-home").click(function (e) {
+        window.location.href = "/home/index";
+    })
+    $(".fa-search").click(function (e) {
+        window.location.href = "/home/search";
+    })
+</script>
