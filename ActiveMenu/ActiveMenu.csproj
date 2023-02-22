@@ -649,9 +649,6 @@
     <Content Include="images\Items\oc\SeekPng.com_cereal-bowl-png_795891.png" />
     <Content Include="images\Items\oc\vippng.com-food-plate-png-668912.png" />
     <Content Include="images\Logo\niki.png" />
-    <Content Include="images\Restaurant\group_21.jpg" />
-    <Content Include="images\Restaurant\group_21.png" />
-    <Content Include="images\Restaurant\kafeNiki.png" />
     <Content Include="main\css\bootstrap.min.css" />
     <Content Include="main\css\style.css" />
     <Content Include="main\img\about.png" />
@@ -947,6 +944,7 @@
     <Folder Include="App_Data\" />
     <Folder Include="images\Qr2\" />
     <Folder Include="images\Qr\" />
+    <Folder Include="images\Restaurant\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />

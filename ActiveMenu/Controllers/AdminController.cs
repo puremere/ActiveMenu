@@ -719,7 +719,7 @@ namespace ActiveMenu.Controllers
             string tempPath = Path.Combine(Server.MapPath(pathString), "sample.jpg");
             string finalPath = Path.Combine(Server.MapPath(pathString), "final.png");
 
-            using (Image image = Image.FromFile(tempPath))
+            using (Image image = Image.FromFile(finalPath))
             using (Image watermarkImage = Image.FromFile(url))
             using (Graphics imageGraphics = Graphics.FromImage(image))
             using (TextureBrush watermarkBrush = new TextureBrush(watermarkImage))
